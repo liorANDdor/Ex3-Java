@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 const customerActions = {
     createOrder:'Create order',
-    raitingOfStoreOwners:'Raitind of store owners',
+    raitingOfStoreOwners:'Raiting of store owners',
     ordersInfo:'Orders infomartion'
 }
 
