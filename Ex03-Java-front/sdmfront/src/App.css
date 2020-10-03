@@ -1,0 +1,11 @@
+.App {
+  position: relative;
+  margin-top: 0px;
+  min-height: 100vh;
+  height: 100%;
+  background: -moz-linear-gradient(45deg, rgba(221, 191, 198, 0.6), rgba(182, 183, 240, 0.69) 100%);
+  background: -webkit-linear-gradient(45deg, rgba(236, 8, 57, 0.6), rgba(207, 108, 108, 0.69) 100%);
+  background: linear-gradient(45deg, rgba(223, 100, 126, 0.6), rgba(173, 199, 113, 0.69) 100%);
+  text-align: center;
+}
+

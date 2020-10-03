@@ -1,0 +1,9 @@
+.Videobackground  {
+    height: 100%;
+    background: -moz-linear-gradient(45deg, rgba(221, 191, 198, 0.6), rgba(13, 17, 198, 0.69) 100%);
+    background: -webkit-linear-gradient(45deg, rgba(146, 123, 128, 0.6), rgba(121, 122, 175, 0.69) 100%);
+    background: linear-gradient(45deg, rgba(204, 168, 176, 0.6), rgba(13, 17, 198, 0.69) 100%);
+    }
+    
+  
+    
