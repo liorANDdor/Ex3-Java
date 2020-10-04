@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useEffect, useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -14,8 +13,8 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import Container from "@material-ui/core/Container";
 import clone from "clone";
+import axios from '../../Utilities/Axios/Axios'
 
-//import axios from '../../Utilities/Axios/Axios'
 const formElementsInit = {
   role: {
     type: "select",
@@ -32,6 +31,7 @@ const formElementsInit = {
     value: "",
   },
 };
+
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -55,14 +55,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SignUp = (props) => {
+  
   const [formInputs, setFormInputs] = useState(formElementsInit);
   const [isTaken, setisTaken] = useState(false);
   const classes = useStyles();
-  const onSubmitHandler = async (event) => {
+  const onSubmitHandler = (event) => {
     event.preventDefault();
     console.log(event);
-    await axios
-      .post("http://localhost:8080/SDM/register", formInputs)
+    axios
+      .post("/SDM/register", formInputs)
       .then((res) => {
         if (res.data === true) {
           props.setSignedUpResult(true, formInputs.role.value);
