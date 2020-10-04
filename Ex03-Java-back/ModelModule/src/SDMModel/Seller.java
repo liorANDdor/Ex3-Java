@@ -6,12 +6,12 @@ import java.awt.*;
 import java.util.HashMap;
 
 
-public class Customer extends User {
+public class Seller extends User {
 
-    public Customer() {
+    public Seller() {
     }
 
-    public Customer(String name, Integer customerId) {
+    public Seller(String name, Integer customerId) {
         this.name = name;
         this.id = customerId;
     }
@@ -21,7 +21,7 @@ public class Customer extends User {
     public enum InfoOptions {
         Name, CustomerId, Location,AverageShipmentPrice, AverageItemPrice, NumberOfOrders;
 
-        public String getInfo(Customer customer) {
+        public String getInfo(Seller customer) {
             switch (this) {
                 case CustomerId:
                     return String.valueOf(customer.getId());
@@ -61,7 +61,7 @@ public class Customer extends User {
         numberOfOrders++;
     }
 
-    public String getAverageShipmentprice(Customer customer) {
+    public String getAverageShipmentprice(Seller customer) {
         if(customer.getNumberOfOrders() == 0)
             return "0.0";
         else
@@ -69,7 +69,7 @@ public class Customer extends User {
     }
 
 
-    public String getAverageItemPrice(Customer customer) {
+    public String getAverageItemPrice(Seller customer) {
         if(customer.getNumberOfOrders() == 0)
             return "0.0";
         else
@@ -122,8 +122,8 @@ public class Customer extends User {
         this.id = id;
     }
 
-    public static Customer createInstanceBySDM(SDMCustomer sdmCustomer) {
-        Customer customer = new Customer();
+    public static Seller createInstanceBySDM(SDMCustomer sdmCustomer) {
+        Seller customer = new Seller();
         customer.setId(sdmCustomer.getId());
         customer.setName(sdmCustomer.getName());
         customer.setLocation(new Point(sdmCustomer.getLocation().getX(),sdmCustomer.getLocation().getY()));

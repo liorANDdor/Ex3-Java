@@ -6,22 +6,17 @@ import java.awt.*;
 import java.util.HashMap;
 
 
-public class Customer extends User {
+public class User {
 
-    public Customer() {
-    }
-
-    public Customer(String name, Integer customerId) {
-        this.name = name;
-        this.id = customerId;
+    public User() {
     }
 
 
 
     public enum InfoOptions {
-        Name, CustomerId, Location,AverageShipmentPrice, AverageItemPrice, NumberOfOrders;
+        Name, CustomerId, Location, NumberOfOrders;
 
-        public String getInfo(Customer customer) {
+        public String getInfo(User customer) {
             switch (this) {
                 case CustomerId:
                     return String.valueOf(customer.getId());
@@ -29,10 +24,6 @@ public class Customer extends User {
                     return customer.getName();
                 case Location:
                     return customer.showLocation();
-                case AverageShipmentPrice:
-                    return customer.getAverageShipmentprice(customer);
-                case AverageItemPrice:
-                    return customer.getAverageItemPrice(customer);
                 case NumberOfOrders:
                     return String.valueOf(customer.getNumberOfOrders());
                 default:
@@ -61,7 +52,7 @@ public class Customer extends User {
         numberOfOrders++;
     }
 
-    public String getAverageShipmentprice(Customer customer) {
+    public String getAverageShipmentprice(User customer) {
         if(customer.getNumberOfOrders() == 0)
             return "0.0";
         else
@@ -69,7 +60,7 @@ public class Customer extends User {
     }
 
 
-    public String getAverageItemPrice(Customer customer) {
+    public String getAverageItemPrice(User customer) {
         if(customer.getNumberOfOrders() == 0)
             return "0.0";
         else
@@ -122,8 +113,8 @@ public class Customer extends User {
         this.id = id;
     }
 
-    public static Customer createInstanceBySDM(SDMCustomer sdmCustomer) {
-        Customer customer = new Customer();
+    public static User createInstanceBySDM(SDMCustomer sdmCustomer) {
+        User customer = new User();
         customer.setId(sdmCustomer.getId());
         customer.setName(sdmCustomer.getName());
         customer.setLocation(new Point(sdmCustomer.getLocation().getX(),sdmCustomer.getLocation().getY()));

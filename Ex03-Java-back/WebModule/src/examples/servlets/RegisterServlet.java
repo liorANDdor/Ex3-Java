@@ -45,9 +45,9 @@ public class RegisterServlet extends HttpServlet {
 
         String role = requestData.get("role").getAsJsonObject().get("value").getAsString();
         String name = requestData.get("name").getAsJsonObject().get("value").getAsString();
-        Store store = new Store("dor", 1,1,new Point(1,1));
-        String stores = gson.toJson(store);
-        response.getWriter().append(stores);
+        SystemManager.userType userType =  role.equals("Customer") ? SystemManager.userType.Customer : SystemManager.userType.Seller; ;
+        Boolean wasUserAdded = SystemManager.getInstance().addUser(name, userType);
+        response.getWriter().append(gson.toJson(wasUserAdded));
 
     }
 

@@ -43,8 +43,21 @@ public class SystemManager {
         }
     }
 
+    public enum userType{
+        Customer,
+        Seller
+    }
     private static SystemManager manager = null;
     private SuperMarket superMarket;
+
+    public Integer getNumberOfUsers() {
+        return numberOfUsers;
+    }
+
+    private Integer numberOfUsers = 0;
+    private HashMap<Integer, SuperMarket> superMarkets = new HashMap<>();
+    private HashMap<String, User> users = new HashMap<>();
+
     private static Object createManagerInstance = new Object();
 
     private SimpleBooleanProperty thereIsXmlLoaded = new SimpleBooleanProperty(false);
@@ -110,7 +123,32 @@ public class SystemManager {
                 .orElseThrow(NoSuchElementException::new);
         return Math.max(maxColsCustomers, maxColStores);
     }
+    public synchronized boolean addUser(String name, SystemManager.userType type ) {
+        if (checkIfUserExist(name)) {
+            return false;
+        }
+        else{
+            User newUser;
 
+            Integer userNumber = this.getNumberOfUsers() + 1;
+            this.increaseNumberOfUsers();
+            if (type == userType.Customer)
+                newUser = new Customer(name, userNumber);
+            else
+                newUser = new Seller(name, userNumber);
+            users.put(name, newUser);
+            return true;
+        }
+    }
+
+    private synchronized boolean checkIfUserExist(String name) {
+        return users.containsKey(name) ? true : false;
+    }
+
+
+    public void increaseNumberOfUsers() {
+        this.numberOfUsers+=1;
+    }
     public static  List<Sale> changeValueOfItem(Store store, Item item, optionsForUpdate whatToDo, double price) {
         List<Sale> saleDeletedWhatYouBuy = new ArrayList();
         List<Sale> saleDeletedWhatYouGet = new ArrayList();
@@ -184,6 +222,7 @@ public class SystemManager {
 
         return manager;
     }
+
 
     public SimpleBooleanProperty isXmlLoaded() {
         return thereIsXmlLoaded;

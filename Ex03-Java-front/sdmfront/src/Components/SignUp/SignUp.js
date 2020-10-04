@@ -59,7 +59,7 @@ const SignUp = (props) => {
   const onSubmitHandler = (event) => {
     event.preventDefault();
     console.log(event);
-    axios.post("/SDM/register", formInputs).then((res) => console.log(res));
+    axios.post("/SDM/register", formInputs).then((res) => console.log(res.data));
     //    .catch(err => console.log(err))
     props.setSignedUpResult(true, formInputs.role.value);
   };
