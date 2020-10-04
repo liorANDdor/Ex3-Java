@@ -9,11 +9,12 @@ import java.util.HashMap;
 public class Customer extends User {
 
     public Customer() {
+        super();
     }
 
     public Customer(String name, Integer customerId) {
-        this.name = name;
-        this.id = customerId;
+        super(name, customerId);
+
     }
 
 
@@ -43,9 +44,7 @@ public class Customer extends User {
 
     }
 
-    private String name;
-    private Point location;
-    private int id;
+
 
 
     public Integer getNumberOfOrders() {
@@ -95,32 +94,9 @@ public class Customer extends User {
     private HashMap<Integer, Order> orders = new HashMap<>();
 
 
-    public String getName() {
-        return name;
-    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
-    public Point getLocation() {
-        return location;
-    }
-    public String showLocation() {
-        return String.format("(%s, %s)", location.x, location.y);
-    }
 
-    public void setLocation(Point location) {
-        this.location = location;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public static Customer createInstanceBySDM(SDMCustomer sdmCustomer) {
         Customer customer = new Customer();

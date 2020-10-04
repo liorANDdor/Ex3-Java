@@ -4,6 +4,7 @@ import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
+import Alert from "@material-ui/lab/Alert";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
@@ -55,13 +56,22 @@ const useStyles = makeStyles((theme) => ({
 
 const SignUp = (props) => {
   const [formInputs, setFormInputs] = useState(formElementsInit);
+  const [isTaken, setisTaken] = useState(false);
   const classes = useStyles();
-  const onSubmitHandler = (event) => {
+  const onSubmitHandler = async (event) => {
     event.preventDefault();
     console.log(event);
-    axios.post("/SDM/register", formInputs).then((res) => console.log(res.data));
-    //    .catch(err => console.log(err))
-    props.setSignedUpResult(true, formInputs.role.value);
+    await axios
+      .post("http://localhost:8080/SDM/register", formInputs)
+      .then((res) => {
+        if (res.data === true) {
+          props.setSignedUpResult(true, formInputs.role.value);
+        } else {
+          props.setSignedUpResult(false);
+          setisTaken(true);
+        }
+      })
+      .catch((err) => console.log(err));
   };
 
   const handleChange = (event, key) => {
@@ -137,6 +147,11 @@ const SignUp = (props) => {
             Sign up
           </Button>
         </form>
+        {isTaken ? (
+          <Alert severity="info">
+            User Name is already taken, try another one
+          </Alert>
+        ) : null}
       </div>
     </Container>
   );

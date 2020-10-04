@@ -1,43 +1,31 @@
 package examples.servlets;
 
+import SDMModel.SystemManager;
+import SDMModel.User;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-
-import SDMModel.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.*;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 
-
-@WebServlet(name = "RegisterServlet", urlPatterns = "/register")
-public class RegisterServlet extends HttpServlet {
+@WebServlet(name = "getUsersServlet", urlPatterns = "/getUsers")
+public class getUsersServlet extends HttpServlet {
 
     public void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String rawRequestData = request.getReader().lines().collect(Collectors.joining());
         Gson gson = new Gson();
-        JsonObject requestData = new Gson().fromJson(rawRequestData, JsonObject.class);
 
-
+         HashMap<String, User> users =  SystemManager.getInstance().getUsers();
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
-
-        String role = requestData.get("role").getAsJsonObject().get("value").getAsString();
-        String name = requestData.get("name").getAsJsonObject().get("value").getAsString();
-        SystemManager.userType userType =  role.equals("Customer") ? SystemManager.userType.Customer : SystemManager.userType.Seller; ;
-        Boolean wasUserAdded = SystemManager.getInstance().addUser(name, userType);
-        response.getWriter().append(gson.toJson(wasUserAdded));
+        response.getWriter().append(gson.toJson(users));
 
     }
 

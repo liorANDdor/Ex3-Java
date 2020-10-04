@@ -55,7 +55,17 @@ public class SystemManager {
     }
 
     private Integer numberOfUsers = 0;
+
+    public SuperMarket getSuperMarketByLocation(String regionId) {
+        return superMarkets.get(regionId);
+    }
+
     private HashMap<Integer, SuperMarket> superMarkets = new HashMap<>();
+
+    public HashMap<String, User> getUsers() {
+        return users;
+    }
+
     private HashMap<String, User> users = new HashMap<>();
 
     private static Object createManagerInstance = new Object();

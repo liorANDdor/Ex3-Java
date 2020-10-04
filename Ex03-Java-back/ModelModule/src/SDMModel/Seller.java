@@ -12,14 +12,14 @@ public class Seller extends User {
     }
 
     public Seller(String name, Integer customerId) {
-        this.name = name;
-        this.id = customerId;
+        super(name, customerId);
+
     }
 
 
 
     public enum InfoOptions {
-        Name, CustomerId, Location,AverageShipmentPrice, AverageItemPrice, NumberOfOrders;
+        Name, CustomerId, Location;
 
         public String getInfo(Seller customer) {
             switch (this) {
@@ -29,12 +29,7 @@ public class Seller extends User {
                     return customer.getName();
                 case Location:
                     return customer.showLocation();
-                case AverageShipmentPrice:
-                    return customer.getAverageShipmentprice(customer);
-                case AverageItemPrice:
-                    return customer.getAverageItemPrice(customer);
-                case NumberOfOrders:
-                    return String.valueOf(customer.getNumberOfOrders());
+
                 default:
                     return "Unknown";
             }
@@ -43,38 +38,13 @@ public class Seller extends User {
 
     }
 
-    private String name;
-    private Point location;
-    private int id;
 
 
-    public Integer getNumberOfOrders() {
-        return numberOfOrders;
-    }
 
-    private Integer numberOfOrders = 0;
     private double totalShipmentPrice = 0.0;
     private double totalItemPrice = 0.0;
 
 
-    public void increaseNumberOfOrders() {
-        numberOfOrders++;
-    }
-
-    public String getAverageShipmentprice(Seller customer) {
-        if(customer.getNumberOfOrders() == 0)
-            return "0.0";
-        else
-            return String.format("%.2f" ,customer.getTotalShipmentPrice() / customer.getNumberOfOrders());
-    }
-
-
-    public String getAverageItemPrice(Seller customer) {
-        if(customer.getNumberOfOrders() == 0)
-            return "0.0";
-        else
-            return String.format("%.2f" ,customer.getTotalItemPrice() / customer.getNumberOfOrders());
-    }
 
     public double getTotalShipmentPrice() {
         return totalShipmentPrice;
@@ -95,32 +65,8 @@ public class Seller extends User {
     private HashMap<Integer, Order> orders = new HashMap<>();
 
 
-    public String getName() {
-        return name;
-    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
-    public Point getLocation() {
-        return location;
-    }
-    public String showLocation() {
-        return String.format("(%s, %s)", location.x, location.y);
-    }
-
-    public void setLocation(Point location) {
-        this.location = location;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public static Seller createInstanceBySDM(SDMCustomer sdmCustomer) {
         Seller customer = new Seller();
