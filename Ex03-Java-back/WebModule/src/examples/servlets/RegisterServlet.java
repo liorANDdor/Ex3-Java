@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,18 +26,19 @@ public class RegisterServlet extends HttpServlet {
 
     public void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String rawRequestData = request.getReader().lines().collect(Collectors.joining());
         Gson gson = new Gson();
+        HttpSession session = request.getSession();
+        String rawRequestData = request.getReader().lines().collect(Collectors.joining());
         JsonObject requestData = new Gson().fromJson(rawRequestData, JsonObject.class);
 
 
-        response.setContentType("text/html;charset=UTF-8");
-        response.setHeader("Access-Control-Allow-Origin", "*");
-
         String role = requestData.get("role").getAsJsonObject().get("value").getAsString();
         String name = requestData.get("name").getAsJsonObject().get("value").getAsString();
+        session.setAttribute("userName", name);
         SystemManager.userType userType =  role.equals("Customer") ? SystemManager.userType.Customer : SystemManager.userType.Seller; ;
         Boolean wasUserAdded = SystemManager.getInstance().addUser(name, userType);
+        response.setContentType("text/html;charset=UTF-8");
+        response.setHeader("Access-Control-Allow-Origin", "*");
         response.getWriter().append(gson.toJson(wasUserAdded));
 
     }
