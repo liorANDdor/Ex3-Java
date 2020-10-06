@@ -22,7 +22,7 @@ const TopNavBar = props => {
         <Navbar bg="dark" variant="dark">
             <Navbar.Brand href="#home">Navbar</Navbar.Brand>
             <Nav className="mr-auto">
-                <Nav.Link as={Link} to="/storeAreas">storeAreas</Nav.Link>
+                <Nav.Link as={Link} to="/storeAreas">Store Areas</Nav.Link>
                 <Nav.Link as={Link} to="/storesAndItems">storesAndItems</Nav.Link>
                 <Nav.Link as={Link} to="/account">account</Nav.Link>
 
