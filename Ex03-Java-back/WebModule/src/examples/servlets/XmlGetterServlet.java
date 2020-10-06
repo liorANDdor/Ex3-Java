@@ -1,10 +1,7 @@
 package examples.servlets;
 
 import java.io.*;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.Collection;
-import java.util.Scanner;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -17,6 +14,7 @@ import SDMGenerated.SuperDuperMarketDescriptor;
 import SDMModel.SuperMarket;
 import SDMModel.SystemManager;
 import SDMModel.XmlUtilities;
+import com.google.gson.Gson;
 
 @MultipartConfig
 @WebServlet(name = "ReadXMLServlet", urlPatterns = {"/readxml"})
@@ -26,10 +24,12 @@ public class XmlGetterServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        Gson gson = new Gson();
         SuperDuperMarketDescriptor superMarketSDM = null;
         XmlUtilities xmlUtilities = new XmlUtilities();
         Collection<Part> parts = request.getParts();
-
+        response.setContentType("text/html;charset=UTF-8");
+        response.setHeader("Access-Control-Allow-Origin", "*");
 
         for (Part part : parts) {
             xmlUtilities.isNameOfFileCorrect(part.getName());
@@ -38,25 +38,19 @@ public class XmlGetterServlet extends HttpServlet {
             if (xmlUtilities.getIsXmlOk()) {
                 SuperMarket superMarket = SuperMarket.creatInstance(superMarketSDM);
                 SystemManager.getInstance().setSuperMarket(superMarket);
-                //return true;
-            } else {
 
+                String message = "XML file was loaded correctly";
+                response.getWriter().append(gson.toJson(message));
+            } else {
+                xmlUtilities.getWhatWrongMessage();
+                response.getWriter().append(gson.toJson(xmlUtilities.getWhatWrongMessage()));
                 //return false;
             }
         }
     }
 
 
-    private String extractMapName(Part part) {
-        String contentDisp = part.getHeader("content-disposition");
-        String[] items = contentDisp.split(";");
-        for (String s : items) {
-            if (s.trim().startsWith("name")) {
-                return s.substring(s.indexOf("=") + 2, s.length()-1);
-            }
-        }
-        return "";
-    }
+
     private String extractFileName(Part part) {
         String contentDisp = part.getHeader("content-disposition");
         String[] items = contentDisp.split(";");

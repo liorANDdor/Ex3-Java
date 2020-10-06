@@ -13,7 +13,7 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import Container from "@material-ui/core/Container";
 import clone from "clone";
-import axios from '../../Utilities/Axios/Axios'
+import axios from "../../Utilities/Axios/Axios";
 
 const formElementsInit = {
   role: {
@@ -31,7 +31,6 @@ const formElementsInit = {
     value: "",
   },
 };
-
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -55,16 +54,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SignUp = (props) => {
-  
   const [formInputs, setFormInputs] = useState(formElementsInit);
   const [isTaken, setisTaken] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
   const classes = useStyles();
   const onSubmitHandler = (event) => {
     event.preventDefault();
-    console.log(event);
+
     axios
-      .post("/SDM/register", formInputs)
+      .post("http://localhost:8080/SDM/register", formInputs)
       .then((res) => {
+        console.log("yes");
         if (res.data === true) {
           props.setSignedUpResult(true, formInputs.role.value);
         } else {
@@ -81,6 +81,16 @@ const SignUp = (props) => {
     setFormInputs(newFormInputs);
   };
 
+  const onFileChange = (file) => {
+    setSelectedFile(file.target.files[0]);
+  };
+  const onFileUpload = () => {
+    const formData = new FormData();
+    formData.append(selectedFile.name, selectedFile);
+    axios.post("http://localhost:8080/SDM/readxml", formData).then((res) => {
+      console.log(res.data);
+    });
+  };
   return (
     <Container component="main" maxWidth="xs" className={classes.paper}>
       <CssBaseline />
@@ -153,6 +163,10 @@ const SignUp = (props) => {
             User Name is already taken, try another one
           </Alert>
         ) : null}
+        <div>
+          <input type="file" onChange={onFileChange} />
+          <button onClick={onFileUpload}>Upload!</button>
+        </div>
       </div>
     </Container>
   );

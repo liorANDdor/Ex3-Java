@@ -60,6 +60,10 @@ public class SystemManager {
         return superMarkets.get(regionId);
     }
 
+    public HashMap<Integer, SuperMarket> getSuperMarkets() {
+        return superMarkets;
+    }
+
     private HashMap<Integer, SuperMarket> superMarkets = new HashMap<>();
 
     public HashMap<String, User> getUsers() {

@@ -77,20 +77,26 @@ public class XmlUtilities {
         if (isXmlOk) {
             List<SDMStore> stores = superMarketSDM.getSDMStores().getSDMStore();
             List<SDMItem> items = superMarketSDM.getSDMItems().getSDMItem();
-
+            if(SystemManager.getInstance().getSuperMarkets().size()!=0){
+                HashMap<Integer, SuperMarket> superMarkets = SystemManager.getInstance().getSuperMarkets();
+                if(superMarkets.values().stream().anyMatch(sdm -> sdm.getZone().equals(superMarketSDM.getSDMZone().getName()))){
+                    isContentAsNeeded.set(false);
+                    whatWrongMessage += String.format("There are two zones with the same name : %s \n", superMarketSDM.getSDMZone().getName());
+                }
+            }
 
             for (int i = 0; i < stores.size(); i++)
                 for (int j = i + 1; j < stores.size(); j++)
                     if (stores.get(i).getId() == stores.get(j).getId()) {
                         isContentAsNeeded.set(false);
-                        whatWrongMessage += String.format("There is two stores with the same ID : %d \n", stores.get(i).getId());
+                        whatWrongMessage += String.format("There are two stores with the same ID : %d \n", stores.get(i).getId());
                     }
 
             for (int i = 0; i < items.size(); i++) {
                 for (int j = i + 1; j < items.size(); j++) {
                     if (items.get(i).getId() == items.get(j).getId()) {
                         isContentAsNeeded.set(false);
-                        whatWrongMessage += String.format("There is two items with the same ID : %d \n", items.get(i).getId());
+                        whatWrongMessage += String.format("There are two items with the same ID : %d \n", items.get(i).getId());
                     }
                 }
             }
@@ -107,7 +113,7 @@ public class XmlUtilities {
                             .count();
                     if (count > 1) {
                         isContentAsNeeded.set(false);
-                        whatWrongMessage += String.format("There is two object on same location: %s", pointToCheck.toString());
+                        whatWrongMessage += String.format("There are two object on same location: %s", pointToCheck.toString());
                     }
                 }
             }
