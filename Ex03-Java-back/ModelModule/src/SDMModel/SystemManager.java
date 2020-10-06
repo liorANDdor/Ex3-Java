@@ -56,15 +56,15 @@ public class SystemManager {
 
     private Integer numberOfUsers = 0;
 
-    public SuperMarket getSuperMarketByLocation(String regionId) {
+    public List<SuperMarket> getSuperMarketByLocation(String regionId) {
         return superMarkets.get(regionId);
     }
 
-    public HashMap<Integer, SuperMarket> getSuperMarkets() {
+    public HashMap<String, List<SuperMarket>> getSuperMarkets() {
         return superMarkets;
     }
 
-    private HashMap<Integer, SuperMarket> superMarkets = new HashMap<>();
+    private HashMap<String, List<SuperMarket>> superMarkets = new HashMap<>();
 
     public HashMap<String, User> getUsers() {
         return users;
@@ -227,8 +227,14 @@ public class SystemManager {
 
     }
 
-    public void setSuperMarket(SuperMarket SDM){
-        this.superMarket = SDM;
+    public void setSuperMarket(String userName, SuperMarket SDM){
+        if(superMarkets.containsKey(userName))
+            superMarkets.get(userName).add(SDM);
+        else{
+            ArrayList<SuperMarket> newList = new ArrayList<>();
+            newList.add(SDM);
+            superMarkets.put(userName, newList);
+    }
     }
 
     public static SystemManager getInstance() {

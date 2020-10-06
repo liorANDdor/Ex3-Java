@@ -78,8 +78,8 @@ public class XmlUtilities {
             List<SDMStore> stores = superMarketSDM.getSDMStores().getSDMStore();
             List<SDMItem> items = superMarketSDM.getSDMItems().getSDMItem();
             if(SystemManager.getInstance().getSuperMarkets().size()!=0){
-                HashMap<Integer, SuperMarket> superMarkets = SystemManager.getInstance().getSuperMarkets();
-                if(superMarkets.values().stream().anyMatch(sdm -> sdm.getZone().equals(superMarketSDM.getSDMZone().getName()))){
+                HashMap<String, List<SuperMarket>> superMarkets = SystemManager.getInstance().getSuperMarkets();
+                if(superMarkets.values().stream().anyMatch(regions -> regions.stream().anyMatch(sdm->sdm.getZone().equals(superMarketSDM.getSDMZone().getName())))){
                     isContentAsNeeded.set(false);
                     whatWrongMessage += String.format("There are two zones with the same name : %s \n", superMarketSDM.getSDMZone().getName());
                 }

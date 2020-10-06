@@ -18,7 +18,7 @@ import com.google.gson.Gson;
 
 @MultipartConfig
 @WebServlet(name = "ReadXMLServlet", urlPatterns = {"/readxml"})
-public class XmlGetterServlet extends HttpServlet {
+public class XmlUploadServlet extends HttpServlet {
 
     //private final static String XML_PATH = "/resources/world.xml";
 
@@ -27,6 +27,7 @@ public class XmlGetterServlet extends HttpServlet {
         Gson gson = new Gson();
         SuperDuperMarketDescriptor superMarketSDM = null;
         XmlUtilities xmlUtilities = new XmlUtilities();
+        String userName = (String) request.getSession().getAttribute("userName");
         Collection<Part> parts = request.getParts();
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
@@ -37,9 +38,10 @@ public class XmlGetterServlet extends HttpServlet {
             xmlUtilities.checkIfTheXmlThatJustLoadedOk(superMarketSDM);
             if (xmlUtilities.getIsXmlOk()) {
                 SuperMarket superMarket = SuperMarket.creatInstance(superMarketSDM);
-                SystemManager.getInstance().setSuperMarket(superMarket);
+                SystemManager.getInstance().setSuperMarket(userName, superMarket);
 
                 String message = "XML file was loaded correctly";
+
                 response.getWriter().append(gson.toJson(message));
             } else {
                 xmlUtilities.getWhatWrongMessage();
@@ -47,7 +49,10 @@ public class XmlGetterServlet extends HttpServlet {
                 //return false;
             }
         }
+
     }
+
+
 
 
 
