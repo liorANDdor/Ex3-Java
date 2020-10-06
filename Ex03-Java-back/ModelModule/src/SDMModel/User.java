@@ -1,7 +1,5 @@
 package SDMModel;
 
-import SDMGenerated.SDMCustomer;
-
 import java.awt.*;
 import java.util.HashMap;
 
@@ -72,13 +70,6 @@ public class User {
         this.id = id;
     }
 
-    public static User createInstanceBySDM(SDMCustomer sdmCustomer) {
-        User customer = new User();
-        customer.setId(sdmCustomer.getId());
-        customer.setName(sdmCustomer.getName());
-        customer.setLocation(new Point(sdmCustomer.getLocation().getX(),sdmCustomer.getLocation().getY()));
-        return  customer;
 
-    }
 }
 

@@ -3,6 +3,7 @@ import TopNavbar from '../../Components/TopNavbar/TopNavbar'
 import Customer from '../Customer/Customer'
 import ShopOwner from '../ShopOwner/ShopOwner'
 import UsersList from '../../Components/UsersList/UsersList'
+import StoresList from '../../Components/StoresList/StoresList'
 import { Route } from 'react-router-dom'
 
 const Main = (props) => {
@@ -14,6 +15,7 @@ const Main = (props) => {
             <div>
                 <Route path='/customer' component={Customer} />
                 <Route path='/storeAreas' component={UsersList} />
+                <Route path='/storesAndItems' component={StoresList} />
 
                 <Route path='/shop' component={ShopOwner} />
 

@@ -1,6 +1,5 @@
 package SDMModel;
 
-import SDMGenerated.SDMCustomer;
 import SDMGenerated.SDMItem;
 import SDMGenerated.SDMStore;
 import SDMGenerated.SuperDuperMarketDescriptor;
@@ -11,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class SuperMarket {
-
+    private String zone = "";
     private Integer numberOfOrders = 0;
     private HashMap<Integer, Store> stores = new HashMap<>();
     private HashMap<Integer ,Item> items = new HashMap<>();
@@ -29,12 +28,16 @@ public class SuperMarket {
         return items;
     }
 
+    public String getZone() {
+        return zone;
+    }
+
     public static SuperMarket creatInstance(SuperDuperMarketDescriptor superMarketSDM) {
         SuperMarket instance = new SuperMarket();
-
+        instance.zone = superMarketSDM.getSDMZone().getName();
         List<SDMItem>itemsSDM = superMarketSDM.getSDMItems().getSDMItem();
         List<SDMStore>storesSDM = superMarketSDM.getSDMStores().getSDMStore();
-        List<SDMCustomer>customersSDM = superMarketSDM.getSDMCustomers().getSDMCustomer();
+
 
         for(SDMStore sdmStore : storesSDM){
             Store newStore = Store.createInstanceBySDM(sdmStore);
@@ -49,10 +52,7 @@ public class SuperMarket {
             instance.getItems().put(newItem.getId(),newItem);
         }
 
-        for(SDMCustomer sdmCustomer : customersSDM){
-            Customer newCustomer = Customer.createInstanceBySDM(sdmCustomer);
-            instance.getCostumers().put(newCustomer.getId(),newCustomer);
-        }
+
 
         return instance;
     }

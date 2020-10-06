@@ -17,7 +17,7 @@ public class Sale {
     protected String name;
     protected IfBuy ifBuy;
     protected NeedToGet needToGet;
-    protected Store storeOfferSale;
+    protected transient Store storeOfferSale;
 
 
     public Store getStoreOfferSale() {
