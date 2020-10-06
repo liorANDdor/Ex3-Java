@@ -16,7 +16,8 @@ public class XmlUtilities {
     public String getWhatWrongMessage() {
         return whatWrongMessage;
     }
-    private String whatWrongMessage ="";
+
+    private String whatWrongMessage = "";
     private boolean isXmlOk = true;
 
     public boolean getIsXmlOk() {
@@ -33,7 +34,7 @@ public class XmlUtilities {
                 Unmarshaller jaxbUnMarshaller = jaxbContext.createUnmarshaller();
                 instance = (SuperDuperMarketDescriptor) jaxbUnMarshaller.unmarshal(file);
             } catch (JAXBException e) {
-                isXmlOk= false;
+                isXmlOk = false;
                 whatWrongMessage = "Unknown file";
             } catch (Exception e) {
                 isXmlOk = false;
@@ -43,12 +44,40 @@ public class XmlUtilities {
         return instance;
     }
 
+    public SuperDuperMarketDescriptor xmlCheckFromServlet( InputStream file) {
+        SuperDuperMarketDescriptor instance = null;
+        if (isXmlOk) {
+
+
+            try {
+                JAXBContext jaxbContext = JAXBContext.newInstance(SuperDuperMarketDescriptor.class);
+                Unmarshaller jaxbUnMarshaller = jaxbContext.createUnmarshaller();
+                instance = (SuperDuperMarketDescriptor) jaxbUnMarshaller.unmarshal(file);
+            } catch (
+                    JAXBException e) {
+                isXmlOk = false;
+                whatWrongMessage = "Unknown file";
+            } catch (
+                    Exception e) {
+                isXmlOk = false;
+                whatWrongMessage = "Unknown file";
+            }
+
+
+        }
+        return instance;
+    }
+
+
+
+
+
     public void checkIfTheXmlThatJustLoadedOk(SuperDuperMarketDescriptor superMarketSDM) {
         AtomicBoolean isContentAsNeeded = new AtomicBoolean(true);
         if (isXmlOk) {
             List<SDMStore> stores = superMarketSDM.getSDMStores().getSDMStore();
             List<SDMItem> items = superMarketSDM.getSDMItems().getSDMItem();
-            List<SDMCustomer> customers = superMarketSDM.getSDMCustomers().getSDMCustomer();
+
 
             for (int i = 0; i < stores.size(); i++)
                 for (int j = i + 1; j < stores.size(); j++)
@@ -66,14 +95,7 @@ public class XmlUtilities {
                 }
             }
 
-            for (int i = 0; i < customers.size(); i++) {
-                for (int j = i + 1; j < customers.size(); j++) {
-                    if (customers.get(i).getId() == customers.get(j).getId()) {
-                        isContentAsNeeded.set(false);
-                        whatWrongMessage += String.format("There is two customers with the same ID : %d \n", customers.get(i).getId());
-                    }
-                }
-            }
+
 
             for (int i = 1; i <= 50; i++) {
                 for (int j = 1; j <= 50; j++) {
@@ -82,10 +104,6 @@ public class XmlUtilities {
                     count += stores
                             .stream()
                             .filter(store -> store.getLocation().getX() == pointToCheck.x && store.getLocation().getY() == pointToCheck.getY())
-                            .count();
-                    count += customers
-                            .stream()
-                            .filter(customer -> customer.getLocation().getX() == pointToCheck.x && customer.getLocation().getY() == pointToCheck.getY())
                             .count();
                     if (count > 1) {
                         isContentAsNeeded.set(false);

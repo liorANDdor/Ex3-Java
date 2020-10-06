@@ -223,6 +223,10 @@ public class SystemManager {
 
     }
 
+    public void setSuperMarket(SuperMarket SDM){
+        this.superMarket = SDM;
+    }
+
     public static SystemManager getInstance() {
         if (manager == null)
             synchronized (createManagerInstance){
