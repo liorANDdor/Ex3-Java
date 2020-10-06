@@ -31,9 +31,12 @@ public class getStoresServlet extends HttpServlet {
 
 
 
-        HashMap<Integer, Store> stores =  SystemManager.getInstance().getSuperMarketByLocation(storeRegionData.get("id").toString()).getStores();
+        //HashMap<Integer, Store> stores =  SystemManager.getInstance().getSuperMarketByLocation(storeRegionData.get("id").toString()).getStores();
+        HashMap<Integer, Store> stores = SystemManager.getInstance().getSuperMarket().getStores();
+
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
+
         response.getWriter().append(gson.toJson(stores));
 
     }
