@@ -1,10 +1,9 @@
 import React from 'react'
 import TopNavbar from '../../Components/TopNavbar/TopNavbar'
-import Customer from '../Customer/Customer'
-import ShopOwner from '../ShopOwner/ShopOwner'
-import UsersList from '../../Components/UsersList/UsersList'
+import StoreArea from '../../Components/StoreArea/StoreArea'
+//import UsersList from '../../Components/UsersList/UsersList'
 import StoresList from '../../Components/StoresList/StoresList'
-import { Route } from 'react-router-dom'
+import { Route, Redirect } from 'react-router-dom'
 
 const Main = (props) => {
     return (
@@ -13,11 +12,9 @@ const Main = (props) => {
                 <TopNavbar userKind={props.userKind} />
             </header>
             <div>
-                <Route path='/customer' component={Customer} />
-                <Route path='/storeAreas' component={UsersList} />
+                <Route path='/storeAreas' component={StoreArea} />
                 <Route path='/storesAndItems' component={StoresList} />
-
-                <Route path='/shop' component={ShopOwner} />
+                <Redirect to='/storeAreas' />
 
             </div>
 

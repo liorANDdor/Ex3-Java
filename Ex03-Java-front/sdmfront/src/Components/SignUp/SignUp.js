@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -56,7 +56,6 @@ const useStyles = makeStyles((theme) => ({
 const SignUp = (props) => {
   const [formInputs, setFormInputs] = useState(formElementsInit);
   const [isTaken, setisTaken] = useState(false);
-  const [selectedFile, setSelectedFile] = useState(null);
   const classes = useStyles();
   const onSubmitHandler = (event) => {
     event.preventDefault();
@@ -81,16 +80,7 @@ const SignUp = (props) => {
     setFormInputs(newFormInputs);
   };
 
-  const onFileChange = (file) => {
-    setSelectedFile(file.target.files[0]);
-  };
-  const onFileUpload = () => {
-    const formData = new FormData();
-    formData.append(selectedFile.name, selectedFile);
-    axios.post("http://localhost:8080/SDM/readxml", formData).then((res) => {
-      console.log(res.data);
-    });
-  };
+  
   return (
     <Container component="main" maxWidth="xs" className={classes.paper}>
       <CssBaseline />
@@ -163,10 +153,7 @@ const SignUp = (props) => {
             User Name is already taken, try another one
           </Alert>
         ) : null}
-        <div>
-          <input type="file" onChange={onFileChange} />
-          <button onClick={onFileUpload}>Upload!</button>
-        </div>
+        
       </div>
     </Container>
   );

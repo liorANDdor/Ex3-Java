@@ -10,11 +10,9 @@ const StartUpPage = () => {
     setUserKind(userKindParam);
   };
 
-  return isSigned ? (
-    <Main userKind={userKind} />
-  ) : (
-    <Sign setSignedUpResult={setSignedUpResultsHandeler} />
-  );
+  return isSigned ? <Main userKind={userKind} />
+    : <Sign setSignedUpResult={setSignedUpResultsHandeler} />
+    
 };
 
 export default StartUpPage;

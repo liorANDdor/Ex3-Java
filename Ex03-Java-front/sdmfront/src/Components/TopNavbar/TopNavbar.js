@@ -9,7 +9,6 @@ const customerActions = {
 }
 
 const storeOwnerActions = {
-    loadXML:'Load XML',
     storeOrders:'Store orders',
     showFeedback:'Show feedback',
     openNewStorw:'Open new store'
@@ -23,7 +22,6 @@ const TopNavBar = props => {
             <Navbar.Brand href="#home">Navbar</Navbar.Brand>
             <Nav className="mr-auto">
                 <Nav.Link as={Link} to="/storeAreas">Store Areas</Nav.Link>
-                <Nav.Link as={Link} to="/storesAndItems">storesAndItems</Nav.Link>
                 <Nav.Link as={Link} to="/account">account</Nav.Link>
 
                 <NavDropdown title={label} id="collasible-nav-dropdown">
