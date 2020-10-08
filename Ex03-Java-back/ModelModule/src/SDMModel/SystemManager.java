@@ -56,8 +56,14 @@ public class SystemManager {
 
     private Integer numberOfUsers = 0;
 
-    public List<SuperMarket> getSuperMarketByLocation(String regionId) {
-        return superMarkets.get(regionId);
+    public SuperMarket getSuperMarketByLocation(String zone) {
+       SuperMarket superMarketSpecificZone = null;
+       for(List<SuperMarket> superMarketList: superMarkets.values())
+           for (SuperMarket sdm:superMarketList)
+               if(sdm.getZone().equals(zone))
+                   superMarketSpecificZone = sdm;
+
+        return superMarketSpecificZone;
     }
 
     public HashMap<String, List<SuperMarket>> getSuperMarkets() {
