@@ -1,20 +1,30 @@
 import React, { useEffect, useState } from 'react'
 import axios from '../../Utilities/Axios/Axios'
+
+
 const Users = props => {
 
     const [listOfUsers, setListOfUsers] = useState(null);
 
+
+    let interval;
+    interval = null;
+
+
     useEffect(() => {
 
-        
+        const interval = setInterval(()=>{
+            axios.get('/SDM/getUsers')
+                .then(res => {
+                    setListOfUsers(res.data)
+                })
+                .catch(err => {
+
+                })
+        },2);
 
         axios.get('/SDM/getUsers')
             .then(res => {
-                let arr = []
-                console.log(res.data)
-           
-                console.log(arr)
-
                 setListOfUsers(res.data)
             })
             .catch(err => {
