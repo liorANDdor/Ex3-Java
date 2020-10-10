@@ -17,7 +17,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
-ע
+
 @WebServlet(name = "getZoneDataServlet", urlPatterns = "/getZoneData")
 public class getZoneDataServlet extends HttpServlet {
 
