@@ -1,15 +1,28 @@
-import React from 'react'
+import React, { useContext } from 'react'
+
+import { makeStyles } from '@material-ui/core/styles';
+
 import UsersList from '../UsersList/UsersList'
 import LoadXml from '../LoadXml/LoadXml'
+import AllZones from '../AllZones/AllZones'
+import UserProfileContext from '../UserProfileContext/UserProfileContext'
 
-const StoreArea = prop =>{
-return(
-    <React.Fragment>
-        <UsersList/>
-        <LoadXml/>
-    </React.Fragment>
+const useStyle = makeStyles(theme => ({
+    container: {
+        marginTop: '2%'
+    }
+}))
 
-)
+const StoreArea = prop => {
+    const userProfileContext = useContext(UserProfileContext)
+    const classes = useStyle()
+    return (
+        <div className={classes.container}>
+            {userProfileContext.userType === 'Shop Owner' ? <LoadXml /> : null}
+            <UsersList />
+            <AllZones />
+        </div>
+    )
 }
 
 export default StoreArea
