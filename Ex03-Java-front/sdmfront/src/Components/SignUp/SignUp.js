@@ -64,7 +64,7 @@ const SignUp = (props) => {
     event.preventDefault();
 
     axios
-      .post("http://localhost:8080/SDM/register", formInputs)
+      .post("/SDM/register", formInputs)
       .then((res) => {
         if (res.data === true) {
           props.setSignedUpResult(true, formInputs.role.value);

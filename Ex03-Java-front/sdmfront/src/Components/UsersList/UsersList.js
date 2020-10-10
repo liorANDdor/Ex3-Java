@@ -10,8 +10,8 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
-const useStyles = makeStyles({
 
+const useStyles = makeStyles({
     container: {
         background: 'inherit',
         width: '40%',
@@ -19,6 +19,7 @@ const useStyles = makeStyles({
         marginTop: '2%',
         height: '240px',
     }
+
 });
 
 
