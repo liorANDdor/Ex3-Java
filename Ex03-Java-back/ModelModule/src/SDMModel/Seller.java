@@ -37,8 +37,7 @@ public class Seller extends User {
     }
 
 
-
-
+    HashMap<String, Feedback> feedbacks = new HashMap<String, Feedback>();
     private double totalShipmentPrice = 0.0;
     private double totalItemPrice = 0.0;
 

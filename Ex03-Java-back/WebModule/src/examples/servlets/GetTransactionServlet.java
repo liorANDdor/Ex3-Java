@@ -13,11 +13,19 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
+import SDMModel.MoneyAcount;
+/*
+epoch: String(epoch time),
+amountTransfered: double,
+transferType: String(Sell/Deposit/Purchase)
+
+* */
 
 
-@WebServlet(name = "RegisterServlet", urlPatterns = "/register")
-public class TransactionServlet extends HttpServlet {
+@WebServlet(name = "GetTransactionServlet", urlPatterns = "/getTransaction")
+public class GetTransactionServlet extends HttpServlet {
 
     public void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -31,30 +39,15 @@ public class TransactionServlet extends HttpServlet {
         Boolean wasTransactionAdded = false;
         try {
             String userName = (String) request.getSession().getAttribute("userName");
-            String dateEpoch = requestData.get("epoch").getAsString();
-            String amountTransfered = requestData.get("amountTransfered").getAsString();
-            MoneyAcount.TransferType transferType = stringToTransferType(requestData.get("transferType").getAsString());
-            SystemManager.getInstance().getUsers().get(userName).addTransaction(Double.parseDouble(amountTransfered), transferType, new Date(Long.parseLong(dateEpoch)));
-            wasTransactionAdded=true;
-            response.getWriter().append(gson.toJson(wasTransactionAdded));
-        }
-       catch (Exception e){
-           response.getWriter().append(gson.toJson(wasTransactionAdded));
-           response.getWriter().append(gson.toJson(e.getCause()));
+            List<MoneyAcount.Transaction> transactions = SystemManager.getInstance().getUsers().get(userName).getAcount().getTransactions();
+
+            response.getWriter().append(gson.toJson(transactions));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
 
 
-
-    }
-
-    private MoneyAcount.TransferType stringToTransferType(String transferType) {
-        if(transferType.equals("Deposite") ||transferType.equals("deposite") )
-            return MoneyAcount.TransferType.Deposite;
-        else if(transferType.equals("Sell") ||transferType.equals("sell") )
-            return MoneyAcount.TransferType.Sell;
-        else
-            return MoneyAcount.TransferType.Purchase;
     }
 
     @Override

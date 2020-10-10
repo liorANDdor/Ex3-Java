@@ -12,6 +12,15 @@ public class MoneyAcount {
 
 
     private double balance;
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
+
     private List<Transaction> transactions;
     public synchronized void  addTransaction(double amountTransfered, TransferType transferType, Date date){
         Transaction newTransaction = new Transaction( amountTransfered,  transferType, date,this.balance);
@@ -27,7 +36,7 @@ public class MoneyAcount {
 
 
 
-    private class Transaction {
+    public class Transaction {
 
         private TransferType transferType;
         private Date transactionDate;

@@ -36,11 +36,21 @@ public class User {
 
 
     }
+
+    public MoneyAcount getAcount() {
+        return acount;
+    }
+
     private MoneyAcount acount;
     private String name;
     private Point location;
     private int id;
 
+    public HashMap<Integer, Order> getOrders() {
+        return orders;
+    }
+
+    private HashMap<Integer, Order> orders = new HashMap<>();
 
     public synchronized void  addTransaction(double amountTransfered, MoneyAcount.TransferType transferType, Date date){
         acount.addTransaction(amountTransfered, transferType, date);
