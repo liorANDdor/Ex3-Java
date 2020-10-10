@@ -7,7 +7,7 @@ import axios from '../../../Utilities/Axios/Axios'
 const Zone = props => {
     const [items, setItems] = useState([])
     useEffect(() => {
-        axios.get('/getData', { zone: props.location.pathname.split('/')[2] }).then(res=>console.log(res.data)).catch(err=>console.log(err))
+        axios.post('SDM/getData', { zone: props.location.pathname.split('/')[2] }).then(res=>console.log(res.data)).catch(err=>console.log(err))
 
     }, [])
     return (
