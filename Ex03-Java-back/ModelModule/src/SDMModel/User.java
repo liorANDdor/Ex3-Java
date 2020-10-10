@@ -1,6 +1,7 @@
 package SDMModel;
 
 import java.awt.*;
+import java.util.Date;
 import java.util.HashMap;
 
 
@@ -35,13 +36,15 @@ public class User {
 
 
     }
-
+    private MoneyAcount acount;
     private String name;
     private Point location;
     private int id;
 
 
-
+    public synchronized void  addTransaction(double amountTransfered, MoneyAcount.TransferType transferType, Date date){
+        acount.addTransaction(amountTransfered, transferType, date);
+    }
 
     public String getName() {
         return name;
