@@ -91,7 +91,6 @@ public class Customer extends User {
         this.totalItemPrice = this.totalItemPrice + itemsPrice;
     }
 
-    private HashMap<Integer, Order> orders = new HashMap<>();
 
 
 }

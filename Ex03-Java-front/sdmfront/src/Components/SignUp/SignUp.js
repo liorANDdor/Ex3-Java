@@ -20,6 +20,7 @@ const formElementsInit = {
     type: "select",
     options: { ShopOwner: "Shop Owner", Customer: "Customer" },
     valid: false,
+    touched: false,
     label: "Role",
     value: "",
   },
@@ -27,6 +28,7 @@ const formElementsInit = {
     type: "text",
     options: null,
     valid: false,
+    touched: false,
     label: "Name",
     value: "",
   },
@@ -55,6 +57,7 @@ const useStyles = makeStyles((theme) => ({
 
 const SignUp = (props) => {
   const [formInputs, setFormInputs] = useState(formElementsInit);
+  const [maySubmit, setMaySubnit] = useState(false)
   const [isTaken, setisTaken] = useState(false);
   const classes = useStyles();
   const onSubmitHandler = (event) => {
@@ -63,7 +66,6 @@ const SignUp = (props) => {
     axios
       .post("http://localhost:8080/SDM/register", formInputs)
       .then((res) => {
-        console.log("yes");
         if (res.data === true) {
           props.setSignedUpResult(true, formInputs.role.value);
         } else {
@@ -77,10 +79,23 @@ const SignUp = (props) => {
   const handleChange = (event, key) => {
     let newFormInputs = clone(formInputs);
     newFormInputs[key].value = event.target.value;
+    if (newFormInputs[key].value === '') {
+      newFormInputs[key].label = newFormInputs[key].label + ' REQUIRED'
+      newFormInputs[key].valid = false
+    }
+    else {
+      newFormInputs[key].label = newFormInputs[key].label.split(" ")[0]
+      newFormInputs[key].valid = true;
+    }
+    let isSubimitAble = true
+    Object.keys(newFormInputs).forEach(key => {
+      isSubimitAble &= newFormInputs[key].valid
+    })
+    setMaySubnit(isSubimitAble)
     setFormInputs(newFormInputs);
   };
 
-  
+
   return (
     <Container component="main" maxWidth="xs" className={classes.paper}>
       <CssBaseline />
@@ -139,6 +154,7 @@ const SignUp = (props) => {
             return input;
           })}
           <Button
+            disabled={!maySubmit}
             type="submit"
             fullWidth
             variant="contained"
@@ -153,7 +169,7 @@ const SignUp = (props) => {
             User Name is already taken, try another one
           </Alert>
         ) : null}
-        
+
       </div>
     </Container>
   );

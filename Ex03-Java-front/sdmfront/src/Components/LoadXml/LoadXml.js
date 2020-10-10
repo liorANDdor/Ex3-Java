@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import Button from "@material-ui/core/Button";
+
 import axios from '../../Utilities/Axios/Axios'
 
 
@@ -13,9 +15,12 @@ const LoadXml = prop => {
         if (selectedFile) {
             const formData = new FormData();
             formData.append(selectedFile.name, selectedFile);
-            axios.post("http://localhost:8080/SDM/readxml", formData).then((res) => {
+            axios.post("/SDM/readxml", formData).then((res) => {
                 console.log(res.data);
             });
+        }
+        else{
+            window.alert("choose file first")
         }
     };
 
