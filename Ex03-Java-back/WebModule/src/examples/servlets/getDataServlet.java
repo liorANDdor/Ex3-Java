@@ -23,13 +23,14 @@ public class getDataServlet extends HttpServlet {
             throws ServletException, IOException {
         Gson gson = new Gson();
         HttpSession session = request.getSession();
+
         String rawRequestData = request.getReader().lines().collect(Collectors.joining());
         JsonObject requestData = new Gson().fromJson(rawRequestData, JsonObject.class);
 
 
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
-
+        String zone = request.getParameter("zone");
         if(requestData.has("zone")){
             SuperMarket superMarket = SystemManager.getInstance().getSuperMarketByLocation(requestData.get("zone").getAsString());
             if(!requestData.has("storeId") || requestData.get("storeId").getAsString().equals(""))

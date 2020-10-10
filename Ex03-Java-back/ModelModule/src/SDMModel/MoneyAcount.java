@@ -1,6 +1,7 @@
 package SDMModel;
 
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -8,8 +9,10 @@ public class MoneyAcount {
 
     public MoneyAcount() {
         balance = 0;
+        transactions = new ArrayList<>();
     }
 
+    private List<Transaction> transactions;
 
     private double balance;
 
@@ -21,7 +24,6 @@ public class MoneyAcount {
         return transactions;
     }
 
-    private List<Transaction> transactions;
     public synchronized void  addTransaction(double amountTransfered, TransferType transferType, Date date){
         Transaction newTransaction = new Transaction( amountTransfered,  transferType, date,this.balance);
         balance = newTransaction.balanceAfter;

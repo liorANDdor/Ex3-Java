@@ -2,6 +2,7 @@ package examples.servlets;
 
 import SDMModel.MoneyAcount;
 import SDMModel.SystemManager;
+import SDMModel.User;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -43,9 +44,10 @@ public class MakeTransactionServlet extends HttpServlet {
             //String dateEpoch = requestData.get("epoch").getAsString();
             double amountTransfered = requestData.get("amountTransfered").getAsDouble();
             MoneyAcount.TransferType transferType = stringToTransferType(requestData.get("transferType").getAsString());
-            SystemManager.getInstance().getUsers().get(userName).addTransaction(amountTransfered, transferType, new Date(Instant.now().toEpochMilli()));
+            User user = SystemManager.getInstance().getUsers().get(userName);
+            user.addTransaction(amountTransfered, transferType, new Date(Instant.now().toEpochMilli()));
             wasTransactionAdded=true;
-            response.getWriter().append(gson.toJson(wasTransactionAdded));
+            response.getWriter().append(gson.toJson(user.getAcount().getBalance()));
         }
        catch (Exception e){
            response.getWriter().append(gson.toJson(wasTransactionAdded));
@@ -54,7 +56,7 @@ public class MakeTransactionServlet extends HttpServlet {
     }
 
     private MoneyAcount.TransferType stringToTransferType(String transferType) {
-        if(transferType.equals("Deposite") ||transferType.equals("deposite") )
+        if(transferType.equals("Deposit") ||transferType.equals("deposit") )
             return MoneyAcount.TransferType.Deposite;
         else if(transferType.equals("Sell") ||transferType.equals("sell") )
             return MoneyAcount.TransferType.Sell;

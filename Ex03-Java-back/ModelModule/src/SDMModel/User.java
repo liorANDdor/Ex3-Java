@@ -8,11 +8,13 @@ import java.util.HashMap;
 public class User {
 
     public User() {
+        acount = new MoneyAcount();
     }
 
     public User(String name, Integer Id) {
         this.name = name;
         this.id = Id;
+        acount = new MoneyAcount();
 
     }
 
