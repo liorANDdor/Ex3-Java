@@ -3,6 +3,7 @@ import React, { useContext } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 
 import UsersList from '../UsersList/UsersList'
+import Deposit from '../Deposit/Deposit'
 import LoadXml from '../LoadXml/LoadXml'
 import AllZones from '../AllZones/AllZones'
 import UserProfileContext from '../UserProfileContext/UserProfileContext'
@@ -18,7 +19,7 @@ const StoreArea = prop => {
     const classes = useStyle()
     return (
         <div className={classes.container}>
-            {userProfileContext.userType === 'Shop Owner' ? <LoadXml /> : null}
+            {userProfileContext.userType === 'Shop Owner' ? <LoadXml /> : <Deposit /> }
             <UsersList />
             <AllZones />
         </div>
