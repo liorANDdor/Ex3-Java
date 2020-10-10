@@ -57,6 +57,13 @@ public class SuperMarket {
         return instance;
     }
 
+    public double getOrdersAveragePrice(){
+        double sum=0;
+        for(Order order: orders.values()){
+            sum = sum + order.getItemsPrice();
+        }
+        return sum;
+    }
     public Item getItemByID(int itemId){
         Item item = items.get(itemId);
         return item;
