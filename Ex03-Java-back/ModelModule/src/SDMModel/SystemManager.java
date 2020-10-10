@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 public class SystemManager {
 
+
     public enum optionsForUpdate {
         DeleteItem("Delete Item"),
         ChangePriceOfItem("Change Price Of Item"),
@@ -81,6 +82,14 @@ public class SystemManager {
     private static Object createManagerInstance = new Object();
 
     private SimpleBooleanProperty thereIsXmlLoaded = new SimpleBooleanProperty(false);
+
+    public String getOwnerOfZone(String zone) {
+        for (Map.Entry<String ,List<SuperMarket>> entry :superMarkets.entrySet()){
+            if (entry.getValue().stream().anyMatch(sdm -> sdm.getZone().equals(zone)))
+                    return entry.getKey();
+        }
+        return "Didnt Find Zone Owner";
+    }
 
     public List<Item> getItemsThatCanBeDeleted(Store store) {
         List<Item> lst = this.getSuperMarket().getItems().values().stream()
