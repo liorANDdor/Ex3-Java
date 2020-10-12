@@ -3,7 +3,6 @@ package examples.servlets;
 import SDMModel.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import org.json.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,22 +11,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.Date;
 import java.util.stream.Collectors;
 
 /*
  * input:
- *       zone:
- *       storeId:
+ *      zone:
+ *      orderId:
+ *      storeId:
+ *      rating:
+ *      comment(optional):
  *
  *output:
- *       customerName:
- *       Date:
- *       rating:
- *       comments(optional:
  * */
-@WebServlet(name = "getFeedbacksServlet", urlPatterns = "/getFeedbacks")
-public class getFeedbacksServlet extends HttpServlet {
+@WebServlet(name = "addFeedbacksServlet", urlPatterns = "/addFeedbacks")
+public class addFeedbacksServlet extends HttpServlet {
 
     public void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -36,14 +34,24 @@ public class getFeedbacksServlet extends HttpServlet {
         HttpSession session = request.getSession();
         String rawRequestData = request.getReader().lines().collect(Collectors.joining());
         JsonObject requestData = new Gson().fromJson(rawRequestData, JsonObject.class);
-        String userName = session.getAttribute("userName") != null ? session.getAttribute("userName").toString() : null;
+        String customer = session.getAttribute("userName") != null ? session.getAttribute("userName").toString() : null;
+        double rating = Double.parseDouble(requestData.get("rating").toString());
+        int orderId =  Integer.parseInt(requestData.get("orderId").toString());
+        int storeId =  Integer.parseInt(requestData.get("storeId").toString());
+        String zone =  requestData.get("zone").toString();
+        Order order = SystemManager.getInstance().getSuperMarketByLocation(zone).getOrders().get(orderId);
+        Date orderDate = order.getDateOfOrder();
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
-        if (requestData.has("zone")) {
-            Store store =  SystemManager.getInstance().getSuperMarketByLocation(requestData.get("zone").toString()).getStores().get(Integer.parseInt(requestData.get("storeId").toString()));
-            Rating rating = store.getRating();
-            response.getWriter().append(gson.toJson(rating));
+        if (requestData.has("comment")) {
+            String comment = requestData.get("comment").toString();
+            SystemManager.getInstance().getSuperMarketByLocation(zone).getStores().get(storeId).getRating().addFeedback(customer, order.getDateOfOrder(), rating, comment);
         }
+        else{
+            SystemManager.getInstance().getSuperMarketByLocation(zone).getStores().get(storeId).getRating().addFeedback(customer, order.getDateOfOrder(), rating);
+        }
+
+
     }
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -54,6 +54,13 @@ public class Store implements Serializable {
 
 
 
+    public Rating getRating() {
+        return rating;
+    }
+
+    private Rating rating = new Rating();
+
+
     private Double totalEarning = 0.0;
     private Double totalShipmentEarning = 0.0;
     private HashMap<Integer, Order> orders = new HashMap<>();
