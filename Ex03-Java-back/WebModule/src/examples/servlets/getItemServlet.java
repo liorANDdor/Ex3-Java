@@ -6,6 +6,7 @@ import SDMModel.SuperMarket;
 import SDMModel.SystemManager;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import org.json.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,7 +18,19 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 
-
+/*
+ * input:
+ *       zone:
+ *       item (optional):
+ *
+ *output:
+ *       id:
+ *       name:
+ *       purchaseCategory:
+ *       numOfStoresSellItem:
+ *       averageItemPrice:
+ *
+ * */
 @WebServlet(name = "getItemsServlet", urlPatterns = "/getItems")
 public class getItemServlet extends HttpServlet {
 
@@ -31,18 +44,35 @@ public class getItemServlet extends HttpServlet {
 
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
-        if(requestData.has("zone")){
+        if(requestData.has("zone")) {
             SuperMarket superMarket = SystemManager.getInstance().getSuperMarketByLocation(requestData.get("zone").getAsString());
-            if(requestData.has("item") && !requestData.get("item").equals("")){
+            if (requestData.has("item") && !requestData.get("item").equals("")) {
                 Item item = superMarket.getItemByID(requestData.get("item").getAsInt());
-                response.getWriter().append(gson.toJson(item));
+                response.getWriter().append(gson.toJson(createItemJson(item)));
+            } else {
+                JSONObject itemsInfo = new JSONObject();
+                HashMap<Integer, Item> items = superMarket.getItems();
+                for(Item item: items.values()){
+                    JSONObject singleItemInfo = createItemJson(item);
+                    itemsInfo.put(item.getName(),singleItemInfo);
+                }
+                response.getWriter().append(gson.toJson(itemsInfo));
             }
-            else
-                response.getWriter().append(gson.toJson(superMarket.getItems()));
         }
 
     }
 
+    public JSONObject createItemJson( Item item){
+        JSONObject itemInfo = new JSONObject();
+
+        itemInfo.put("id", item.getId());
+        itemInfo.put("name", item.getName());
+        itemInfo.put("purchaseCategory", item.getPurchaseCategory());
+        itemInfo.put("numOfStoresSellItem", item.getStoresWhoSellTheItem().size());
+        itemInfo.put("averageItemPrice", item.getItemAveragePrice());
+        itemInfo.put("timesSold", item.getNumberOfTimesItemWasSold());
+       return itemInfo;
+    }
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         processRequest(request, response);
