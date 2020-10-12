@@ -1,6 +1,5 @@
 package SDMModel;
 
-import java.awt.*;
 import java.util.HashMap;
 
 
@@ -37,9 +36,14 @@ public class Seller extends User {
     }
 
 
-    HashMap<String, Feedback> feedbacks = new HashMap<String, Feedback>();
     private double totalShipmentPrice = 0.0;
     private double totalItemPrice = 0.0;
+
+    public HashMap<String, Rating> getRating() {
+        return rating;
+    }
+
+    private HashMap<String, Rating> rating = new HashMap<>();
 
 
 
