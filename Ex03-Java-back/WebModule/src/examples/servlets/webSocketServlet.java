@@ -4,46 +4,44 @@ package examples.servlets;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 @ServerEndpoint("/saveSocket")
 public class webSocketServlet {
 
-    public static HashMap<String ,webSocketServlet> sessions = new HashMap<>();
+    public static HashMap<String ,Session> sessionsToUser = new HashMap<>();
     public Session session;
     @OnOpen
     public void onOpen(Session session) {
-        sessions.put(session.getId(), this);
+
         this.session = session;
+
     }
 
     @OnClose
     public void onClose(Session session) {
-        sessions.remove(session.getId());
+        sessionsToUser.remove(session.getId());
     }
 
     @OnMessage
-    public void onMessage(String message, Session session) {
-        try {
-            session.getBasicRemote().sendText("Hello Client " + session.getId() + "!");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void onMessasge(String message, Session session) {
+        if(message.substring(0, 4).equals("User"))
+            sessionsToUser.put(message.substring(5), this.session);
+
     }
 
     @OnError
     public void onError(Throwable t) {
     }
 
-    public static void broadcast(String msg){
-        sessions.values().forEach(endpoint -> {
-            synchronized (endpoint) {
+    public static void broadcast(String userName, String msg){
                 try {
-                    endpoint.session.getBasicRemote().sendText(msg);
+                    sessionsToUser.get(userName).getBasicRemote().sendText(msg);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-        });
-    }
+
+
 }
