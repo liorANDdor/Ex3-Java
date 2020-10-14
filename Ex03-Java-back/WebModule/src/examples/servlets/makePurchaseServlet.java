@@ -59,11 +59,13 @@ public class makePurchaseServlet extends HttpServlet {
         order.setOrderCustomer(user);
 
         if (isDynamic.equals("True") || isDynamic.equals("true")) {
-            //SystemManager.getInstance().createDynamicOrder(requestData.get("items").getAsJsonObject(), requestData.get("zone").getAsString(), location, user);
-            for (String itemID : requestData.get("items").getAsJsonObject().keySet()) {
-                Item item = sdm.getItemByID(Integer.parseInt(itemID));
-                //sys.addAnItemToOrder(order, subOrders, );
+            for (Map.Entry<String, JsonElement> item : requestData.get("items").getAsJsonObject().entrySet()) {
+                int itemId = item.getValue().getAsJsonObject().get("id").getAsInt();
+                Store store = sys.getItemLowestPrice(sdm, itemId);
+                double itemQuantity = item.getValue().getAsJsonObject().get("quantity").getAsDouble();
+                sys.addAnItemToOrder(sdm, order, subOrders, store, itemId, itemQuantity);
             }
+            sys.commitOrder(sdm, order);
         }
         else if (isDynamic.equals("False") || isDynamic.equals("false")) {
             Store store = sdm.getStores().get(requestData.get("storeId").getAsInt());

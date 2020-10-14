@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 public class SystemManager {
 
 
-
     public enum optionsForUpdate {
         DeleteItem("Delete Item"),
         ChangePriceOfItem("Change Price Of Item"),
@@ -47,10 +46,11 @@ public class SystemManager {
         }
     }
 
-    public enum userType{
+    public enum userType {
         Customer,
         Seller
     }
+
     private static SystemManager manager = null;
     private SuperMarket superMarket;
 
@@ -61,11 +61,11 @@ public class SystemManager {
     private Integer numberOfUsers = 0;
 
     public SuperMarket getSuperMarketByLocation(String zone) {
-       SuperMarket superMarketSpecificZone = null;
-       for(List<SuperMarket> superMarketList: superMarkets.values())
-           for (SuperMarket sdm:superMarketList)
-               if(sdm.getZone().equals(zone))
-                   superMarketSpecificZone = sdm;
+        SuperMarket superMarketSpecificZone = null;
+        for (List<SuperMarket> superMarketList : superMarkets.values())
+            for (SuperMarket sdm : superMarketList)
+                if (sdm.getZone().equals(zone))
+                    superMarketSpecificZone = sdm;
 
         return superMarketSpecificZone;
     }
@@ -87,9 +87,9 @@ public class SystemManager {
     private SimpleBooleanProperty thereIsXmlLoaded = new SimpleBooleanProperty(false);
 
     public String getOwnerOfZone(String zone) {
-        for (Map.Entry<String ,List<SuperMarket>> entry :superMarkets.entrySet()){
+        for (Map.Entry<String, List<SuperMarket>> entry : superMarkets.entrySet()) {
             if (entry.getValue().stream().anyMatch(sdm -> sdm.getZone().equals(zone)))
-                    return entry.getKey();
+                return entry.getKey();
         }
         return "Didnt Find Zone Owner";
     }
@@ -155,11 +155,11 @@ public class SystemManager {
                 .orElseThrow(NoSuchElementException::new);
         return Math.max(maxColsCustomers, maxColStores);
     }
-    public synchronized boolean addUser(String name, SystemManager.userType type ) {
+
+    public synchronized boolean addUser(String name, SystemManager.userType type) {
         if (checkIfUserExist(name)) {
             return false;
-        }
-        else{
+        } else {
             User newUser;
 
             Integer userNumber = this.getNumberOfUsers() + 1;
@@ -179,9 +179,10 @@ public class SystemManager {
 
 
     public void increaseNumberOfUsers() {
-        this.numberOfUsers+=1;
+        this.numberOfUsers += 1;
     }
-    public static  List<Sale> changeValueOfItem(Store store, Item item, optionsForUpdate whatToDo, double price) {
+
+    public static List<Sale> changeValueOfItem(Store store, Item item, optionsForUpdate whatToDo, double price) {
         List<Sale> saleDeletedWhatYouBuy = new ArrayList();
         List<Sale> saleDeletedWhatYouGet = new ArrayList();
         List<Sale> finalListOfSaleDeleted = new ArrayList();
@@ -198,11 +199,11 @@ public class SystemManager {
                 saleDeletedWhatYouGet = store.getSales().stream().filter(sale -> sale.getNeedToGet().getOffers().stream().anyMatch(x -> x.getItemId() == item.getId())).collect(Collectors.toList());
 
 
-                if(saleDeletedWhatYouBuy != null) {
+                if (saleDeletedWhatYouBuy != null) {
                     store.getSales().removeAll(saleDeletedWhatYouBuy);
                     finalListOfSaleDeleted.addAll(saleDeletedWhatYouBuy);
                 }
-                if(saleDeletedWhatYouGet != null) {
+                if (saleDeletedWhatYouGet != null) {
                     store.getSales().removeAll(saleDeletedWhatYouGet);
 
                     finalListOfSaleDeleted.addAll(saleDeletedWhatYouGet);
@@ -245,20 +246,20 @@ public class SystemManager {
 
     }
 
-    public void setSuperMarket(String userName, SuperMarket SDM){
-        if(superMarkets.containsKey(userName))
+    public void setSuperMarket(String userName, SuperMarket SDM) {
+        if (superMarkets.containsKey(userName))
             superMarkets.get(userName).add(SDM);
-        else{
+        else {
             ArrayList<SuperMarket> newList = new ArrayList<>();
             newList.add(SDM);
             superMarkets.put(userName, newList);
-    }
+        }
     }
 
     public static SystemManager getInstance() {
         if (manager == null)
-            synchronized (createManagerInstance){
-                if(manager == null)
+            synchronized (createManagerInstance) {
+                if (manager == null)
                     manager = new SystemManager();
             }
 
@@ -433,7 +434,7 @@ public class SystemManager {
         return order;
     }
 
-    public Store getItemLowestPrice(Integer itemId) {
+    public Store getItemLowestPrice(SuperMarket superMarket, int itemId) {
         Double itemLowstPrice = Double.POSITIVE_INFINITY;
         Store storeLowestItemPrice = null;
         for (Store store : superMarket.getStores().values()) {
@@ -445,21 +446,6 @@ public class SystemManager {
         }
         return storeLowestItemPrice;
     }
-    public void createDynamicOrder(JsonObject itemsJson, String zone, Point userLocation, User user) {
-    }
 
-    public void createStaticOrder(JsonObject itemsJson, String zone, int storeId, Point userLocation, Customer user) {
-        SuperMarket sdm = SystemManager.getInstance().getSuperMarketByLocation(zone);
-        Integer orderNumber = sdm.getNumberOfOrders() + 1;
-        Store store = sdm.getStores().get(storeId);
-        Order order = new Order();
-        order.setDateOfOrder(new Date(Long.parseLong(String.valueOf(Instant.now()))));
-        order.setLocationOfClient(userLocation);
-        order.calculatAndSetDistance();
-        order.setOrderCustomer(user);
-        order.setOrderNumber(orderNumber);
-
-
-    }
 
 }
