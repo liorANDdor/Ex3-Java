@@ -152,7 +152,7 @@ public class Order implements Serializable {
         return itemsQuantity.keySet().size();
     }
 
-    public void setDeliveryDistance(double deliveryDistance) {
+    private void setDeliveryDistance(double deliveryDistance) {
         this.deliveryDistance = deliveryDistance;
     }
 
@@ -172,7 +172,7 @@ public class Order implements Serializable {
         return (double)Math.round( shipmentPrice * 100.0d) / 100.0d;
     }
 
-    public void setShipmentPrice(Double price) {
+    private void setShipmentPrice(Double price) {
         shipmentPrice = price;
     }
 

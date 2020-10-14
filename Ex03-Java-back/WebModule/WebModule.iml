@@ -39,5 +39,6 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="jakarta.websocket-api-1.0.19.9-jre13" level="project" />
   </component>
 </module>

@@ -1,15 +1,18 @@
 package SDMModel;
 
 
+import com.google.gson.JsonObject;
 import javafx.beans.property.SimpleBooleanProperty;
 
 import java.awt.*;
+import java.time.Instant;
 import java.util.*;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class SystemManager {
+
 
 
     public enum optionsForUpdate {
@@ -363,7 +366,7 @@ public class SystemManager {
             return "No Price (not for sale)";
     }
 
-    public void commitOrder(Order order) {
+    public void commitOrder(SuperMarket superMarket, Order order) {
         order.getStoresToOrderFrom().keySet().stream().forEach(store -> store.getOrders().remove(null));
         Integer orderNumber = superMarket.getNumberOfOrders() + 1;
         superMarket.increaseOrderNumber();
@@ -391,7 +394,7 @@ public class SystemManager {
 
     }
 
-    public void addAnItemToOrder(Order order, HashMap<Integer, Order> subOrders, Store store, int itemId, double quantity) {
+    public void addAnItemToOrder(SuperMarket superMarket, Order order, HashMap<Integer, Order> subOrders, Store store, int itemId, double quantity) {
         Item item = superMarket.getItemByID(itemId);
         if (order.getItemsQuantity().containsKey(item)) {
             order.getItemsQuantity().put(item, (order.getItemsQuantity().get(item) + quantity));
@@ -407,10 +410,10 @@ public class SystemManager {
 
         double itemPrice = superMarket.getStores().get(store.getId()).getItemPrice(itemId);
         order.increaseOrderTotalPrice(itemPrice * quantity);
-        subOrders.put(store.getId(), addAnItemToSubOrder(subOrders.getOrDefault(store.getId(), getEmptyOrder()), store, itemId, quantity));
+        subOrders.put(store.getId(), addAnItemToSubOrder(superMarket, subOrders.getOrDefault(store.getId(), getEmptyOrder()), store, itemId, quantity));
     }
 
-    public Order addAnItemToSubOrder(Order order, Store store, int itemId, double quantity) {
+    public Order addAnItemToSubOrder(SuperMarket superMarket, Order order, Store store, int itemId, double quantity) {
         Item item = superMarket.getItemByID(itemId);
         if (order.getItemsQuantity().containsKey(item)) {
             order.getItemsQuantity().put(item, (order.getItemsQuantity().get(item) + quantity));
@@ -441,6 +444,22 @@ public class SystemManager {
                 }
         }
         return storeLowestItemPrice;
+    }
+    public void createDynamicOrder(JsonObject itemsJson, String zone, Point userLocation, User user) {
+    }
+
+    public void createStaticOrder(JsonObject itemsJson, String zone, int storeId, Point userLocation, Customer user) {
+        SuperMarket sdm = SystemManager.getInstance().getSuperMarketByLocation(zone);
+        Integer orderNumber = sdm.getNumberOfOrders() + 1;
+        Store store = sdm.getStores().get(storeId);
+        Order order = new Order();
+        order.setDateOfOrder(new Date(Long.parseLong(String.valueOf(Instant.now()))));
+        order.setLocationOfClient(userLocation);
+        order.calculatAndSetDistance();
+        order.setOrderCustomer(user);
+        order.setOrderNumber(orderNumber);
+
+
     }
 
 }
