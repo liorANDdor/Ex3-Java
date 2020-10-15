@@ -14,7 +14,7 @@ const MyTable = props => {
     const useStyles = makeStyles({
         container: {
             background: 'inherit',
-            width: props.width,
+            width: '40%',
             marginLeft: '30%',
             marginTop: '2%',
             height: '240px',
@@ -27,17 +27,17 @@ const MyTable = props => {
             <Table size='small' aria-label="simple table">
                 <TableHead>
                     <TableRow>
-                        {Object.keys(props.colums).map(el => {
-                            return <TableCell align="left">{props.colums[el].header}</TableCell>
+                        {Object.keys(props.columns).map(el => {
+                            return <TableCell align="left">{props.columns[el].header}</TableCell>
 
                         })}
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {props.data.map((el) => (
+                    {props.data.map((el,index) => (
                         <TableRow key={el.name}>
                             {Object.keys(el).map(key => {
-                                return <TableCell align="left">{props.colums[key].RenderMethod ? props.colums[key].RenderMethod(el) : el[key]}</TableCell>
+                                return <TableCell align="left">{props.columns[key].RenderMethod ? props.columns[key].RenderMethod(el,index) : el[key]}</TableCell>
                             })}
                         </TableRow>
                     ))}

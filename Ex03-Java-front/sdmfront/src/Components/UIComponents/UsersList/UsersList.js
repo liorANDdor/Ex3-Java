@@ -33,7 +33,7 @@ const Users = props => {
     }
     return props.users.length > 0 ?
         <Table
-            colums={cols}
+            columns={cols}
             data={props.users.map(user => ({ name: user.name, id: user.id }))} 
             width='40%'/>
         : null
