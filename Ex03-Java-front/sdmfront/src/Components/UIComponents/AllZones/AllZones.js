@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { withRouter } from "react-router-dom";
-import axios from '../../Utilities/Axios/Axios'
+import axios from '../../../Utilities/Axios/Axios'
 
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -25,57 +25,34 @@ const useStyles = makeStyles((theme) => ({
 
     },
 }));
+
+
 const AllZones = props => {
     const classes = useStyles()
-    const [allzones, setAllZones] = useState([]);
-    console.log(props)
-
-    const loadZones = () => {
-        axios.get('/SDM/getZones')
-            .then(res => {
-                console.log(res.data)
-                setAllZones(res.data)
-            })
-            .catch(err => {
-            })
-    }
-
-    useEffect(() => {
-        loadZones()
-        const interval = setInterval(() => {
-            loadZones()
-        }, 2000);
-        return () => {
-            clearInterval(interval)
-        }
-    }, [])
-
+    console.log(props.zones)
     return (
-
-
-
         <React.Fragment>
 
-            {Object.keys(allzones).map(key => {
+            {props.zones.map(zone => {
                 return <div className={classes.root}>
                     <Grid container spacing={3}>
                         <Grid item xs={6} >
-                            <Paper className={classes.paper}>Name: {allzones[key].map.name}</Paper>
+                            <Paper className={classes.paper}>Name: {zone.name}</Paper>
                         </Grid>
-                        <Grid item xs={6} onClick={event => props.history.push("/storeAreas/" + allzones[key].map.name)} >
+                        <Grid item xs={6} onClick={() => props.history.push("/storeAreas/" + zone.name)} >
                             <Paper className={classes.paper}>show (Click me)</Paper>
                         </Grid>
                         <Grid item xs={3} >
-                            <Paper className={classes.paper}>Items count: {allzones[key].map.itemsCount}</Paper>
+                            <Paper className={classes.paper}>Items count: {zone.itemsCount}</Paper>
                         </Grid>
                         <Grid item xs={3} >
-                            <Paper className={classes.paper}>Orders count: {allzones[key].map.orderCount}</Paper>
+                            <Paper className={classes.paper}>Orders count: {zone.orderCount}</Paper>
                         </Grid>
                         <Grid item xs={3} >
-                            <Paper className={classes.paper}>Stores count: {allzones[key].map.storesCount}</Paper>
+                            <Paper className={classes.paper}>Stores count: {zone.storesCount}</Paper>
                         </Grid>
                         <Grid item xs={3} >
-                            <Paper className={classes.paper}>averageOrderPrice: {allzones[key].map.averageOrderPrice}</Paper>
+                            <Paper className={classes.paper}>averageOrderPrice: {zone.averageOrderPrice}</Paper>
                         </Grid>
 
                     </Grid>
