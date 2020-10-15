@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 
-import axios from '../../Utilities/Axios/Axios'
+import axios from '../../../Utilities/Axios/Axios'
 import TextField from "@material-ui/core/TextField";
-import clone from "clone";
 
 
 const Deposit = prop => {

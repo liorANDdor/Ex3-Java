@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import Sign from "../../Components/SignUp/SignUp";
+import Sign from "../../Components/LogicalComponents/SignUp/SignUp";
 import Main from "../Main/Main";
-import UserProfileContext from '../../Components/UserProfileContext/UserProfileContext'
+import UserProfileContext from '../../Utilities/Contexts/UserProfileContext/UserProfileContext'
 const StartUpPage = () => {
-  const [isSigned, setIsSigned] = useState(false);
-  const [userKind, setUserKind] = useState('');
+  const [isSigned, setIsSigned] = useState(true);
+  const [userKind, setUserKind] = useState('Shop Owner');
 
   const setSignedUpResultsHandeler = (isSignedParam, userKindParam) => {
     setIsSigned(isSignedParam);
