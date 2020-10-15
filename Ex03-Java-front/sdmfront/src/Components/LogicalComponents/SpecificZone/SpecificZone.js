@@ -25,7 +25,7 @@ const useStyles = makeStyles({
 });
 
 const Zone = props => {
-    
+    const classes = useStyles()
     const [isOpen, setIsOpen] = useState({})
     const [items, setItems] = useState([])
     const [stores, setStores] = useState([])
@@ -46,7 +46,7 @@ const Zone = props => {
         }
         loadData()
 
-    }, [])
+    }, [props.location.pathname])
 
     let itemsCols = {}
 
@@ -106,8 +106,14 @@ const Zone = props => {
     console.log(items)
     return (
         <React.Fragment>
-            <MyTable columns={itemsCols} data={items} />
-            <MyTable columns={storesCols} data={stores} />
+            <MyTable
+                columns={itemsCols}
+                data={items}
+                container={classes.container} />
+            <MyTable
+                columns={storesCols}
+                data={stores}
+                container={classes.container} />
         </React.Fragment>
     )
 }

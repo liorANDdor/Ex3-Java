@@ -1,8 +1,8 @@
 import React from 'react'
+import { Route, Redirect, Switch } from 'react-router-dom'
+
 import TopNavbar from '../../Components/UIComponents/TopNavbar/TopNavbar'
 import StoreArea from '../../Components/LogicalComponents/StoreArea/StoreArea'
-import StoresList from '../../Components/UIComponents/StoresList/StoresList'
-import { Route, Redirect, Switch } from 'react-router-dom'
 import Zone from '../../Components/LogicalComponents/SpecificZone/SpecificZone'
 
 const Main = (props) => {

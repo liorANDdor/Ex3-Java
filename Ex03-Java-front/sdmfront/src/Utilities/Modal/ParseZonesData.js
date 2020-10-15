@@ -1,4 +1,3 @@
-const { DeviceDataUsage } = require("material-ui/svg-icons")
 
 
 const parseZonesData = (zonesData) =>{

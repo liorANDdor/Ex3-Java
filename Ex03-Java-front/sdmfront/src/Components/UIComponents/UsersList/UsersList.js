@@ -1,28 +1,20 @@
-import React, { useEffect, useState } from 'react'
-import axios from '../../../Utilities/Axios/Axios'
+import React from 'react'
 
-
+import { makeStyles } from '@material-ui/core/styles';
 import Table from '../Table/Table'
 
-
-
-
-const keyToUpperCaseAndSpacesString = key => {
-    let str
-    if (key === 'storesWhoSellTheItem')
-        str = 'Number Of Stores'
-    else {
-        str = key.replace(/([A-Z])/g, ' $1').trim()
-        str = str.charAt(0).toUpperCase() + str.slice(1)
+const useStyles = makeStyles((theme) => ({
+    container: {
+        background: 'inherit',
+        width: '60%',
+        marginLeft: '20%',
+        marginTop: '2%',
+        height: '240px',
     }
-
-    return str
-}
-
+}));
 
 const Users = props => {
-    console.log(props.users)
-
+    const classes = useStyles()
     let cols = {
         name: {
             header: 'Name',
@@ -34,8 +26,8 @@ const Users = props => {
     return props.users.length > 0 ?
         <Table
             columns={cols}
-            data={props.users.map(user => ({ name: user.name, id: user.id }))} 
-            width='40%'/>
+            data={props.users.map(user => ({ name: user.name, id: user.id }))}
+            container={classes.container} />
         : null
 }
 

@@ -6,24 +6,13 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { makeStyles } from '@material-ui/core/styles';
 
 
 
 const MyTable = props => {
-    const useStyles = makeStyles({
-        container: {
-            background: 'inherit',
-            width: '40%',
-            marginLeft: '30%',
-            marginTop: '2%',
-            height: '240px',
-        }
     
-    });
-    const classes = useStyles()
     return (
-        <TableContainer className={classes.container} component={Paper}>
+        <TableContainer className={props.container} component={Paper}>
             <Table size='small' aria-label="simple table">
                 <TableHead>
                     <TableRow>

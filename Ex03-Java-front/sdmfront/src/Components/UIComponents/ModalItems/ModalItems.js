@@ -1,12 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+import Table from '../Table/Table'
+import keyToLabel from '../../../Utilities/Modal/ParseKeyToUpperCaseWithSpacesString'
 const getModalStyle = () => {
     const top = 50
     const left = 50
@@ -27,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
         height: '360px',
     },
     paper: {
-        background:'inherit',
+        background: 'inherit',
         position: 'absolute',
         width: '50%',
         backgroundColor: theme.palette.background.paper,
@@ -37,38 +32,24 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ModalItems = props => {
-    const [items, setItems] = useState([])
-    const [modalStyle] = React.useState(getModalStyle);
+    const modalStyle = getModalStyle();
     const classes = useStyles()
-  
+
+    let cols = {}
+    if (props.items.length > 0) {
+        Object.keys(props.items[0]).forEach(key => {
+            cols = {
+                ...cols,
+                [key]: {
+                    header: keyToLabel(key)
+                }
+            }
+        })
+    }
+
     return (
         <div style={modalStyle} className={classes.paper}>
-            {JSON.stringify(props.items)}
-            {/* {items.length > 0 ?
-                < TableContainer className={classes.container} component={Paper} >
-                    <Table size='small' aria-label="simple table">
-                        <TableHead>
-                            <TableRow>
-                                {Object.keys(items[0].map).map(key => {
-                                    let str
-                                    str = key.replace(/([A-Z])/g, ' $1').trim()
-                                    str = str.charAt(0).toUpperCase() + str.slice(1)
-                                    return (<TableCell key={key} align="left" > {str}</TableCell>)
-                                })}
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {items.map(el => {
-                                return (
-                                    <TableRow >
-                                        {Object.keys(el.map).map(key=>{
-                                            return <TableCell align="left">{el.map[key]}</TableCell>
-                                        })}
-                                    </TableRow>)
-                            })}
-                        </TableBody>
-                    </Table>
-                </TableContainer > : null} */}
+            <Table data={props.items} columns={cols} container={classes.container}/>            
 
         </div>
     )
