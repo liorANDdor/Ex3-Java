@@ -4,7 +4,7 @@ import Main from "../Main/Main";
 import UserProfileContext from '../../Utilities/Contexts/UserProfileContext/UserProfileContext'
 const StartUpPage = () => {
   const [isSigned, setIsSigned] = useState(true);
-  const [userKind, setUserKind] = useState('Shop Owner');
+  const [userKind, setUserKind] = useState('Customer');
 
   const setSignedUpResultsHandeler = (isSignedParam, userKindParam) => {
     setIsSigned(isSignedParam);
