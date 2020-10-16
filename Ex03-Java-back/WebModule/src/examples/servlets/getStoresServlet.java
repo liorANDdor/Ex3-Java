@@ -85,6 +85,7 @@ public class getStoresServlet extends HttpServlet {
         SuperMarket superMarket = SystemManager.getInstance().getSuperMarketByLocation(zone);
         for(Sell sell:itemsToSell){
             Item item = superMarket.getItemByID(sell.getItemId());
+            singleSellInfo = new JSONObject();
             singleSellInfo.put("id", sell.getItemId());
             singleSellInfo.put("name", item.getName());
             singleSellInfo.put("purchaseCategory", item.getPurchaseCategory());
