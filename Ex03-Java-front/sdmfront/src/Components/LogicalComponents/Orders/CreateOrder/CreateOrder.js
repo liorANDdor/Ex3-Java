@@ -11,6 +11,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import LoadZonesService from "../../../../Utilities/Services/LoadZonesServices";
 import LoadSpecificZoneService from "../../../../Utilities/Services/LoadSpecificZoneService";
 import Table from "../../../UIComponents/Table/Table";
+import { SpaceBarRounded } from '@material-ui/icons';
 
 
 const useStyle = makeStyles(theme => ({
@@ -22,6 +23,13 @@ const useStyle = makeStyles(theme => ({
     formControl: {
         margin: theme.spacing(2, 'auto'),
         minWidth: '25%'
+    },
+    locationInput: {
+        width: '25%',
+        margin: theme.spacing(2, 2, 4, 2),
+    },
+    LocationContainer: {
+        justifyContent: 'space-between'
     }
 }))
 
@@ -51,6 +59,9 @@ const CreateOrder = props => {
     const [itemOptions, setItemOptions] = useState([])
 
     const [itemsToOrder, setItemsToOrder] = useState([])
+
+    const [x, setX] = useState('')
+    const [y, setY] = useState('')
 
     useEffect(() => {
         LoadZonesService().then(res => {
@@ -134,7 +145,7 @@ const CreateOrder = props => {
             RenderMethod: el => <Button
                 variant="contained"
                 color="secondary"
-                disabled={el.quantity == 0&& el.purchaseCategory == 'QUANTITY' ? Number.isInteger(el.quantity) : false}
+                disabled={el.quantity == 0 || (el.purchaseCategory === 'QUANTITY' ? !Number.isInteger(Number(el.quantity)) : false)}
                 onClick={() => addItemToOrder(el)}>add</Button>
         }
     }
@@ -150,9 +161,32 @@ const CreateOrder = props => {
         console.log(itemsToOrder)
     }
 
+    const submitHandler = () => {
+        let itemsAsObject = {}
+        itemsToOrder.forEach(item => {
+            itemsAsObject = {
+                ...itemsAsObject,
+                [item.id]: item.quantity
+            }
+        })
+        const order = {
+            isDynamic: isDynamicOrder,
+            zone: zoneToOrder,
+            storeId: isDynamicOrder ? null : storeToOrderFrom,
+            items: itemsAsObject,
+            customerLocationX: x,
+            customerLocationY: y
+        }
+        console.log(order)
+    }
+
 
     return (
         <div className={classes.container}>
+            <div className={classes.LocationContainer}>
+                <Input type='number' onChange={e => setX(e.target.value)} className={classes.locationInput} placeholder='Location: X' />
+                <Input type='number' onChange={e => setY(e.target.value)} className={classes.locationInput} placeholder='Location: Y' />
+            </div>
             <FormControlLabel
                 control={
                     <Switch
@@ -203,17 +237,10 @@ const CreateOrder = props => {
                     data={itemOptions}
                     container={classesTable.container}
                 />
-
-                {/* {itemOptions.map(item => {
-                    return <div>
-                        {(item.price ? item.price : 'no price') + ' ' + item.purchaseCategory + ' ' + item.name}
-                    </div>
-                })} */
-
-                }
             </div>
             <Button
-                disabled={itemsToOrder.length === 0}
+                onClick={submitHandler}
+                disabled={itemsToOrder.length === 0 || x == '' || y == ''}
                 className={classes.formControl}
                 variant="contained"
                 color="secondary">
