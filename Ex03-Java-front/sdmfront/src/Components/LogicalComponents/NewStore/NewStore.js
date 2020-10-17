@@ -116,14 +116,33 @@ const NewStore = (props) => {
     };
     const handleToggle = (value) => () => {
         let newItems = clone(items);
-        newItems[value].chosen=!items[value].chosen
+        newItems[value].chosen = !items[value].chosen
         //setMaySubnit(isSubimitAble)
         //valid items
         setItems(newItems);
 
+        let hasItem = false;
+        let newFormInputs = clone(formInputs);
+
+        for (let index = 0; index < items.length-1; ++index) {
+            if (newItems[index].chosen == true) {
+                hasItem = true;
+            }
+        }
+        newFormInputs["items"].valid =hasItem;
+        newFormInputs["items"].value = items;
+
+        setFormInputs(newFormInputs);
+        let isSubimitAble = true
+        Object.keys(newFormInputs).forEach(key => {
+            console.log(key +"   " + formInputs[key].valid)
+            isSubimitAble &= newFormInputs[key].valid
+        })
+        setMaySubnit(isSubimitAble)
 
 
-    };
+
+    }
 
     const loadData = async () => {
         const zonesData = await loadZones()
@@ -151,24 +170,12 @@ const NewStore = (props) => {
         event.preventDefault();
 
         axios
-            .post("/SDM/register", formInputs)
+            .post("/SDM/createStore", formInputs)
             .then((res) => {
                 if (res.data === true) {
-                    props.setSignedUpResult(true, formInputs.role.value);
-                    const ws = new WebSocket('ws://127.0.0.1:8080/SDM/saveSocket')
-
-                    ws.onopen = () => {
-                        // on connecting, do nothing but log it to the console
-                        console.log('connected')
-                        ws.send("User:" + formInputs["name"].value)}
-
-                    ws.onmessage = (message) => {
-                        console.log(message)
-                    };
 
                 } else {
-                    props.setSignedUpResult(false);
-                    setisTaken(true);
+
                 }
             })
             .catch((err) => console.log(err));
@@ -242,23 +249,23 @@ const NewStore = (props) => {
         const double = /^[0-9,.\b]+$/;
 
         if (items[key].purchaseCategory === "QUANTITY") {
-            console.log(key.purchaseCategory)
+
             if (!int.test(event.target.value)) {
 
             } else {
                 newItems[key].price = event.target.value
                 newItems[key].price = event.target.value
-                console.log(newItems[key])
+
             }
         }
         else if (items[key].purchaseCategory === "WEIGHT") {
-            console.log(key.purchaseCategory)
+
             if (!double.test(event.target.value)) {
 
             } else {
                 newItems[key].price = event.target.value
                 newItems[key].price = event.target.value
-                console.log(newItems[key])
+
             }
         }
 
