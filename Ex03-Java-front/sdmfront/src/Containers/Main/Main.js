@@ -9,7 +9,7 @@ const Main = (props) => {
     return (
         <div>
             <header>
-                <TopNavbar />
+                <TopNavbar websocket={props.websocket} />
             </header>
             <div>
                 <Switch>

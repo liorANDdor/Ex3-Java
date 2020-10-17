@@ -80,6 +80,14 @@ const NewStore = (props) => {
             label: "PPK",
             value: "",
         },
+        storeId: {
+            type: "location",
+            options: null,
+            valid: false,
+            touched: false,
+            label: "storeId",
+            value: "",
+        },
         locationX: {
             type: "location",
             options: null,
@@ -116,32 +124,33 @@ const NewStore = (props) => {
     };
     const handleToggle = (value) => () => {
         let newItems = clone(items);
-        newItems[value].chosen = !items[value].chosen
-        //setMaySubnit(isSubimitAble)
-        //valid items
-        setItems(newItems);
+        if(newItems[value].price!='') {
+            newItems[value].chosen = !items[value].chosen
+            //setMaySubnit(isSubimitAble)
+            //valid items
+            setItems(newItems);
 
-        let hasItem = false;
-        let newFormInputs = clone(formInputs);
+            let hasItem = false;
+            let newFormInputs = clone(formInputs);
 
-        for (let index = 0; index < items.length-1; ++index) {
-            if (newItems[index].chosen == true) {
-                hasItem = true;
+            for (let index = 0; index < items.length - 1; ++index) {
+                if (newItems[index].chosen == true) {
+                    hasItem = true;
+                }
             }
+            newFormInputs["items"].valid = hasItem;
+            newFormInputs["items"].value = newItems;
+
+            setFormInputs(newFormInputs);
+            let isSubimitAble = true
+            Object.keys(newFormInputs).forEach(key => {
+                console.log(key + "   " + formInputs[key].valid)
+                isSubimitAble &= newFormInputs[key].valid
+            })
+            setMaySubnit(isSubimitAble)
+
+
         }
-        newFormInputs["items"].valid =hasItem;
-        newFormInputs["items"].value = items;
-
-        setFormInputs(newFormInputs);
-        let isSubimitAble = true
-        Object.keys(newFormInputs).forEach(key => {
-            console.log(key +"   " + formInputs[key].valid)
-            isSubimitAble &= newFormInputs[key].valid
-        })
-        setMaySubnit(isSubimitAble)
-
-
-
     }
 
     const loadData = async () => {
@@ -172,10 +181,10 @@ const NewStore = (props) => {
         axios
             .post("/SDM/createStore", formInputs)
             .then((res) => {
-                if (res.data === true) {
-
+                if (res.data.wasAdded === true) {
+                    console.log("Store Was Added")
                 } else {
-
+                    console.log(res.data.map.error);
                 }
             })
             .catch((err) => console.log(err));
@@ -204,7 +213,7 @@ const NewStore = (props) => {
                 newFormInputs[key].valid = true;
                 newFormInputs[key].value = event.target.value;
                 let data = await loadSpecificZone(event.target.value)
-                setItems(data.items.map(item=> {return {name:item.name, purchaseCategory:item.purchaseCategory, price:"", chosen: false}}))
+                setItems(data.items.map(item=> {return {name:item.name, id:item.id, purchaseCategory:item.purchaseCategory, price:"", chosen: false}}))
 
                 console.log(items)
 
@@ -250,7 +259,7 @@ const NewStore = (props) => {
 
         if (items[key].purchaseCategory === "QUANTITY") {
 
-            if (!int.test(event.target.value)) {
+            if (!int.test(event.target.value) && !event.target.value == "") {
 
             } else {
                 newItems[key].price = event.target.value
@@ -268,9 +277,11 @@ const NewStore = (props) => {
 
             }
         }
+        console.log(newItems[key])
 
         //setMaySubnit(isSubimitAble)
         setItems(newItems);
+        console.log(items)
 
     };
 
@@ -357,10 +368,11 @@ const NewStore = (props) => {
                         const labelId = `checkbox-list-label-${value.name}`;
 
                         return (
-                            <ListItem key={items[value]} role={undefined} dense button onClick={handleToggle(value)}>
+                            <ListItem key={items[value]}  role={undefined} dense button onClick={handleToggle(value)}>
                                 <ListItemIcon>
                                     <Checkbox
                                         edge="start"
+                                        disabled={false}
                                         checked={items[value].chosen}
                                         tabIndex={-1}
                                         disableRipple

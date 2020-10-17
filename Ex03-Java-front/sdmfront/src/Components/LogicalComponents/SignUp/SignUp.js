@@ -14,6 +14,7 @@ import Select from "@material-ui/core/Select";
 import Container from "@material-ui/core/Container";
 import clone from "clone";
 import axios from "../../../Utilities/Axios/Axios";
+import LoadWebSocket from "../../../Utilities/Services/LoadWebSocket";
 
 const formElementsInit = {
   role: {
@@ -68,16 +69,8 @@ const SignUp = (props) => {
       .then((res) => {
         if (res.data === true) {
           props.setSignedUpResult(true, formInputs.role.value);
-          const ws = new WebSocket('ws://127.0.0.1:8080/SDM/saveSocket')
 
-          ws.onopen = () => {
-            // on connecting, do nothing but log it to the console
-            console.log('connected')
-            ws.send("User:" + formInputs["name"].value)}
-
-          ws.onmessage = (message) => {
-            console.log(message)
-          };
+          const ws = new LoadWebSocket(formInputs["name"].value)
 
         } else {
           props.setSignedUpResult(false);

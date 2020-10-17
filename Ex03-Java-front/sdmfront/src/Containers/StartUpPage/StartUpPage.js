@@ -3,9 +3,9 @@ import Sign from "../../Components/LogicalComponents/SignUp/SignUp";
 import Main from "../Main/Main";
 import UserProfileContext from '../../Utilities/Contexts/UserProfileContext/UserProfileContext'
 const StartUpPage = () => {
-  const [isSigned, setIsSigned] = useState(true);
-  const [userKind, setUserKind] = useState('Shop Owner');
-
+  const [isSigned, setIsSigned] = useState();
+  const [userKind, setUserKind] = useState();
+  let ws;
   const setSignedUpResultsHandeler = (isSignedParam, userKindParam) => {
     setIsSigned(isSignedParam);
     setUserKind(userKindParam);
@@ -13,10 +13,10 @@ const StartUpPage = () => {
 
   return isSigned ? (
     <UserProfileContext.Provider value={{ userType: userKind }}>
-      <Main/>
+      <Main />
     </UserProfileContext.Provider>
   )
-    : <Sign setSignedUpResult={setSignedUpResultsHandeler} />
+    : <Sign websocket={ws} setSignedUpResult={setSignedUpResultsHandeler} />
 
 };
 

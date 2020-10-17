@@ -1,9 +1,11 @@
-import React, { useContext } from 'react'
+import React, {useContext, useState} from 'react'
 import { Nav, NavDropdown, Navbar } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
 import UserProfileContext from '../../../Utilities/Contexts/UserProfileContext/UserProfileContext'
 
+import Button from "@material-ui/core/Button";
+import LoadWebSocket from "../../../Utilities/Services/LoadWebSocket";
 const customerActions = {
     createOrder: 'Create order',
     raitingOfStoreOwners: 'Raiting of store owners',
@@ -17,9 +19,18 @@ const storeOwnerActions = {
 }
 
 const TopNavBar = props => {
+
+    const [btnColor, setBtnColor] = useState("white");
     const userProfileContext = useContext(UserProfileContext)
     let specificActions = userProfileContext.userType === 'Customer' ? customerActions : storeOwnerActions
     let label = userProfileContext.userType === 'Customer' ? 'Customer actions' : 'Store owner actions'
+    const ws = new LoadWebSocket()
+    ws.onmessage = evt => {
+        // add the new message to state
+        setBtnColor("secondary")
+        console.log("DorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDor")
+    };
+
     return (
         <Navbar style={{ background: 'inherit' }} variant="light">
             <Navbar.Brand href="#home">Super Market</Navbar.Brand>
@@ -35,8 +46,12 @@ const TopNavBar = props => {
                     })}
 
                 </NavDropdown>
+
             </Nav>
 
+            <Button variant="contained" color={btnColor}>
+                Notifications
+            </Button>
         </Navbar>)
 }
 export default TopNavBar
