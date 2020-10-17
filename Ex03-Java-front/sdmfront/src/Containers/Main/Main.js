@@ -5,6 +5,9 @@ import TopNavbar from '../../Components/UIComponents/TopNavbar/TopNavbar'
 import StoreArea from '../../Components/LogicalComponents/StoreArea/StoreArea'
 import Zone from '../../Components/LogicalComponents/SpecificZone/SpecificZone'
 import NewStore from "../../Components/LogicalComponents/NewStore/NewStore";
+import CreateOrder from "../../Components/LogicalComponents/Orders/CreateOrder/CreateOrder";
+
+
 const Main = (props) => {
     return (
         <div>
@@ -14,6 +17,7 @@ const Main = (props) => {
             <div>
                 <Switch>
                     <Route exact path='/storeAreas' component={StoreArea} />
+                    <Route  path='/createOrder' component={CreateOrder} />
                     <Route  path='/storeAreas/:zone' component={Zone} />
                     <Route  path='/openNewStore' component={NewStore} />
                 </Switch>

@@ -18,7 +18,7 @@ import com.google.gson.Gson;
 
 @MultipartConfig
 @WebServlet(name = "ReadXMLServlet", urlPatterns = {"/readxml"})
-public class XmlUploadServlet extends HttpServlet {
+public class    XmlUploadServlet extends HttpServlet {
 
     //private final static String XML_PATH = "/resources/world.xml";
 

@@ -3,9 +3,10 @@ import Sign from "../../Components/LogicalComponents/SignUp/SignUp";
 import Main from "../Main/Main";
 import UserProfileContext from '../../Utilities/Contexts/UserProfileContext/UserProfileContext'
 const StartUpPage = () => {
-  const [isSigned, setIsSigned] = useState();
-  const [userKind, setUserKind] = useState();
-  let ws;
+
+  const [isSigned, setIsSigned] = useState(true);
+  const [userKind, setUserKind] = useState('Customer');
+
   const setSignedUpResultsHandeler = (isSignedParam, userKindParam) => {
     setIsSigned(isSignedParam);
     setUserKind(userKindParam);
