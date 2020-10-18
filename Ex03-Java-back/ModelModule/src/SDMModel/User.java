@@ -43,6 +43,15 @@ public class User {
         return acount;
     }
 
+    public boolean isSeller() {
+        return isSeller;
+    }
+
+    public void setSeller(boolean seller) {
+        isSeller = seller;
+    }
+
+    private boolean isSeller;
     private MoneyAcount acount;
     private String name;
     private Point location;

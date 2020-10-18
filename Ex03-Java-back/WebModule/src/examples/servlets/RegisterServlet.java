@@ -36,6 +36,7 @@ public class RegisterServlet extends HttpServlet {
         String name = requestData.get("name").getAsJsonObject().get("value").getAsString();
         session.setAttribute("userName", name);
         SystemManager.userType userType =  role.equals("Customer") ? SystemManager.userType.Customer : SystemManager.userType.Seller; ;
+
         Boolean wasUserAdded = SystemManager.getInstance().addUser(name, userType);
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");

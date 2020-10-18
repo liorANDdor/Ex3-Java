@@ -19,14 +19,14 @@ const Users = props => {
         name: {
             header: 'Name',
         },
-        id: {
-            header: 'ID'
+        role: {
+            header: 'Role'
         }
     }
     return props.users.length > 0 ?
         <Table
             columns={cols}
-            data={props.users.map(user => ({ name: user.name, id: user.id }))}
+            data={props.users.map(user => ({ name: user.name, role: user.isSeller===true? "Seller" : "Customer" }))}
             container={classes.container} />
         : null
 }

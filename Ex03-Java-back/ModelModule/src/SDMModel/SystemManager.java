@@ -164,10 +164,16 @@ public class SystemManager {
 
             Integer userNumber = this.getNumberOfUsers() + 1;
             this.increaseNumberOfUsers();
-            if (type == userType.Customer)
+            if (type == userType.Customer) {
                 newUser = new Customer(name, userNumber);
-            else
+                newUser.setSeller(false);
+            }
+            else {
                 newUser = new Seller(name, userNumber);
+                newUser.setSeller(true);
+
+            }
+
             users.put(name, newUser);
             return true;
         }
