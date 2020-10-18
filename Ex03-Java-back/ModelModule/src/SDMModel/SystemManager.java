@@ -229,18 +229,6 @@ public class SystemManager {
         return superMarket;
     }
 
-    public void LoadXMLFileAndCheckIt(String fullPath) {
-        Consumer<SuperMarket> superMarketConsumer = value -> {
-            this.superMarket = value;
-        };
-
-        Consumer<Boolean> xmlLoadedConsumer = value -> {
-            this.thereIsXmlLoaded.set(value);
-        };
-        XmlLoaderTask task = new XmlLoaderTask(fullPath, superMarketConsumer, xmlLoadedConsumer);
-        new Thread(task).start();
-
-    }
 
     private SystemManager() {
 
@@ -333,10 +321,10 @@ public class SystemManager {
         return order;
     }
 
-    public boolean checkIfStoreOk(Store newStore, StringBuilder whatWrongMessage) {
+    public boolean checkIfStoreOk(SuperMarket sdm, Store newStore, StringBuilder whatWrongMessage) {
         boolean isContentAsNeeded = true;
-        HashMap<Integer, Store> stores = superMarket.getStores();
-        HashMap<Integer, Customer> customers = superMarket.getCostumers();
+        HashMap<Integer, Store> stores = sdm.getStores();
+        HashMap<Integer, Customer> customers = sdm.getCostumers();
         for (Store store : stores.values()) {
             if (store.getId() == newStore.getId()) {
                 isContentAsNeeded = false;

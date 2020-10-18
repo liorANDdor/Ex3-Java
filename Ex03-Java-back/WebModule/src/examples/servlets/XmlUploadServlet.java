@@ -13,6 +13,7 @@ import javax.servlet.http.Part;
 import SDMGenerated.SuperDuperMarketDescriptor;
 import SDMModel.SuperMarket;
 import SDMModel.SystemManager;
+import SDMModel.User;
 import SDMModel.XmlUtilities;
 import com.google.gson.Gson;
 
@@ -28,6 +29,7 @@ public class    XmlUploadServlet extends HttpServlet {
         SuperDuperMarketDescriptor superMarketSDM = null;
         XmlUtilities xmlUtilities = new XmlUtilities();
         String userName = (String) request.getSession().getAttribute("userName");
+        User user = SystemManager.getInstance().getUsers().get(userName);
         Collection<Part> parts = request.getParts();
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
@@ -37,7 +39,7 @@ public class    XmlUploadServlet extends HttpServlet {
             superMarketSDM = xmlUtilities.xmlCheckFromServlet(part.getInputStream());
             xmlUtilities.checkIfTheXmlThatJustLoadedOk(superMarketSDM);
             if (xmlUtilities.getIsXmlOk()) {
-                SuperMarket superMarket = SuperMarket.creatInstance(superMarketSDM);
+                SuperMarket superMarket = SuperMarket.creatInstance(superMarketSDM, user);
                 SystemManager.getInstance().setSuperMarket(userName, superMarket);
 
                 String message = "XML file was loaded correctly";

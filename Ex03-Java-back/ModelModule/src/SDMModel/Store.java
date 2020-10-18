@@ -14,7 +14,9 @@ import java.util.List;
 
 public class Store implements Serializable {
 
-    public Store( String name,  int id, int deliveryPpk, Point location) {
+    private User storeOwner;
+
+    public Store(String name, int id, int deliveryPpk, Point location) {
         this.totalEarning = 0.0;
         this.totalShipmentEarning = 0.0;;
         this.orders = new HashMap<>();
@@ -26,6 +28,14 @@ public class Store implements Serializable {
         this.id = id;
     }
     public Store(){}
+
+    public User getStoreOwner() {
+        return storeOwner;
+    }
+
+    public void setStoreOwner(User user) {
+        this.storeOwner=user;
+    }
 
     public enum InfoOptions {
         Name, Id, Location, DeliveryPpk, TotalEarning, TotalShipmentEarning, NumberOfOrders;
@@ -94,9 +104,9 @@ public class Store implements Serializable {
          totalEarning = totalEarning +earning;
     }
 
-    public static Store createInstanceBySDM(SDMStore sdmStore) {
+    public static Store createInstanceBySDM(SDMStore sdmStore, Seller storeOwner) {
         Store newStore = new Store();
-
+        newStore.setStoreOwner(storeOwner);
         newStore.setId(sdmStore.getId());
         newStore.setDeliveryPpk(sdmStore.getDeliveryPpk());
         newStore.setName(sdmStore.getName());

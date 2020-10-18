@@ -60,9 +60,9 @@ public class makePurchaseServlet extends HttpServlet {
 
         if (isDynamic.equals("True") || isDynamic.equals("true")) {
             for (Map.Entry<String, JsonElement> item : requestData.get("items").getAsJsonObject().entrySet()) {
-                int itemId = item.getValue().getAsJsonObject().get("id").getAsInt();
+                int itemId = Integer.parseInt( item.getKey());
                 Store store = sys.getItemLowestPrice(sdm, itemId);
-                double itemQuantity = item.getValue().getAsJsonObject().get("quantity").getAsDouble();
+                double itemQuantity = item.getValue().getAsDouble();
                 sys.addAnItemToOrder(sdm, order, subOrders, store, itemId, itemQuantity);
             }
             sys.commitOrder(sdm, order);

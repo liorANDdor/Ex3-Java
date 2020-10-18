@@ -12,6 +12,7 @@ import LoadZonesService from "../../../../Utilities/Services/LoadZonesServices";
 import LoadSpecificZoneService from "../../../../Utilities/Services/LoadSpecificZoneService";
 import Table from "../../../UIComponents/Table/Table";
 import { SpaceBarRounded } from '@material-ui/icons';
+import axios from "../../../../Utilities/Axios/Axios";
 
 
 const useStyle = makeStyles(theme => ({
@@ -177,8 +178,13 @@ const CreateOrder = props => {
             customerLocationX: x,
             customerLocationY: y
         }
-        console.log(order)
+        axios.post("/SDM/makePurchase", order).then((res) => {
+            if (res.data.wasOrdered === true) {
+                return true
+            }
+        });
     }
+
 
 
     return (

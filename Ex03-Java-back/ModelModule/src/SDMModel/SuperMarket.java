@@ -32,7 +32,7 @@ public class SuperMarket {
         return zone;
     }
 
-    public static SuperMarket creatInstance(SuperDuperMarketDescriptor superMarketSDM) {
+    public static SuperMarket creatInstance(SuperDuperMarketDescriptor superMarketSDM, User user) {
         SuperMarket instance = new SuperMarket();
         instance.zone = superMarketSDM.getSDMZone().getName();
         List<SDMItem>itemsSDM = superMarketSDM.getSDMItems().getSDMItem();
@@ -40,7 +40,7 @@ public class SuperMarket {
 
 
         for(SDMStore sdmStore : storesSDM){
-            Store newStore = Store.createInstanceBySDM(sdmStore);
+            Store newStore = Store.createInstanceBySDM(sdmStore, (Seller) user);
             instance.getStores().put(newStore.getId(), newStore);
         }
 
