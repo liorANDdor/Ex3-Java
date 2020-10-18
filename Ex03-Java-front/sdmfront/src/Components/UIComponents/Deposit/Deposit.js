@@ -1,13 +1,28 @@
-import React, { useState } from 'react'
+import React, {useEffect, useState} from 'react'
 
 import axios from '../../../Utilities/Axios/Axios'
 import TextField from "@material-ui/core/TextField";
+import loadZones from "../../../Utilities/Services/LoadZonesServices";
+import loadUsers from "../../../Utilities/Services/LoadUserService";
 
 
 const Deposit = prop => {
 
     const [depositAmount, setdepositAmount] = useState(0);
     const [totalAmount, settotalAmount] = useState("Total Amound = 0");
+
+
+
+
+    useEffect(() => {
+        makeTransaction()
+        const interval = setInterval(async () => {
+            makeTransaction()
+        }, 2000);
+        return () => {
+            clearInterval(interval)
+        }
+    }, [])
 
 
     const handleChange = (event) => {

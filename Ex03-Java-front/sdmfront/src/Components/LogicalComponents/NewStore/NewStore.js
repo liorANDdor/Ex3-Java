@@ -257,27 +257,14 @@ const NewStore = (props) => {
         const int = /^[0-9\b]+$/;
         const double = /^[0-9,.\b]+$/;
 
-        if (items[key].purchaseCategory === "QUANTITY") {
 
-            if (!int.test(event.target.value) && !event.target.value == "") {
-
-            } else {
-                newItems[key].price = event.target.value
-                newItems[key].price = event.target.value
-
-            }
-        }
-        else if (items[key].purchaseCategory === "WEIGHT") {
-
-            if (!double.test(event.target.value)) {
+            if (!double.test(event.target.value) && !event.target.value == "") {
 
             } else {
                 newItems[key].price = event.target.value
                 newItems[key].price = event.target.value
 
             }
-        }
-        console.log(newItems[key])
 
         //setMaySubnit(isSubimitAble)
         setItems(newItems);
@@ -353,7 +340,7 @@ const NewStore = (props) => {
                         color="secondary"
                         className={classes.submit}
                     >
-                        Sign up
+                       Add Store
                     </Button>
                 </form>
                 {isTaken ? (
@@ -386,7 +373,7 @@ const NewStore = (props) => {
                                         <TextField
                                             id="standard-flexible"
                                             label="Price"
-                                            type={value.purchaseCategory==="QUANTITY" ? "PriceQuantity" : "PriceWeight"}
+                                            type={value.purchaseCategory==="QUANTITY" ? "PriceWeight" : "PriceWeight"}
                                             value={items[value].price}
                                             onChange={(event) => handlePriceChange(event, value)}
                                         />
