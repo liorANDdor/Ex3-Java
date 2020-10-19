@@ -15,7 +15,8 @@ const customerActions = {
 const storeOwnerActions = {
     storeOrders: 'Store orders',
     showFeedback: 'Show feedback',
-    openNewStore: 'Open new store'
+    openNewStore: 'Open new store',
+    addItem: 'Add new item'
 }
 
 const TopNavBar = props => {

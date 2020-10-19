@@ -57,10 +57,10 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const NewStore = (props) => {
+const NewItem = (props) => {
 
     const [zones, setZones] = useStateIfMounted([{}])
-    const [items, setItems] = useState([])
+    const [stores, setStores] = useState([])
 
     const [checked, setChecked] = React.useState([0]);
     const formElementsInit = {
@@ -69,77 +69,54 @@ const NewStore = (props) => {
             options: null,
             valid: false,
             touched: false,
-            label: "Store Name",
+            label: "Item Name",
             value: "",
         },
-        ppk: {
-            type: "ppk",
-            options: null,
+        type: {
+            type: "selectType",
+            options: { Weight: "Weight", Quantity: "Quantity" },
             valid: false,
             touched: false,
-            label: "PPK",
-            value: "",
-        },
-        storeId: {
-            type: "location",
-            options: null,
-            valid: false,
-            touched: false,
-            label: "storeId",
-            value: "",
-        },
-        locationX: {
-            type: "location",
-            options: null,
-            valid: false,
-            touched: false,
-            label: "Location(X)",
-            value: "",
-        },
-        locationY: {
-            type: "location",
-            options: null,
-            valid: false,
-            touched: false,
-            label: "Location(Y)",
+            label: "Purchase Type",
             value: "",
         },
         zone: {
-            type: "select",
+            type: "selectZone",
             options: zones ,
             valid: false,
             touched: false,
             label: "Zone",
             value: "",
         },
-        items: {
-            type: "item",
+        stores: {
+            type: "stores",
             options: null ,
             valid: false,
             touched: false,
-            label: "items",
-            value: items,
+            label: "stores",
+            value: stores,
         },
 
     };
     const handleToggle = (value) => () => {
-        let newItems = clone(items);
-        if(newItems[value].price!='') {
-            newItems[value].chosen = !items[value].chosen
+
+        let newStores = clone(stores);
+        if(newStores[value].price!='') {
+            newStores[value].chosen = !stores[value].chosen
             //setMaySubnit(isSubimitAble)
             //valid items
-            setItems(newItems);
+            setStores(newStores);
 
-            let hasItem = false;
+            let hasStore = false;
             let newFormInputs = clone(formInputs);
 
-            for (let index = 0; index < items.length - 1; ++index) {
-                if (newItems[index].chosen == true) {
-                    hasItem = true;
+            for (let index = 0; index < stores.length - 1; ++index) {
+                if (newStores[index].chosen == true) {
+                    hasStore = true;
                 }
             }
-            newFormInputs["items"].valid = hasItem;
-            newFormInputs["items"].value = newItems;
+            newFormInputs["stores"].valid = hasStore;
+            newFormInputs["stores"].value = newStores;
 
             setFormInputs(newFormInputs);
             let isSubimitAble = true
@@ -179,10 +156,10 @@ const NewStore = (props) => {
         event.preventDefault();
 
         axios
-            .post("/SDM/createStore", formInputs)
+            .post("/SDM/createItem", formInputs)
             .then((res) => {
                 if (res.data.wasAdded === true) {
-                    console.log("Store Was Added")
+                    console.log("Item Was Added")
                 } else {
                     console.log(res.data.map.error);
                 }
@@ -196,16 +173,7 @@ const NewStore = (props) => {
         const re = /^[0-9\b]+$/;
         const ppk = /^[0-9,.\b]+$/;
 
-        if (newFormInputs[key].type === "location" && !event.target.value == "") {
-            if (!re.test(event.target.value) || parseInt(event.target.value) > 50) {
-
-                newFormInputs[key].label = "Location must be between 1-50"
-                newFormInputs[key].valid = false
-            } else {
-                newFormInputs[key].value = event.target.value;
-                newFormInputs[key].valid = true;
-            }
-        } else if (newFormInputs[key].type === "select") {
+        if (newFormInputs[key].type === "selectZone") {
             if (event.target.value !== "") {
 
 
@@ -213,9 +181,9 @@ const NewStore = (props) => {
                 newFormInputs[key].valid = true;
                 newFormInputs[key].value = event.target.value;
                 let data = await loadSpecificZone(event.target.value)
-                setItems(data.items.map(item=> {return {name:item.name, id:item.id, purchaseCategory:item.purchaseCategory, price:"", chosen: false}}))
+                setStores(data.stores.map(store=> {return {name:store.name, id:store.id, purchaseCategory:store.purchaseCategory, price:"", chosen: false}}))
 
-                console.log(items)
+                console.log(stores)
 
 
             } else {
@@ -223,14 +191,21 @@ const NewStore = (props) => {
                 newFormInputs[key].valid = false;
                 newFormInputs[key].value = event.target.value;
             }
-        } else if (newFormInputs[key].type === "ppk" && !event.target.value == "") {
+        }
 
-            if (!ppk.test(event.target.value)) {
-                newFormInputs[key].label = "ppk must be a double"
-                newFormInputs[key].valid = false
-            } else {
-                newFormInputs[key].value = event.target.value;
+        if (newFormInputs[key].type === "selectType") {
+            if (event.target.value !== "") {
+
+
+                newFormInputs[key].label = newFormInputs[key].label.split(" ")[0]
                 newFormInputs[key].valid = true;
+                newFormInputs[key].value = event.target.value;
+
+
+            } else {
+                newFormInputs[key].label = newFormInputs[key].label.split(" ")[0]
+                newFormInputs[key].valid = false;
+                newFormInputs[key].value = event.target.value;
             }
         } else if (newFormInputs[key].value === '') {
             newFormInputs[key].label = newFormInputs[key].label + ' REQUIRED'
@@ -253,22 +228,20 @@ const NewStore = (props) => {
 
 
     const handlePriceChange = async (event, key) => {
-        let newItems = clone(items);
-        const int = /^[0-9\b]+$/;
+        let newStores = clone(stores);
         const double = /^[0-9,.\b]+$/;
 
 
             if (!double.test(event.target.value) && !event.target.value == "") {
 
             } else {
-                newItems[key].price = event.target.value
-                newItems[key].price = event.target.value
+                newStores[key].price = event.target.value
+                newStores[key].price = event.target.value
 
             }
 
         //setMaySubnit(isSubimitAble)
-        setItems(newItems);
-        console.log(items)
+        setStores(newStores);
 
     };
 
@@ -284,10 +257,40 @@ const NewStore = (props) => {
                     {Object.keys(formInputs).map((el) => {
                         let input = null;
 
-                        if(formInputs[el].type==="item") {
-                        return
+                        if(formInputs[el].type==="stores") {
+                            return
                         }
-                    else if(formInputs[el].type==="select") {
+                        else if(formInputs[el].type==="selectType" ) {
+                            input = (
+                                <FormControl key={el} className={classes.formControl}>
+                                    <InputLabel>{formInputs[el].label}</InputLabel>
+                                    <Select
+                                        value={formInputs.type.value}
+                                        onChange={(event) => handleChange(event, el)}
+                                        renderValue={(value) => value}
+                                    >
+                                        <MenuItem value="">
+                                            <em>None</em>
+                                        </MenuItem>
+
+
+
+                                        {Object.keys(formInputs[el].options).map((item) => {
+                                            return (
+                                                <MenuItem
+                                                    key={item}
+                                                    value={formInputs[el].options[item]}
+                                                >
+                                                    {formInputs[el].options[item]}
+                                                </MenuItem>
+                                            );
+                                        })}
+
+                                    </Select>
+                                </FormControl>
+                            );
+                        }
+                    else if(formInputs[el].type==="selectZone") {
                         input = (
                             <FormControl key={el} className={classes.formControl}>
                                 <InputLabel>{formInputs[el].label}</InputLabel>
@@ -299,16 +302,16 @@ const NewStore = (props) => {
                                     <MenuItem value="">
                                         <em>None</em>
                                     </MenuItem>
-                                    {zones.map((item) => {
+                                    {zones.map((store) => {
 
 
 
                                         return (
                                             <MenuItem
-                                                key={item.name}
-                                                value={item.name}
+                                                key={store.name}
+                                                value={store.name}
                                             >
-                                                {item.name}
+                                                {store.name}
                                             </MenuItem>
                                         );
                                     })}
@@ -350,23 +353,23 @@ const NewStore = (props) => {
                 ) : null}
 
                 <List className={classes.root}>
-                    {Object.keys(items).map((value) => {
+                    {Object.keys(stores).map((value) => {
 
                         const labelId = `checkbox-list-label-${value.name}`;
 
                         return (
-                            <ListItem key={items[value]}  role={undefined} dense button onClick={handleToggle(value)}>
+                            <ListItem key={stores[value]}  role={undefined} dense button onClick={handleToggle(value)}>
                                 <ListItemIcon>
                                     <Checkbox
                                         edge="start"
                                         disabled={false}
-                                        checked={items[value].chosen}
+                                        checked={stores[value].chosen}
                                         tabIndex={-1}
                                         disableRipple
                                         inputProps={{ 'aria-labelledby': labelId }}
                                     />
                                 </ListItemIcon>
-                                <ListItemText id={labelId} primary={items[value].name} />
+                                <ListItemText id={labelId} primary={stores[value].name} />
                                 <ListItemSecondaryAction>
 
                                         <CommentIcon />
@@ -374,7 +377,7 @@ const NewStore = (props) => {
                                             id="standard-flexible"
                                             label="Price"
                                             type={value.purchaseCategory==="QUANTITY" ? "PriceWeight" : "PriceWeight"}
-                                            value={items[value].price}
+                                            value={stores[value].price}
                                             onChange={(event) => handlePriceChange(event, value)}
                                         />
 
@@ -389,4 +392,4 @@ const NewStore = (props) => {
 };
 
 
-export default withRouter(NewStore)
+export default withRouter(NewItem)

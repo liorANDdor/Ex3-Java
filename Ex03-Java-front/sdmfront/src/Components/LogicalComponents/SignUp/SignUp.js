@@ -95,6 +95,7 @@ const SignUp = (props) => {
     Object.keys(newFormInputs).forEach(key => {
       isSubimitAble &= newFormInputs[key].valid
     })
+    console.log(newFormInputs)
     setMaySubnit(isSubimitAble)
     setFormInputs(newFormInputs);
   };
