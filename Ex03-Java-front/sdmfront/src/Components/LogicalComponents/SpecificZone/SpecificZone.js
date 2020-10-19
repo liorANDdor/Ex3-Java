@@ -6,6 +6,8 @@ import parseKeyToLabel from '../../../Utilities/Modal/ParseKeyToUpperCaseWithSpa
 
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
+
+import Button from '@material-ui/core/Button';
 import ModalItems from '../../UIComponents/ModalItems/ModalItems'
 
 import MyTable from '../../UIComponents/Table/Table'
@@ -70,9 +72,12 @@ const Zone = props => {
                 break
             case 'itemsStoreSell':
                 method = (el, index) => (<div style={{ background: 'inherit' }}>
-                    <button type="button" onClick={() => handleOpen(index)}>
+                    <Button type="button"
+                        variant="contained"
+                        color="secondary"
+                        onClick={() => handleOpen(index)}>
                         View items
-                    </button>
+                    </Button>
                     <Modal
                         open={isOpen[index]}
                         onClose={() => handleClose(index)}

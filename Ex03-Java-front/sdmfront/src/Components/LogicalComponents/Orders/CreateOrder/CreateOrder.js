@@ -139,14 +139,14 @@ const CreateOrder = props => {
                 type='number'
                 onChange={event => setItemOptions(itemOptions.map(item => item.id === el.id ? { ...el, quantity: event.target.value } : item))}
                 value={el.quantity}
-            />
+                />
         },
         add: {
             header: 'Add to order',
             RenderMethod: el => <Button
                 variant="contained"
                 color="secondary"
-                disabled={el.quantity == 0 || (el.purchaseCategory === 'QUANTITY' ? !Number.isInteger(Number(el.quantity)) : false)}
+                disabled={el.quantity <= 0 || (el.purchaseCategory === 'QUANTITY' ? !Number.isInteger(Number(el.quantity)) : false)}
                 onClick={() => addItemToOrder(el)}>add</Button>
         }
     }
@@ -190,8 +190,16 @@ const CreateOrder = props => {
     return (
         <div className={classes.container}>
             <div className={classes.LocationContainer}>
-                <Input type='number' onChange={e => setX(e.target.value)} className={classes.locationInput} placeholder='Location: X' />
-                <Input type='number' onChange={e => setY(e.target.value)} className={classes.locationInput} placeholder='Location: Y' />
+                <Input
+                    type='number'
+                    onChange={e => setX(e.target.value)}
+                    className={classes.locationInput}
+                    placeholder='Location: X' />
+                <Input
+                    type='number'
+                    onChange={e => setY(e.target.value)}
+                    className={classes.locationInput}
+                    placeholder='Location: Y' />
             </div>
             <FormControlLabel
                 control={

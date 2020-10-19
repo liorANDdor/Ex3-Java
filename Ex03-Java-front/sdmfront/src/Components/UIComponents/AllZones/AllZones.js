@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import { Button } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -38,8 +39,15 @@ const AllZones = props => {
                         <Grid item xs={6} >
                             <Paper className={classes.paper}>Name: {zone.name}</Paper>
                         </Grid>
-                        <Grid item xs={6} onClick={() => props.history.push("/storeAreas/" + zone.name)} >
-                            <Paper className={classes.paper}>show (Click me)</Paper>
+                        <Grid item xs={6}  >
+
+                            <Paper className={classes.paper}>
+
+                                <Button variant="contained"
+                                    color="secondary" onClick={() => props.history.push("/storeAreas/" + zone.name)}>show
+                                    </Button>
+                            </Paper>
+
                         </Grid>
                         <Grid item xs={3} >
                             <Paper className={classes.paper}>Items count: {zone.itemsCount}</Paper>
