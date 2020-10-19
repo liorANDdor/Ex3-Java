@@ -46,6 +46,7 @@ public class makePurchaseServlet extends HttpServlet {
     public void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Gson gson = new Gson();
+        JSONObject orderStatus = new JSONObject();
         HttpSession session = request.getSession();
         String rawRequestData = request.getReader().lines().collect(Collectors.joining());
         JsonObject requestData = new Gson().fromJson(rawRequestData, JsonObject.class);
@@ -57,25 +58,49 @@ public class makePurchaseServlet extends HttpServlet {
         user.setLocation(location);
         String isDynamic = requestData.get("isDynamic").getAsString();
         order.setOrderCustomer(user);
+        if (isCustomerLocationFine(sdm, location)) {
+            if (isDynamic.equals("True") || isDynamic.equals("true")) {
+                for (Map.Entry<String, JsonElement> item : requestData.get("items").getAsJsonObject().entrySet()) {
+                    int itemId = Integer.parseInt(item.getKey());
+                    Store store = sys.getItemLowestPrice(sdm, itemId);
+                    double itemQuantity = item.getValue().getAsDouble();
+                    sys.addAnItemToOrder(sdm, order, subOrders, store, itemId, itemQuantity);
+                }
+                sys.commitOrder(sdm, order);
+            } else if (isDynamic.equals("False") || isDynamic.equals("false")) {
+                Store store = sdm.getStores().get(requestData.get("storeId").getAsInt());
+                for (Map.Entry<String, JsonElement> item : requestData.get("items").getAsJsonObject().entrySet()) {
+                    int itemId = Integer.parseInt(item.getKey());
+                    double itemQuantity = item.getValue().getAsDouble();
+                    sys.addAnItemToOrder(sdm, order, subOrders, store, itemId, itemQuantity);
+                }
+                sys.commitOrder(sdm, order);
+            }
 
-        if (isDynamic.equals("True") || isDynamic.equals("true")) {
-            for (Map.Entry<String, JsonElement> item : requestData.get("items").getAsJsonObject().entrySet()) {
-                int itemId = Integer.parseInt( item.getKey());
-                Store store = sys.getItemLowestPrice(sdm, itemId);
-                double itemQuantity = item.getValue().getAsDouble();
-                sys.addAnItemToOrder(sdm, order, subOrders, store, itemId, itemQuantity);
-            }
-            sys.commitOrder(sdm, order);
+            orderStatus.put("wasAdded", true);
+            response.getWriter().append(gson.toJson(true));
         }
-        else if (isDynamic.equals("False") || isDynamic.equals("false")) {
-            Store store = sdm.getStores().get(requestData.get("storeId").getAsInt());
-            for (Map.Entry<String, JsonElement> item : requestData.get("items").getAsJsonObject().entrySet()) {
-                int itemId = item.getValue().getAsJsonObject().get("id").getAsInt();
-                double itemQuantity = item.getValue().getAsJsonObject().get("quantity").getAsDouble();
-                sys.addAnItemToOrder(sdm, order, subOrders, store, itemId, itemQuantity);
-            }
-            sys.commitOrder(sdm, order);
+        else {
+            orderStatus.put("wasAdded", false);
+            orderStatus.put("error", "Location entered belongs to another store");
+            response.getWriter().append(gson.toJson(false));
         }
+    }
+
+    private boolean isCustomerLocationFine(SuperMarket sdm, Point customerLocation) {
+
+        boolean isLocationFine = true;
+
+        int count = 0;
+        count += sdm.getStores().values()
+                .stream()
+                .filter(store -> store.getLocation().getX() == customerLocation.x && store.getLocation().getY() == customerLocation.getY())
+                .count();
+        if (count > 0) {
+            isLocationFine = false;
+        }
+
+        return isLocationFine;
     }
 
     private JSONObject createZoneData(SuperMarket superMarket) {

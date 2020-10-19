@@ -41,7 +41,7 @@ const Transactions = props => {
         <Table
             columns={cols}
             data={props.transactions.map(transaction => ({ Date: transaction.transactionDate, Action: transaction.transferType,
-            Before: transaction.balanceBefore, Current: transaction.balanceAfter, Transfered: transaction.amountTransfered}))}
+            Before: transaction.amountTransfered , Current: transaction.balanceBefore, Transfered: transaction.balanceAfter }))}
             container={classes.container} /> </div>
         : <div>    <Typography component="h1" variant="h5">
             Your Current Balance is {props.balance}$
