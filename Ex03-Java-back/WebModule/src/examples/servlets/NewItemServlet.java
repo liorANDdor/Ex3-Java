@@ -35,7 +35,7 @@ public class NewItemServlet extends HttpServlet {
         String zone =  requestData.get("zone").getAsJsonObject().get("value").getAsString();
         SuperMarket sdm = SystemManager.getInstance().getSuperMarketByLocation(zone);
 
-        int itemId = sdm.getItems().size() +1;
+        int itemId = sdm.getItems().size() + 1;
         Item.PurchaseCategory purcahseCatagory = requestData.get("name").getAsJsonObject().get("value").getAsString().equals("Weight") ?
                 Item.PurchaseCategory.WEIGHT : Item.PurchaseCategory.QUANTITY;
         JsonArray stores = requestData.get("stores").getAsJsonObject().get("value").getAsJsonArray();
@@ -45,9 +45,10 @@ public class NewItemServlet extends HttpServlet {
             JsonObject specificStore = item.getAsJsonObject();
             if (specificStore.get("chosen").getAsBoolean()) {
                 int storeId = specificStore.get("id").getAsInt();
-                Store store = sdm.getStores().get(storeId);
-                store.getItemsToSell().add(new Sell(specificStore.get("id").getAsInt(), specificStore.get("price").getAsDouble()));
-                storesWhoSellItem.add(store);
+                ArrayList sells = (ArrayList) sdm.getStores().get(storeId).getItemsToSell();
+                sells.add(new Sell(specificStore.get("id").getAsInt(), specificStore.get("price").getAsDouble()));
+                sdm.getStores().get(storeId).getItemsToSell().addAll(sells);
+                storesWhoSellItem.add(sdm.getStores().get(storeId));
             }
         }
         newItem.setStoresWhoSellTheItem(storesWhoSellItem);
