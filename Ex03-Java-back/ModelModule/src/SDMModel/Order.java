@@ -95,9 +95,9 @@ public class Order implements Serializable {
             }
         }
         subOrder.setItemsPrice(itemPrice);
-        subOrder.getOrderCustomer().addTransaction(subOrder.getItemsPrice(), MoneyAcount.TransferType.Purchase, order.getDateOfOrder());
+        subOrder.getOrderCustomer().addTransaction(subOrder.getItemsPrice(), MoneyAcount.TransferType.Purchase, subOrder.getDateOfOrder());
 
-        store.getStoreOwner().addTransaction(subOrder.getItemsPrice(), MoneyAcount.TransferType.Sell, order.getDateOfOrder());
+        store.getStoreOwner().addTransaction(subOrder.getItemsPrice(), MoneyAcount.TransferType.Sell, subOrder.getDateOfOrder());
 
         store.addToTotalEarning(itemPrice + subOrder.getShipmentPrice());
         store.getOrders().put(order.getOrderNumber(), subOrder);

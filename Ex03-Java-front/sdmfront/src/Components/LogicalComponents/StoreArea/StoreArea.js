@@ -11,6 +11,8 @@ import AllZones from '../../UIComponents/AllZones/AllZones'
 
 import loadUsers from "../../../Utilities/Services/LoadUserService";
 import loadZones from '../../../Utilities/Services/LoadZonesServices'
+import loadTransactions from "../../../Utilities/Services/LoadTransactions";
+import TransactionsList from "../../UIComponents/TransactionsList/TransactionsList";
 
 const useStyle = makeStyles(theme => ({
     container: {
@@ -23,13 +25,16 @@ const StoreArea = prop => {
     const classes = useStyle()
 
     const [users, setUsers] = useStateIfMounted([])
+    const [transactions, setTransactions] = useStateIfMounted([])
     const [zones, setZones] = useStateIfMounted([])
 
     const loadData = async () => {
         const zonesData = await loadZones()
         const usersData = await loadUsers()
+        const transactionsData = await loadTransactions();
         setZones(zonesData)
         setUsers(usersData)
+        setTransactions(transactionsData)
 
     }
 
@@ -46,6 +51,8 @@ const StoreArea = prop => {
     return (
         <div className={classes.container}>
             {userProfileContext.userType === 'Shop Owner' ? <LoadXml /> : <Deposit />}
+
+            <TransactionsList transactions={transactions} />
             <UsersList users={users} />
             <AllZones zones={zones} />
         </div>

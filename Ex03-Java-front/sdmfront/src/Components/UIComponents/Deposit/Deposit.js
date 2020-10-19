@@ -15,9 +15,8 @@ const Deposit = prop => {
 
 
     useEffect(() => {
-        makeTransaction()
         const interval = setInterval(async () => {
-            makeTransaction()
+          //  checkTransaction();
         }, 2000);
         return () => {
             clearInterval(interval)
