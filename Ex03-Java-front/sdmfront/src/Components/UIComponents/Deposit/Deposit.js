@@ -8,7 +8,7 @@ import loadUsers from "../../../Utilities/Services/LoadUserService";
 
 const Deposit = prop => {
 
-    const [depositAmount, setdepositAmount] = useState(0);
+    const [depositAmount, setdepositAmount] = useState();
     const [totalAmount, settotalAmount] = useState("Total Amound = 0");
 
 
@@ -25,35 +25,38 @@ const Deposit = prop => {
 
 
     const handleChange = (event) => {
-        setdepositAmount( event.target.value);
+
+        const double = /^[0-9,.\b]+$/;
+        if (double.test(event.target.value) || event.target.value=='') {
+                setdepositAmount(event.target.value);
+                console.log('fuck')
+            } else {
+            }
+
     }
     const data = {
         amountTransfered:depositAmount,
         transferType:"Deposit"
     }
     const makeTransaction = () => {
-        const data = {
-            amountTransfered:depositAmount,
-            transferType:"Deposit"
+        if (depositAmount !== 0) {
+            const data = {
+                amountTransfered: depositAmount,
+                transferType: "Deposit"
+            }
+            axios.post("/SDM/makeTransaction", data).then((res) => {
+                settotalAmount(res.data);
+            });
         }
-        axios.post("/SDM/makeTransaction", data).then((res) => {
-            settotalAmount(res.data);
-        });
     };
 
-    const checkTransaction = () => {
 
-        axios.post("/SDM/getTransaction", data).then((res) => {
-        });
-    };
 
     return (<div>
 
         <button onClick={makeTransaction}>Deposit</button>
-
-        <button onClick={checkTransaction}>{totalAmount}</button>
     <TextField onChange={(event) => handleChange(event)} margin="normal" label="Amount To Deposit" variant="filled"
-
+        value={depositAmount}
         autoFocus
 
     />

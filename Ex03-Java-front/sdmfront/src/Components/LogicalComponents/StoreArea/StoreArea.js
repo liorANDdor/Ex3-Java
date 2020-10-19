@@ -13,6 +13,7 @@ import loadUsers from "../../../Utilities/Services/LoadUserService";
 import loadZones from '../../../Utilities/Services/LoadZonesServices'
 import loadTransactions from "../../../Utilities/Services/LoadTransactions";
 import TransactionsList from "../../UIComponents/TransactionsList/TransactionsList";
+import axios from "../../../Utilities/Axios/Axios";
 
 const useStyle = makeStyles(theme => ({
     container: {
@@ -25,6 +26,7 @@ const StoreArea = prop => {
     const classes = useStyle()
 
     const [users, setUsers] = useStateIfMounted([])
+    const [balance, setBalance] = useStateIfMounted([])
     const [transactions, setTransactions] = useStateIfMounted([])
     const [zones, setZones] = useStateIfMounted([])
 
@@ -32,9 +34,12 @@ const StoreArea = prop => {
         const zonesData = await loadZones()
         const usersData = await loadUsers()
         const transactionsData = await loadTransactions();
+        const balance =  await axios.post('/SDM/getBalance')
+        console.log(balance.data)
         setZones(zonesData)
         setUsers(usersData)
         setTransactions(transactionsData)
+        setBalance(balance.data)
 
     }
 
@@ -52,7 +57,7 @@ const StoreArea = prop => {
         <div className={classes.container}>
             {userProfileContext.userType === 'Shop Owner' ? <LoadXml /> : <Deposit />}
 
-            <TransactionsList transactions={transactions} />
+            <TransactionsList transactions={transactions} balance={balance} />
             <UsersList users={users} />
             <AllZones zones={zones} />
         </div>

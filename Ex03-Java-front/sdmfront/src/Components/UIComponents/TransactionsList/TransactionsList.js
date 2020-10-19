@@ -2,6 +2,7 @@ import React from 'react'
 
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '../Table/Table'
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -20,25 +21,32 @@ const Transactions = props => {
             header: 'Date',
         },
         Action : {
-            header: 'Action',
+            header: 'Transfer Type',
         },
         Transfered: {
-            header: 'Before'
+            header: 'Amount Transfered'
         },
         Before: {
-            header: 'After'
+            header: 'Balance Before'
         },
         Current: {
-            header: 'Balance'
+            header: 'Current Balance'
         }
     }
-    return props.transactions.length > 0 ?
+    return   props.transactions.length>0 ?
+        <div>
+            <Typography component="h1" variant="h5">
+               Your Current Balance is {props.balance}$
+            </Typography>
         <Table
             columns={cols}
             data={props.transactions.map(transaction => ({ Date: transaction.transactionDate, Action: transaction.transferType,
             Before: transaction.balanceBefore, Current: transaction.balanceAfter, Transfered: transaction.amountTransfered}))}
-            container={classes.container} />
-        : null
+            container={classes.container} /> </div>
+        : <div>    <Typography component="h1" variant="h5">
+            Your Current Balance is {props.balance}$
+        </Typography></div>
+
 }
 
 export default Transactions

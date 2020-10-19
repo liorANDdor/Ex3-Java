@@ -12,11 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-import SDMModel.MoneyAcount;
-import org.json.JSONObject;
 /*
 epoch: String(epoch time),
 amountTransfered: double,
@@ -25,8 +22,8 @@ transferType: String(Sell/Deposit/Purchase)
 * */
 
 
-@WebServlet(name = "GetTransactionServlet", urlPatterns = "/getTransaction")
-public class GetTransactionServlet extends HttpServlet {
+@WebServlet(name = "GetBalanceServlet", urlPatterns = "/getBalance")
+public class GetBalanceServlet extends HttpServlet {
 
     public void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -40,8 +37,7 @@ public class GetTransactionServlet extends HttpServlet {
         Boolean wasTransactionAdded = false;
         try {
             String userName = (String) request.getSession().getAttribute("userName");
-            List<MoneyAcount.Transaction> transactions = SystemManager.getInstance().getUsers().get(userName).getAcount().getTransactions();
-            response.getWriter().append(gson.toJson(transactions));
+            response.getWriter().append(gson.toJson(SystemManager.getInstance().getUsers().get(userName).getAcount().getBalance()));
         } catch (IOException e) {
             e.printStackTrace();
         }
