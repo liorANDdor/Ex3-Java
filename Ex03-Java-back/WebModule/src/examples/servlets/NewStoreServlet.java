@@ -50,7 +50,7 @@ public class NewStoreServlet extends HttpServlet {
         int locationX = requestData.get("locationX").getAsJsonObject().get("value").getAsInt();
         int locationY = requestData.get("locationY").getAsJsonObject().get("value").getAsInt();
         int ppk = requestData.get("ppk").getAsJsonObject().get("value").getAsInt();
-        int storeId =  requestData.get("ppk").getAsJsonObject().get("value").getAsInt();
+        int storeId =  requestData.get("id").getAsJsonObject().get("value").getAsInt();
         String zone =  requestData.get("zone").getAsJsonObject().get("value").getAsString();
         Store newStore = new Store(storeName, storeId, ppk, new Point(locationX, locationY));
         JsonArray items = requestData.get("items").getAsJsonObject().get("value").getAsJsonArray();

@@ -1,9 +1,6 @@
 package examples.servlets;
 
-import SDMModel.Sell;
-import SDMModel.Store;
-import SDMModel.SuperMarket;
-import SDMModel.SystemManager;
+import SDMModel.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -18,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.*;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 
@@ -31,43 +30,33 @@ public class NewItemServlet extends HttpServlet {
         String rawRequestData = request.getReader().lines().collect(Collectors.joining());
         JsonObject requestData = new Gson().fromJson(rawRequestData, JsonObject.class);
 
+        String itemName = requestData.get("name").getAsJsonObject().get("value").getAsString();
 
-
-
-
-
-        String storeName = requestData.get("name").getAsJsonObject().get("value").getAsString();
-        int locationX = requestData.get("locationX").getAsJsonObject().get("value").getAsInt();
-        int locationY = requestData.get("locationY").getAsJsonObject().get("value").getAsInt();
-        int ppk = requestData.get("ppk").getAsJsonObject().get("value").getAsInt();
-        int storeId =  requestData.get("ppk").getAsJsonObject().get("value").getAsInt();
         String zone =  requestData.get("zone").getAsJsonObject().get("value").getAsString();
-        Store newStore = new Store(storeName, storeId, ppk, new Point(locationX, locationY));
-        JsonArray items = requestData.get("items").getAsJsonObject().get("value").getAsJsonArray();
-
-        for (JsonElement item : items) {
-            JsonObject specificItem = item.getAsJsonObject();
-            if(specificItem.get("chosen").getAsBoolean())
-                newStore.getItemsToSell().add(new Sell(specificItem.get("id").getAsInt(), specificItem.get("price").getAsDouble()));
-        }
-
-        StringBuilder  errorMessage = new StringBuilder();
         SuperMarket sdm = SystemManager.getInstance().getSuperMarketByLocation(zone);
-        boolean isStoreOk = SystemManager.getInstance().checkIfStoreOk(sdm, newStore, errorMessage);
 
-        JSONObject newStoreInfo = new JSONObject();
-        newStoreInfo.put("wasAdded", isStoreOk);
-        newStoreInfo.put("error", errorMessage);
-
-        if(isStoreOk) {
-            String userName = (String) request.getSession().getAttribute("userName");
-            newStore.setStoreOwner(SystemManager.getInstance().getUsers().get(userName));
-            sdm.getStores().put(newStore.getId(), newStore);
-            webSocketServlet.broadcast(SystemManager.getInstance().getOwnerOfZone(zone),"Hi Pal, new store in your Zone was added!!!");
+        int itemId = sdm.getItems().size() +1;
+        Item.PurchaseCategory purcahseCatagory = requestData.get("name").getAsJsonObject().get("value").getAsString().equals("Weight") ?
+                Item.PurchaseCategory.WEIGHT : Item.PurchaseCategory.QUANTITY;
+        JsonArray stores = requestData.get("stores").getAsJsonObject().get("value").getAsJsonArray();
+        Item newItem = new Item(itemName, itemId, purcahseCatagory);
+        ArrayList<Store> storesWhoSellItem = new ArrayList();
+        for (JsonElement item : stores) {
+            JsonObject specificStore = item.getAsJsonObject();
+            if (specificStore.get("chosen").getAsBoolean()) {
+                int storeId = specificStore.get("id").getAsInt();
+                Store store = sdm.getStores().get(storeId);
+                store.getItemsToSell().add(new Sell(specificStore.get("id").getAsInt(), specificStore.get("price").getAsDouble()));
+                storesWhoSellItem.add(store);
+            }
         }
+        newItem.setStoresWhoSellTheItem(storesWhoSellItem);
+
+        sdm.getItems().put(newItem.getId(), newItem);
+
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
-        response.getWriter().append(gson.toJson(newStoreInfo));
+        response.getWriter().append(gson.toJson(true));
 
     }
 
