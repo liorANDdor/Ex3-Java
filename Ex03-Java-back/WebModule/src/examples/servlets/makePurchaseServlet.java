@@ -88,12 +88,12 @@ public class makePurchaseServlet extends HttpServlet {
             }
             notifySellers(order);
             orderStatus.put("wasAdded", true);
-            response.getWriter().append(gson.toJson(true));
+            response.getWriter().append(gson.toJson(orderStatus));
         }
         else {
             orderStatus.put("wasAdded", false);
             orderStatus.put("error", "Location entered belongs to another store");
-            response.getWriter().append(gson.toJson(false));
+            response.getWriter().append(gson.toJson(orderStatus));
         }
     }
 

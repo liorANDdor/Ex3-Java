@@ -18,6 +18,7 @@ import {
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns'
 import axios from "../../../../Utilities/Axios/Axios";
+import SimpleRating from "../../../UIComponents/Rating/Rating";
 
 
 const useStyle = makeStyles(theme => ({
@@ -61,6 +62,7 @@ const CreateOrder = () => {
     const [storeToOrderFrom, setStoreToOrderFrom] = useState('')
 
     const [zoneOptions, setZoneOptions] = useState([])
+    const [wasOrdered, setWasOrdered] = useState(false)
     const [specificZoneData, setSpecificZoneData] = useState(null)
     const [itemOptions, setItemOptions] = useState([])
 
@@ -191,8 +193,10 @@ const CreateOrder = () => {
             customerLocationY: y
         }
         axios.post("/SDM/makePurchase", order).then((res) => {
-            if (res.data.wasOrdered === true) {
-                return true
+
+            if (res.data.map.wasAdded === true) {
+                setWasOrdered(true)
+                console.log(wasOrdered)
             }
         });
     }
@@ -288,8 +292,10 @@ const CreateOrder = () => {
                 variant="contained"
                 color="secondary">
                 Send order
-            </Button>
 
+            </Button>
+            {console.log(wasOrdered)}
+            { wasOrdered ? <SimpleRating/> : null }
         </div>
 
     )
