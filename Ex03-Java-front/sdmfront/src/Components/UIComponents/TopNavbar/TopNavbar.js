@@ -1,10 +1,9 @@
 import React, {useContext, useState} from 'react'
 import { Nav, NavDropdown, Navbar } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-
+import Badge from "@material-ui/core/Badge";
+import MailIcon from "@material-ui/icons/Mail";
 import UserProfileContext from '../../../Utilities/Contexts/UserProfileContext/UserProfileContext'
-
-import Button from "@material-ui/core/Button";
 import LoadWebSocket from "../../../Utilities/Services/LoadWebSocket";
 const customerActions = {
     createOrder: 'Create order',
@@ -20,19 +19,25 @@ const storeOwnerActions = {
 }
 
 const TopNavBar = props => {
-
     const [btnColor, setBtnColor] = useState("white");
+    const [numberOfAlerts, setNumberOfAlerts] = useState(0);
+    const [messages, setMessages] = useState([]);
     const userProfileContext = useContext(UserProfileContext)
     let specificActions = userProfileContext.userType === 'Customer' ? customerActions : storeOwnerActions
     let label = userProfileContext.userType === 'Customer' ? 'Customer actions' : 'Store owner actions'
     const ws = new LoadWebSocket()
     ws.onmessage = evt => {
         // add the new message to state
-        setBtnColor("secondary")
-        console.log("DorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDorDor")
-    };
+        let newNumber = numberOfAlerts + 1;
+        setNumberOfAlerts(newNumber);
+         };
+
+    function showMessages() {
+        setNumberOfAlerts(0) ;
+    }
 
     return (
+
         <Navbar style={{ background: 'inherit' }} variant="light">
             <Navbar.Brand href="#home">Super Market</Navbar.Brand>
             <Nav className="mr-auto">
@@ -49,10 +54,12 @@ const TopNavBar = props => {
                 </NavDropdown>
 
             </Nav>
+            {userProfileContext.userType === 'Customer' ? null :
+                <Badge badgeContent={numberOfAlerts} color="secondary" onClick={showMessages}>
+                    <MailIcon/>
 
-            <Button variant="contained" color={btnColor}>
-                Notifications
-            </Button>
+                </Badge>
+            }
         </Navbar>)
 }
 export default TopNavBar
