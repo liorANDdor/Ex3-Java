@@ -64,13 +64,15 @@ const Deposit = prop => {
     }
     const data = {
         amountTransfered:depositAmount,
-        transferType:"Deposit"
+        transferType:"Deposit",
+        date: selectedDate
     }
     const makeTransaction = () => {
         if (depositAmount !== 0) {
             const data = {
                 amountTransfered: depositAmount,
-                transferType: "Deposit"
+                transferType: "Deposit",
+                date: selectedDate
             }
             axios.post("/SDM/makeTransaction", data).then((res) => {
                 settotalAmount(res.data);
