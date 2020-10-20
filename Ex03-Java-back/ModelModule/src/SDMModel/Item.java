@@ -17,6 +17,11 @@ public class Item implements Serializable {
 
     }
     public Item(){}
+
+    public void setItemAveragePrice(double averagePrice) {
+        this.itemAveragePrice=averagePrice;
+    }
+
     public enum InfoOptions {
         Name, ItemId, Category, NumberOfStoresSellTheItem, ItemAveragePrice, NumberOfTimesItemWasSold;
 
@@ -55,6 +60,7 @@ public class Item implements Serializable {
     private String name;
     private PurchaseCategory purchaseCategory; //can be enum
     private int id;
+    private double itemAveragePrice;
 
     public static Item createInstanceBySDM(SDMItem sdmItem, List<Store> stores) {
         Item newItem = new Item();

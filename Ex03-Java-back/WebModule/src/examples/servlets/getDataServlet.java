@@ -33,6 +33,7 @@ public class getDataServlet extends HttpServlet {
         String zone = request.getParameter("zone");
         if(requestData.has("zone")){
             SuperMarket superMarket = SystemManager.getInstance().getSuperMarketByLocation(requestData.get("zone").getAsString());
+            superMarket.calcItemAveragePrice();
             if(!requestData.has("storeId") || requestData.get("storeId").getAsString().equals(""))
                 response.getWriter().append(gson.toJson(superMarket));
             else{

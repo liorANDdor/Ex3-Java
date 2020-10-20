@@ -100,4 +100,12 @@ public class SuperMarket {
             item.getStoresWhoSellTheItem().add(store);
         }
     }
+
+    public void calcItemAveragePrice() {
+        for(Item item:this.getItems().values())
+        {
+            double averagePrice = item.getItemAveragePrice();
+            item.setItemAveragePrice(averagePrice);
+        }
+    }
 }
