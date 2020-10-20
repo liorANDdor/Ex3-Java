@@ -1,5 +1,5 @@
 import axios from "../Axios/Axios";
-import parseDataItemsAndStores from "../Modal/ParseSpecificZoneData";
+import parseDataItemsAndStores from "../Parsers/ParseSpecificZoneData";
 import React, {useContext, useState} from 'react'
 class LoadWebSocket extends React.Component {
     constructor(props) {

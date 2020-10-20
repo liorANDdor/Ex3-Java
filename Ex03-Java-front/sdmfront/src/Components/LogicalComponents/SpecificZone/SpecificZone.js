@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { withRouter } from "react-router-dom";
 
 
-import parseKeyToLabel from '../../../Utilities/Modal/ParseKeyToUpperCaseWithSpacesString'
+import parseKeyToLabel from '../../../Utilities/Parsers/ParseKeyToUpperCaseWithSpacesString'
 
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';

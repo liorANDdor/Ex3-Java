@@ -1,7 +1,7 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '../Table/Table'
-import keyToLabel from '../../../Utilities/Modal/ParseKeyToUpperCaseWithSpacesString'
+import keyToLabel from '../../../Utilities/Parsers/ParseKeyToUpperCaseWithSpacesString'
 const getModalStyle = () => {
     const top = 50
     const left = 50

@@ -1,5 +1,5 @@
 import axios from '../Axios/Axios'
-import parseUserData from '../Modal/ParseUsersData'
+import parseUserData from '../Parsers/ParseUsersData'
 
 const loadTransactions = async () => {
     try{

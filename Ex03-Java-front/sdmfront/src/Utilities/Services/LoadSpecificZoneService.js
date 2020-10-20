@@ -1,5 +1,5 @@
 import axios from "../Axios/Axios";
-import parseDataItemsAndStores from "../Modal/ParseSpecificZoneData";
+import parseDataItemsAndStores from "../Parsers/ParseSpecificZoneData";
 const LoadSpecificZone = async (nameOfZone) => {
     try {
         let itemsData = await axios.post('SDM/getData', { zone: nameOfZone })

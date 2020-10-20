@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import 'date-fns';
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Select from '@material-ui/core/Select';
@@ -11,7 +12,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import LoadZonesService from "../../../../Utilities/Services/LoadZonesServices";
 import LoadSpecificZoneService from "../../../../Utilities/Services/LoadSpecificZoneService";
 import Table from "../../../UIComponents/Table/Table";
-import { SpaceBarRounded } from '@material-ui/icons';
+import {
+    KeyboardDatePicker,
+    MuiPickersUtilsProvider
+} from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns'
 import axios from "../../../../Utilities/Axios/Axios";
 
 
@@ -48,7 +53,7 @@ const useStylesTable = makeStyles({
 
 
 
-const CreateOrder = props => {
+const CreateOrder = () => {
     const classesTable = useStylesTable()
     const classes = useStyle()
     const [isDynamicOrder, setIsDynamicOrder] = useState(false)
@@ -63,6 +68,12 @@ const CreateOrder = props => {
 
     const [x, setX] = useState('')
     const [y, setY] = useState('')
+
+    const [selectedDate, setSelectedDate] = useState(new Date());
+
+    const handleDateChange = (date) => {
+        setSelectedDate(date);
+    };
 
     useEffect(() => {
         LoadZonesService().then(res => {
@@ -139,7 +150,7 @@ const CreateOrder = props => {
                 type='number'
                 onChange={event => setItemOptions(itemOptions.map(item => item.id === el.id ? { ...el, quantity: event.target.value } : item))}
                 value={el.quantity}
-                />
+            />
         },
         add: {
             header: 'Add to order',
@@ -175,6 +186,7 @@ const CreateOrder = props => {
             zone: zoneToOrder,
             storeId: isDynamicOrder ? null : storeToOrderFrom,
             items: itemsAsObject,
+            date: selectedDate,
             customerLocationX: x,
             customerLocationY: y
         }
@@ -185,10 +197,18 @@ const CreateOrder = props => {
         });
     }
 
-
-
     return (
         <div className={classes.container}>
+
+            <FormControlLabel
+                control={
+                    <Switch
+                        checked={isDynamicOrder}
+                        onChange={isDynamicChangeHandler}
+                    />
+                }
+                label="Is dynamic ?"
+            />
             <div className={classes.LocationContainer}>
                 <Input
                     type='number'
@@ -201,15 +221,6 @@ const CreateOrder = props => {
                     className={classes.locationInput}
                     placeholder='Location: Y' />
             </div>
-            <FormControlLabel
-                control={
-                    <Switch
-                        checked={isDynamicOrder}
-                        onChange={isDynamicChangeHandler}
-                    />
-                }
-                label="Is dynamic ?"
-            />
             <FormControl className={classes.formControl}>
                 <InputLabel htmlFor="zone-native-simple">Zone</InputLabel>
                 <Select
@@ -245,6 +256,23 @@ const CreateOrder = props => {
                     }) : null}
                 </Select>
             </FormControl>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                    className={classes.formControl}
+                    disableToolbar
+                    variant="inline"
+                    format="MM/dd/yyyy"
+                    margin="normal"
+                    id="date-picker-inline"
+                    label="Date"
+                    value={selectedDate}
+                    onChange={handleDateChange}
+                    KeyboardButtonProps={{
+                        'aria-label': 'change date',
+                    }}
+                />
+            </MuiPickersUtilsProvider>
+
             <div>
                 <Table
                     columns={cols}
@@ -252,6 +280,7 @@ const CreateOrder = props => {
                     container={classesTable.container}
                 />
             </div>
+
             <Button
                 onClick={submitHandler}
                 disabled={itemsToOrder.length === 0 || x == '' || y == ''}

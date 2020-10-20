@@ -1,4 +1,4 @@
-import parseZonesData from '../Modal/ParseZonesData'
+import parseZonesData from '../Parsers/ParseZonesData'
 import axios from '../Axios/Axios'
 
 const loadZones = async () => {
