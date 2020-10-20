@@ -3,7 +3,6 @@ package SDMModel;
 import java.io.Serializable;
 import java.util.*;
 import java.util.List;
-
 import java.awt.*;
 
 public class Order implements Serializable {
@@ -99,7 +98,7 @@ public class Order implements Serializable {
         store.getStoreOwner().addTransaction(subOrder.getItemsPrice(), MoneyAcount.TransferType.Sell, subOrder.getDateOfOrder());
         store.addToTotalEarning(itemPrice + subOrder.getShipmentPrice());
         store.getOrders().put(order.getOrderNumber(), subOrder);
-    }
+         }
 
     private String getStoresAsString() {
         String stores = "";

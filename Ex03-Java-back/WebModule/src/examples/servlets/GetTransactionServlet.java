@@ -41,7 +41,10 @@ public class GetTransactionServlet extends HttpServlet {
         try {
             String userName = (String) request.getSession().getAttribute("userName");
             List<MoneyAcount.Transaction> transactions = SystemManager.getInstance().getUsers().get(userName).getAcount().getTransactions();
-            response.getWriter().append(gson.toJson(transactions));
+            if(transactions.size()<6)
+                response.getWriter().append(gson.toJson(transactions));
+            else
+                response.getWriter().append(gson.toJson(transactions.subList(transactions.size()-5,transactions.size())));
         } catch (IOException e) {
             e.printStackTrace();
         }

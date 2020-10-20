@@ -45,9 +45,7 @@ public class NewItemServlet extends HttpServlet {
             JsonObject specificStore = item.getAsJsonObject();
             if (specificStore.get("chosen").getAsBoolean()) {
                 int storeId = specificStore.get("id").getAsInt();
-                ArrayList sells = (ArrayList) sdm.getStores().get(storeId).getItemsToSell();
-                sells.add(new Sell(specificStore.get("id").getAsInt(), specificStore.get("price").getAsDouble()));
-                sdm.getStores().get(storeId).getItemsToSell().addAll(sells);
+                sdm.getStores().get(storeId).getItemsToSell().add(new Sell(itemId, specificStore.get("price").getAsDouble()));
                 storesWhoSellItem.add(sdm.getStores().get(storeId));
             }
         }

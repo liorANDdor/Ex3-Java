@@ -15,10 +15,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.*;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /*
@@ -55,9 +55,19 @@ public class makePurchaseServlet extends HttpServlet {
         Point location = new Point(requestData.get("customerLocationX").getAsInt(), requestData.get("customerLocationY").getAsInt());
         String userName = session.getAttribute("userName") != null ? session.getAttribute("userName").toString() : null;
         Customer user = (Customer) SystemManager.getInstance().getUsers().get(userName);
+        String dateAsString = requestData.get("date").getAsString().substring(0, 10);
+        SimpleDateFormat formatter6=new SimpleDateFormat("yyyy-mm-dd");
+        Date date1 = null;
+        try {
+             date1=formatter6.parse(dateAsString); // 2020-10-20T15:41:46.622Z
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         user.setLocation(location);
         String isDynamic = requestData.get("isDynamic").getAsString();
         order.setOrderCustomer(user);
+       
+        order.setDateOfOrder(date1);
         if (isCustomerLocationFine(sdm, location)) {
             if (isDynamic.equals("True") || isDynamic.equals("true")) {
                 for (Map.Entry<String, JsonElement> item : requestData.get("items").getAsJsonObject().entrySet()) {
@@ -76,7 +86,7 @@ public class makePurchaseServlet extends HttpServlet {
                 }
                 sys.commitOrder(sdm, order);
             }
-
+            notifySellers(order);
             orderStatus.put("wasAdded", true);
             response.getWriter().append(gson.toJson(true));
         }
@@ -84,6 +94,19 @@ public class makePurchaseServlet extends HttpServlet {
             orderStatus.put("wasAdded", false);
             orderStatus.put("error", "Location entered belongs to another store");
             response.getWriter().append(gson.toJson(false));
+        }
+    }
+
+    private void notifySellers(Order aggregatedOrder) {
+        int orderId = aggregatedOrder.getOrderNumber();
+        for(Store store:aggregatedOrder.getStoresToOrderFrom().keySet()){
+            Order order = store.getOrders().get(orderId);
+            webSocketServlet.broadcast(
+                    store.getStoreOwner().getName(), "The user " + order.getOrderCustomer().getName() +
+                            " purchased order " + orderId + "#\n" + "The order price is " + order.getItemsPrice() +
+                            " and the shipment price is " + order.getShipmentPrice() + " with total of "
+                            + order.getItemsQuantity().size() + " different items ");
+
         }
     }
 

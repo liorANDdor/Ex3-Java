@@ -4,15 +4,43 @@ import axios from '../../../Utilities/Axios/Axios'
 import TextField from "@material-ui/core/TextField";
 import loadZones from "../../../Utilities/Services/LoadZonesServices";
 import loadUsers from "../../../Utilities/Services/LoadUserService";
+import DateFnsUtils from "@date-io/date-fns";
+import {KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
+import {makeStyles} from "@material-ui/core/styles";
 
+
+
+const useStyle = makeStyles(theme => ({
+    container: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+    },
+    formControl: {
+        margin: theme.spacing(2, 'auto'),
+        minWidth: '25%'
+    },
+    locationInput: {
+        width: '25%',
+        margin: theme.spacing(2, 2, 4, 2),
+    },
+    LocationContainer: {
+        justifyContent: 'space-between'
+    }
+}))
 
 const Deposit = prop => {
 
     const [depositAmount, setdepositAmount] = useState();
     const [totalAmount, settotalAmount] = useState("Total Amound = 0");
+    const classes = useStyle()
 
 
+    const [selectedDate, setSelectedDate] = useState(new Date());
 
+    const handleDateChange = (date) => {
+        setSelectedDate(date);
+    };
 
     useEffect(() => {
         const interval = setInterval(async () => {
@@ -60,6 +88,22 @@ const Deposit = prop => {
         autoFocus
 
     />
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
+                className={classes.formControl}
+                disableToolbar
+                variant="inline"
+                format="MM/dd/yyyy"
+                margin="normal"
+                id="date-picker-inline"
+                label="Date"
+                value={selectedDate}
+                onChange={handleDateChange}
+                KeyboardButtonProps={{
+                    'aria-label': 'change date',
+                }}
+            />
+        </MuiPickersUtilsProvider>
 
     </div>)
 }
