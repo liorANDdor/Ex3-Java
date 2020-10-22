@@ -50,7 +50,7 @@ public class NewStoreServlet extends HttpServlet {
         int locationX = requestData.get("locationX").getAsJsonObject().get("value").getAsInt();
         int locationY = requestData.get("locationY").getAsJsonObject().get("value").getAsInt();
         int ppk = requestData.get("ppk").getAsJsonObject().get("value").getAsInt();
-        int storeId =  requestData.get("id").getAsJsonObject().get("value").getAsInt();
+        int storeId =  requestData.get("storeId").getAsJsonObject().get("value").getAsInt();
         String zone =  requestData.get("zone").getAsJsonObject().get("value").getAsString();
         Store newStore = new Store(storeName, storeId, ppk, new Point(locationX, locationY));
         JsonArray items = requestData.get("items").getAsJsonObject().get("value").getAsJsonArray();
@@ -73,7 +73,7 @@ public class NewStoreServlet extends HttpServlet {
             String userName = (String) request.getSession().getAttribute("userName");
             newStore.setStoreOwner(SystemManager.getInstance().getUsers().get(userName));
             sdm.getStores().put(newStore.getId(), newStore);
-            webSocketServlet.broadcast(SystemManager.getInstance().getOwnerOfZone(zone),"Hi Pal, new store in your Zone was added!!!");
+            webSocketServlet.broadcast(SystemManager.getInstance().getOwnerOfZone(zone),"Hi Pal, new store named " + newStore.getName() + " in your Zone was added!!!");
         }
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");

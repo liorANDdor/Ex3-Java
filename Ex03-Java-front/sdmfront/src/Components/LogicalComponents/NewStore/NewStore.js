@@ -192,6 +192,9 @@ const NewStore = (props) => {
 
 
     const handleChange = async (event, key) => {
+        axios
+            .post("/SDM/getStoresByZone", formInputs)
+            .then((res) => { console.log(res.data)})
         let newFormInputs = clone(formInputs);
         const re = /^[0-9\b]+$/;
         const ppk = /^[0-9,.\b]+$/;

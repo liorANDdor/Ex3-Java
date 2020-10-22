@@ -47,7 +47,7 @@ const TopNavBar = props => {
         setOpen(isOpenNow);
         console.log(isOpenNow)
         console.log(isOpenNow)
-        if(isOpen){
+        if(isOpenNow){
             console.log(notifications)
         setNumberOfAlerts(0) ;
         setShow(true);
