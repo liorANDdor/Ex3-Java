@@ -35,22 +35,17 @@ public class addFeedbacksServlet extends HttpServlet {
         String rawRequestData = request.getReader().lines().collect(Collectors.joining());
         JsonObject requestData = new Gson().fromJson(rawRequestData, JsonObject.class);
         String customer = session.getAttribute("userName") != null ? session.getAttribute("userName").toString() : null;
-        double rating = Double.parseDouble(requestData.get("rating").toString());
-        int orderId =  Integer.parseInt(requestData.get("orderId").toString());
-        int storeId =  Integer.parseInt(requestData.get("storeId").toString());
-        String zone =  requestData.get("zone").toString();
+        int rating = requestData.get("rate").getAsJsonObject().get("number").getAsInt();
+        String ratingMessage = requestData.get("rate").getAsJsonObject().get("message").getAsString();
+        String zone = requestData.get("zone").getAsString();
+       int orderId =  requestData.get("orderId").getAsInt();
         Order order = SystemManager.getInstance().getSuperMarketByLocation(zone).getOrders().get(orderId);
         Date orderDate = order.getDateOfOrder();
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
-        if (requestData.has("comment")) {
-            String comment = requestData.get("comment").toString();
-            SystemManager.getInstance().getSuperMarketByLocation(zone).getStores().get(storeId).getRating().addFeedback(customer, order.getDateOfOrder(), rating, comment);
+        for(Store store:order.getStoresToOrderFrom().keySet()) {
+            store.getRating().addFeedback(order.getOrderCustomer().getName(), order.getDateOfOrder(),rating, ratingMessage);
         }
-        else{
-            SystemManager.getInstance().getSuperMarketByLocation(zone).getStores().get(storeId).getRating().addFeedback(customer, order.getDateOfOrder(), rating);
-        }
-
 
     }
     @Override

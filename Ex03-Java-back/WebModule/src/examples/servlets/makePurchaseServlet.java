@@ -88,6 +88,7 @@ public class makePurchaseServlet extends HttpServlet {
             }
             notifySellers(order);
             orderStatus.put("wasAdded", true);
+            orderStatus.put("orderId", order.getOrderNumber());
             response.getWriter().append(gson.toJson(orderStatus));
         }
         else {

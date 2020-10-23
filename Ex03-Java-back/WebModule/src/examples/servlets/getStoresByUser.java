@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-@WebServlet(name = "getStoresByUserServlet", urlPatterns = "/getStoresByZone")
+@WebServlet(name = "getStoresByUserServlet", urlPatterns = "/getStoresByUser")
 public class getStoresByUser extends HttpServlet {
 
     public void processRequest(HttpServletRequest request, HttpServletResponse response)

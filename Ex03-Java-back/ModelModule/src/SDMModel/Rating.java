@@ -16,12 +16,12 @@ public class Rating implements Serializable {
 
     double averageRating;
     private List<Rating.Feedback> feedbacks = new ArrayList<>();
-    public void addFeedback( String clientName, Date date, double rating, String comment) {
+    public void addFeedback(String clientName, Date date, int rating, String comment) {
         Feedback feedback = new Feedback(clientName, date, rating, comment );
         feedbacks.add(feedback);
         calcRating();
     }
-    public void addFeedback( String clientName, Date date, double rating) {
+    public void addFeedback(String clientName, Date date, int rating) {
         addFeedback(clientName, date, rating, "" );
     }
 
@@ -37,10 +37,10 @@ public class Rating implements Serializable {
 
         private Date feedbackDate;
         private String clientName;
-        private double rating;
+        private int rating;
         private String comment;
 
-        public Feedback( String clientName, Date date, double rating, String comment) {
+        public Feedback(String clientName, Date date, int rating, String comment) {
             this.clientName = clientName;
             this.feedbackDate = date;
             this.rating = rating;

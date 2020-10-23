@@ -12,6 +12,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import LoadZonesService from "../../../../Utilities/Services/LoadZonesServices";
 import LoadSpecificZoneService from "../../../../Utilities/Services/LoadSpecificZoneService";
 import Table from "../../../UIComponents/Table/Table";
+import SimplRatinge from "../../../UIComponents/Rating/Rating"
 import {
     KeyboardDatePicker,
     MuiPickersUtilsProvider
@@ -60,6 +61,7 @@ const CreateOrder = () => {
     const [isDynamicOrder, setIsDynamicOrder] = useState(false)
     const [zoneToOrder, setZoneToOrder] = useState('');
     const [storeToOrderFrom, setStoreToOrderFrom] = useState('')
+    const [orderId, setOrderId] = useState(null)
 
     const [zoneOptions, setZoneOptions] = useState([])
     const [wasOrdered, setWasOrdered] = useState(false)
@@ -196,14 +198,17 @@ const CreateOrder = () => {
 
             if (res.data.map.wasAdded === true) {
                 setWasOrdered(true)
+                setOrderId(res.data.map.orderId);
                 console.log(wasOrdered)
             }
         });
     }
 
     return (
-        <div className={classes.container}>
 
+         wasOrdered ? <SimplRatinge zone={zoneToOrder} orderId={orderId}/> :
+
+    <div className={classes.container}>
             <FormControlLabel
                 control={
                     <Switch
@@ -294,9 +299,7 @@ const CreateOrder = () => {
                 Send order
 
             </Button>
-            {console.log(wasOrdered)}
-            { wasOrdered ? <SimpleRating/> : null }
-        </div>
+            </div>
 
     )
 

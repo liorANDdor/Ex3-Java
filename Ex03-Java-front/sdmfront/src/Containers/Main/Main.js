@@ -7,6 +7,7 @@ import Zone from '../../Components/LogicalComponents/SpecificZone/SpecificZone'
 import NewStore from "../../Components/LogicalComponents/NewStore/NewStore";
 import CreateOrder from "../../Components/LogicalComponents/Orders/CreateOrder/CreateOrder";
 import NewItem from "../../Components/LogicalComponents/NewItem/NewItem";
+import showFeedbacks from "../../Components/LogicalComponents/showFeedbacks/ShowFeedbacks";
 
 
 const Main = (props) => {
@@ -22,6 +23,7 @@ const Main = (props) => {
                     <Route  path='/storeAreas/:zone' component={Zone} />
                     <Route  path='/openNewStore' component={NewStore} />
                     <Route  path='/addItem' component={NewItem} />
+                    <Route  path='/showFeedback' component={showFeedbacks} />
                 </Switch>
                 <Redirect to='/storeAreas' />
 
