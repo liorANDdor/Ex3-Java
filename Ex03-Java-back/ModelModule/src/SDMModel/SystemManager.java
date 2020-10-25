@@ -1,7 +1,6 @@
 package SDMModel;
 
 
-import com.google.gson.JsonObject;
 import javafx.beans.property.SimpleBooleanProperty;
 
 import java.awt.*;

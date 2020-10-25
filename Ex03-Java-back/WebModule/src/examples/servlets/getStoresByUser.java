@@ -1,22 +1,22 @@
-package examples.servlets;
+ package examples.servlets;
 
-import SDMModel.*;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import org.json.JSONObject;
+        import SDMModel.*;
+        import com.google.gson.Gson;
+        import com.google.gson.JsonObject;
+        import org.json.JSONObject;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.stream.Collectors;
+        import javax.servlet.ServletException;
+        import javax.servlet.annotation.WebServlet;
+        import javax.servlet.http.HttpServlet;
+        import javax.servlet.http.HttpServletRequest;
+        import javax.servlet.http.HttpServletResponse;
+        import javax.servlet.http.HttpSession;
+        import java.io.IOException;
+        import java.util.ArrayList;
+        import java.util.HashMap;
+        import java.util.HashSet;
+        import java.util.List;
+        import java.util.stream.Collectors;
 
 
 @WebServlet(name = "getStoresByUserServlet", urlPatterns = "/getStoresByUser")
@@ -34,11 +34,11 @@ public class getStoresByUser extends HttpServlet {
                 for(Store store:superMarket.getStores().values())
                     if(store.getStoreOwner().getName().equals(customer)) {
                         if(store.getOrders().values().size()>0)
-                        storesInfo.put(storeIndex, makeStoreObject(store));
+                            storesInfo.put(storeIndex, makeStoreObject(store));
                         storeIndex = storeIndex +1;
                     }
             }
-                response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.getWriter().append(gson.toJson(storesInfo));
     }
@@ -102,5 +102,4 @@ public class getStoresByUser extends HttpServlet {
         return "Short description";
     }
 }
-
 
