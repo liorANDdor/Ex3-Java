@@ -38,10 +38,10 @@ const ShowFeedbacks = (props) => {
 
 
     const loadData = async () => {
-        const newFeedbacks =  await axios.post('/SDM/getStoresByUser')
+        const newFeedbacks =  await axios.post('/SDM/getFeedbacks')
 
-        console.log(newFeedbacks)
-            // setFeedbacks(newFeedbacks);
+        console.log(newFeedbacks.data)
+             setFeedbacks(newFeedbacks.data);
     }
 
     useEffect(() => {
@@ -59,8 +59,8 @@ const ShowFeedbacks = (props) => {
         <div>
             <Table
                 columns={cols}
-                data={feedbacks.map(feedback => ({  Client: feedback.clientName, Date: feedback.feedbackDate,
-                Rate: feedback.rating, Message:feedback.comment}))}
+                    data={feedbacks.map(feedback => ({  Client:feedback.rating, Date: feedback.comment ,
+                Rate: feedback.feedbackDate , Message:feedback.clientName}))}
                 container={classes.container} /> </div>
 )
 };

@@ -15,6 +15,11 @@ public class Rating implements Serializable {
     }
 
     double averageRating;
+
+    public List<Feedback> getFeedbacks() {
+        return feedbacks;
+    }
+
     private List<Rating.Feedback> feedbacks = new ArrayList<>();
     public void addFeedback(String clientName, Date date, int rating, String comment) {
         Feedback feedback = new Feedback(clientName, date, rating, comment );
