@@ -5,7 +5,7 @@ import TopNavbar from '../../Components/UIComponents/TopNavbar/TopNavbar'
 import StoreArea from '../../Components/LogicalComponents/StoreArea/StoreArea'
 import Zone from '../../Components/LogicalComponents/SpecificZone/SpecificZone'
 import NewStore from "../../Components/LogicalComponents/NewStore/NewStore";
-import CreateOrder from "../../Components/LogicalComponents/Orders/CreateOrder/CreateOrder";
+import FullOrderCreation from "../../Components/LogicalComponents/Orders/CreateOrder/FullOrderCreation";
 import NewItem from "../../Components/LogicalComponents/NewItem/NewItem";
 import showFeedbacks from "../../Components/LogicalComponents/showFeedbacks/ShowFeedbacks";
 
@@ -19,7 +19,7 @@ const Main = (props) => {
             <div>
                 <Switch>
                     <Route exact path='/storeAreas' component={StoreArea} />
-                    <Route  path='/createOrder' component={CreateOrder} />
+                    <Route  path='/createOrder' component={FullOrderCreation} />
                     <Route  path='/storeAreas/:zone' component={Zone} />
                     <Route  path='/openNewStore' component={NewStore} />
                     <Route  path='/addItem' component={NewItem} />

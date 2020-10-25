@@ -4,7 +4,6 @@ import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Select from '@material-ui/core/Select';
 import Input from '@material-ui/core/Input';
-
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
@@ -12,14 +11,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import LoadZonesService from "../../../../Utilities/Services/LoadZonesServices";
 import LoadSpecificZoneService from "../../../../Utilities/Services/LoadSpecificZoneService";
 import Table from "../../../UIComponents/Table/Table";
-import SimplRatinge from "../../../UIComponents/Rating/Rating"
 import {
     KeyboardDatePicker,
     MuiPickersUtilsProvider
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns'
-import axios from "../../../../Utilities/Axios/Axios";
-import SimpleRating from "../../../UIComponents/Rating/Rating";
 
 
 const useStyle = makeStyles(theme => ({
@@ -55,16 +51,14 @@ const useStylesTable = makeStyles({
 
 
 
-const CreateOrder = () => {
+const CreateOrder = (props) => {
     const classesTable = useStylesTable()
     const classes = useStyle()
     const [isDynamicOrder, setIsDynamicOrder] = useState(false)
     const [zoneToOrder, setZoneToOrder] = useState('');
     const [storeToOrderFrom, setStoreToOrderFrom] = useState('')
-    const [orderId, setOrderId] = useState(null)
 
     const [zoneOptions, setZoneOptions] = useState([])
-    const [wasOrdered, setWasOrdered] = useState(false)
     const [specificZoneData, setSpecificZoneData] = useState(null)
     const [itemOptions, setItemOptions] = useState([])
 
@@ -177,7 +171,7 @@ const CreateOrder = () => {
         console.log(itemsToOrder)
     }
 
-    const submitHandler = () => {
+    const createNewOrderObj = () => {
         let itemsAsObject = {}
         itemsToOrder.forEach(item => {
             itemsAsObject = {
@@ -194,21 +188,16 @@ const CreateOrder = () => {
             customerLocationX: x,
             customerLocationY: y
         }
-        axios.post("/SDM/makePurchase", order).then((res) => {
 
-            if (res.data.map.wasAdded === true) {
-                setWasOrdered(true)
-                setOrderId(res.data.map.orderId);
-                console.log(wasOrdered)
-            }
-        });
+        return order
     }
 
+
+    console.log(props.submitOrder)
     return (
 
-         wasOrdered ? <SimplRatinge zone={zoneToOrder} orderId={orderId}/> :
 
-    <div className={classes.container}>
+        <div className={classes.container}>
             <FormControlLabel
                 control={
                     <Switch
@@ -291,7 +280,7 @@ const CreateOrder = () => {
             </div>
 
             <Button
-                onClick={submitHandler}
+                onClick={() => props.submitOrder(createNewOrderObj())}
                 disabled={itemsToOrder.length === 0 || x == '' || y == ''}
                 className={classes.formControl}
                 variant="contained"
@@ -299,7 +288,7 @@ const CreateOrder = () => {
                 Send order
 
             </Button>
-            </div>
+        </div>
 
     )
 

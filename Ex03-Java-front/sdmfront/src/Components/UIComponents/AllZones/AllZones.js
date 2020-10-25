@@ -6,69 +6,77 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import { Button } from '@material-ui/core';
 
+import Card from '@material-ui/core/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import Typography from '@material-ui/core/Typography';
+
 const useStyles = makeStyles((theme) => ({
     root: {
-        borderStyle: 'inset',
-        padding: '12px',
-        width: '70%',
-        marginLeft: '15%',
-        flexGrow: 1,
+        display: 'flex',
+        flexDirection: 'columns',
+        justifyContent: 'space-around',
         background: 'inherit',
-        marginTop: '20px',
-    },
-    paper: {
-        padding: theme.spacing(2),
-        textAlign: 'center',
-        background: 'inherit',
-        borderStyle: 'outset',
-
+        width: '80%',
+        marginLeft: '10%',
+        marginTopL:'2%'
 
     },
+    card: {
+        minWidth: 400,
+        background: 'inherit',
+    },
+    btn: {
+        width: '100%',
+
+    }
+
 }));
 
 
 const AllZones = props => {
     const classes = useStyles()
-    console.log(props.zones)
     return (
-        <React.Fragment>
-
+        <div className={classes.root}>
             {props.zones.map(zone => {
-                return <div className={classes.root}>
-                    <Grid container spacing={3}>
-                        <Grid item xs={6} >
-                            <Paper className={classes.paper}>Name: {zone.name}</Paper>
-                        </Grid>
-                        <Grid item xs={6}  >
+                return<Card className={classes.card}>
+                        <CardActionArea>
 
-                            <Paper className={classes.paper}>
+                            <CardContent>
+                                <Typography gutterBottom variant="h5" component="h2">
+                                    Name: {zone.name}
+                                </Typography>
+                                <Typography variant="body2" color="textSecondary" component="p">
+                                    <ul>
+                                        <li>Items count: {zone.itemsCount}</li>
+                                        <li>Orders count: {zone.orderCount}</li>
+                                        <li>Stores count: {zone.storesCount}</li>
+                                        <li>Average order price: {zone.averageOrderPrice}</li>
+                                        <Button
+                                            className={classes.btn}
+                                            onClick={() => props.history.push("/storeAreas/" + zone.name)}
+                                            variant="contained"
+                                            color="secondary">
+                                            View
+                                            </Button>
+                                    </ul>
+                                </Typography>
+                            </CardContent>
+                        </CardActionArea>
+                        <CardActions>
 
-                                <Button variant="contained"
-                                    color="secondary" onClick={() => props.history.push("/storeAreas/" + zone.name)}>show
-                                    </Button>
-                            </Paper>
-
-                        </Grid>
-                        <Grid item xs={3} >
-                            <Paper className={classes.paper}>Items count: {zone.itemsCount}</Paper>
-                        </Grid>
-                        <Grid item xs={3} >
-                            <Paper className={classes.paper}>Orders count: {zone.orderCount}</Paper>
-                        </Grid>
-                        <Grid item xs={3} >
-                            <Paper className={classes.paper}>Stores count: {zone.storesCount}</Paper>
-                        </Grid>
-                        <Grid item xs={3} >
-                            <Paper className={classes.paper}>averageOrderPrice: {zone.averageOrderPrice}</Paper>
-                        </Grid>
-
-                    </Grid>
-
-                </div>
+                        </CardActions>
+                    </Card>
             })}
-        </React.Fragment>
+
+
+        </div>
     )
 }
 
 export default withRouter(AllZones)
+
+
 
