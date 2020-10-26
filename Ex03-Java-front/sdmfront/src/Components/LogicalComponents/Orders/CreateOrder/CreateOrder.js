@@ -74,6 +74,7 @@ const CreateOrder = (props) => {
     };
 
     useEffect(() => {
+        setItemsToOrder([])
         LoadZonesService().then(res => {
             setZoneOptions(res)
         })
@@ -173,6 +174,7 @@ const CreateOrder = (props) => {
 
     const createNewOrderObj = () => {
         let itemsAsObject = {}
+        console.log(itemsToOrder)
         itemsToOrder.forEach(item => {
             itemsAsObject = {
                 ...itemsAsObject,
