@@ -32,7 +32,7 @@ export default function SimpleRating(props) {
 
     function sendRating() {
         axios.post('SDM/addFeedbacks', { rate:rating, zone:props.zone, orderId:props.orderId})
-
+       props.restartPage();
     }
 
     return (

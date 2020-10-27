@@ -44,7 +44,7 @@ public class MakeTransactionServlet extends HttpServlet {
         try {
             String userName = (String) request.getSession().getAttribute("userName");
             String dateAsString = requestData.get("date").getAsString().substring(0, 10);
-            SimpleDateFormat formatter6=new SimpleDateFormat("yyyy-mm-dd");
+            SimpleDateFormat formatter6=new SimpleDateFormat("yyyy-MM-dd");
             Date date1 = null;
             try {
                 date1=formatter6.parse(dateAsString); // 2020-10-20T15:41:46.622Z

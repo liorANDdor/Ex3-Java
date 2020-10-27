@@ -12,6 +12,14 @@ const FullOrderCreation = () => {
     const [orderId, setOrderId] = useState(null)
     const [isSentSales, setIsSentSales] = useState(false)
 
+    const refreshPage =() =>{
+        setWasOrdered(false)
+        setDoneOrder({})
+        setOrderId(null)
+        setIsSentSales(false)
+
+
+    }
     const submitHandler = (order) => {
         
         setDoneOrder(order)
@@ -34,7 +42,7 @@ const FullOrderCreation = () => {
         toRender = <AddSales isAddedSaleHandler order={doneOrder} addedSalesHandler={addedSalesHandler} />
         : toRender = <CreatNewOrder submitOrder={submitHandler} />
     if(isSentSales && wasOrdered) 
-        toRender = <SimplRating zone={doneOrder.zone} orderId={orderId} />
+        toRender = <SimplRating zone={doneOrder.zone} orderId={orderId} restartPage={refreshPage} />
         
 
     return toRender

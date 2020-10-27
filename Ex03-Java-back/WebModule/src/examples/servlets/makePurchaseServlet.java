@@ -57,7 +57,7 @@ public class makePurchaseServlet extends HttpServlet {
         String userName = session.getAttribute("userName") != null ? session.getAttribute("userName").toString() : null;
         Customer user = (Customer) SystemManager.getInstance().getUsers().get(userName);
         String dateAsString = requestData.get("date").getAsString().substring(0, 10);
-        SimpleDateFormat formatter6=new SimpleDateFormat("yyyy-mm-dd");
+        SimpleDateFormat formatter6=new SimpleDateFormat("yyyy-MM-dd");
         Date date1 = null;
         try {
              date1=formatter6.parse(dateAsString); // 2020-10-20T15:41:46.622Z
