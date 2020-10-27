@@ -74,10 +74,11 @@ const CreateOrder = (props) => {
     };
 
     useEffect(() => {
-        setItemsToOrder([])
         LoadZonesService().then(res => {
             setZoneOptions(res)
+
         })
+        return()=>console.log(itemsToOrder);
     }, [])
 
     const zoneToOrderChangeHandler = (event) => {
@@ -167,7 +168,7 @@ const CreateOrder = (props) => {
             setItemsToOrder([...itemsToOrder, { ...el, quantity: Number(el.quantity) }])
         }
         else {
-            setItemsToOrder(itemsToOrder.map(item => el.id === item.id ? { ...item, quantity: Number(item.quantity) + Number(el.quantity) } : item))
+            setItemsToOrder([...itemsToOrder, itemsToOrder.map(item => el.id === item.id ? { ...item, quantity: Number(item.quantity) + Number(el.quantity) } : item)])
         }
         console.log(itemsToOrder)
     }

@@ -45,6 +45,7 @@ public class makePurchaseServlet extends HttpServlet {
 
     public void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        order = new Order();
         Gson gson = new Gson();
         JSONObject orderStatus = new JSONObject();
         HttpSession session = request.getSession();
