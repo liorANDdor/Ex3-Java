@@ -337,7 +337,7 @@ public class SystemManager {
             }
         }
         for (Store store : stores.values()) {
-            if (store.getLocation() == newStore.getLocation()) {
+            if (store.getLocation().x == newStore.getLocation().x &&store.getLocation().y == newStore.getLocation().y) {
                 isContentAsNeeded = false;
                 whatWrongMessage.append(String.format("There are two stores with the Location "));
             }

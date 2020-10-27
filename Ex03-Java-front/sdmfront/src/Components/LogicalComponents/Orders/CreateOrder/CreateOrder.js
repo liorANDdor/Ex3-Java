@@ -195,6 +195,18 @@ const CreateOrder = (props) => {
         return order
     }
 
+const changeLocation = (e) =>{
+
+    if (parseInt(e.target.value) > 50 || parseInt(e.target.value) <1   ) {
+        console.log(e.target.value)
+        console.log("over")
+    }
+    else{
+        console.log(e.target.value)
+        console.log("below")
+        setX(e.target.value)}
+}
+
 
     console.log(props.submitOrder)
     return (
@@ -213,13 +225,15 @@ const CreateOrder = (props) => {
             <div className={classes.LocationContainer}>
                 <Input
                     type='number'
-                    onChange={e => setX(e.target.value)}
+                    onChange={e=>changeLocation(e)}
                     className={classes.locationInput}
+                    value={x}
                     placeholder='Location: X' />
                 <Input
                     type='number'
-                    onChange={e => setY(e.target.value)}
+                    onChange={e=>changeLocation(e)}
                     className={classes.locationInput}
+                    value={y}
                     placeholder='Location: Y' />
             </div>
             <FormControl className={classes.formControl}>

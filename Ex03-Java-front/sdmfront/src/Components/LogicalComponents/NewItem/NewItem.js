@@ -251,7 +251,7 @@ const NewItem = (props) => {
             <div>
 
                 <Typography component="h1" variant="h5">
-                    New Store
+                    New Item
                 </Typography>
                 <form onSubmit={onSubmitHandler} className={classes.form} noValidate>
                     {Object.keys(formInputs).map((el) => {

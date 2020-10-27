@@ -172,6 +172,7 @@ const NewStore = (props) => {
 
 
     const [formInputs, setFormInputs] = useState(formElementsInit);
+    const [userAlert, setUserAlert] = useState("");
     const [maySubmit, setMaySubnit] = useState(false)
     const [isTaken, setisTaken] = useState(false);
     const classes = useStyles();
@@ -181,10 +182,13 @@ const NewStore = (props) => {
         axios
             .post("/SDM/createStore", formInputs)
             .then((res) => {
-                if (res.data.wasAdded === true) {
-                    console.log("Store Was Added")
+                console.log(res.data)
+                if (res.data.map.wasAdded === true) {
+                    console.log("store was added")
+                    setUserAlert("Store Was Added")
                 } else {
-                    console.log(res.data.map.error);
+                    setUserAlert(res.data.map.error);
+
                 }
             })
             .catch((err) => console.log(err));
@@ -282,6 +286,9 @@ const NewStore = (props) => {
 
                 <Typography component="h1" variant="h5">
                     New Store
+                </Typography>
+                <Typography component="h4" variant="h5" color="textPrimary" >
+                    {userAlert}
                 </Typography>
                 <form onSubmit={onSubmitHandler} className={classes.form} noValidate>
                     {Object.keys(formInputs).map((el) => {
