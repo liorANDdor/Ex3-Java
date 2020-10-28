@@ -63,9 +63,7 @@ const TopNavBar = props => {
         <Navbar style={{ background: 'inherit' }} variant="light">
             <Navbar.Brand href="#home">Super Market</Navbar.Brand>
             <Nav className="mr-auto">
-                <Nav.Link as={Link} to="/storeAreas">Store Areas</Nav.Link>
-                <Nav.Link as={Link} to="/account">account</Nav.Link>
-
+                <Nav.Link as={Link} to="/storeAreas">Store Areas And Account    </Nav.Link>
                 <NavDropdown title={label} id="collasible-nav-dropdown">
                     {Object.keys(specificActions).map(el => {
                         return (

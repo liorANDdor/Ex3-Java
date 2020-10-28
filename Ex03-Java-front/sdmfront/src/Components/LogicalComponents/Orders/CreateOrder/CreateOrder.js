@@ -195,17 +195,28 @@ const CreateOrder = (props) => {
         return order
     }
 
-const changeLocation = (e) =>{
+    const changeLocationX = (e) =>{
 
-    if (parseInt(e.target.value) > 50 || parseInt(e.target.value) <1   ) {
-        console.log(e.target.value)
-        console.log("over")
+        if (parseInt(e.target.value) > 50 || parseInt(e.target.value) <1   ) {
+            console.log(e.target.value)
+            console.log("over")
+        }
+        else{
+            console.log(e.target.value)
+            console.log("below")
+            setX(e.target.value)}
     }
-    else{
-        console.log(e.target.value)
-        console.log("below")
-        setX(e.target.value)}
-}
+    const changeLocationY = (e) =>{
+
+        if (parseInt(e.target.value) > 50 || parseInt(e.target.value) <1   ) {
+            console.log(e.target.value)
+            console.log("over")
+        }
+        else{
+            console.log(e.target.value)
+            console.log("below")
+            setY(e.target.value)}
+    }
 
 
     console.log(props.submitOrder)
@@ -225,13 +236,13 @@ const changeLocation = (e) =>{
             <div className={classes.LocationContainer}>
                 <Input
                     type='number'
-                    onChange={e=>changeLocation(e)}
+                    onChange={e=>changeLocationX(e)}
                     className={classes.locationInput}
                     value={x}
                     placeholder='Location: X' />
                 <Input
                     type='number'
-                    onChange={e=>changeLocation(e)}
+                    onChange={e=>changeLocationY(e)}
                     className={classes.locationInput}
                     value={y}
                     placeholder='Location: Y' />
