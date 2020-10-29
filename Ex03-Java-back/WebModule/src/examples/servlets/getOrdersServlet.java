@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,26 +34,18 @@ import java.util.stream.Collectors;
 *
 * */
 
-@WebServlet(name = "getOrdersServlet", urlPatterns = "/getOrders")
+@WebServlet(name = "getOrdersServlet", urlPatterns = "/getOrdersByUsername")
 public class getOrdersServlet extends HttpServlet {
 
     public void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Gson gson = new Gson();
-        String rawRequestData = request.getReader().lines().collect(Collectors.joining());
-        JsonObject requestData = new Gson().fromJson(rawRequestData, JsonObject.class);
-
+        String userName = (String) request.getSession().getAttribute("userName");
+        HashMap<Integer, Order> orders =  SystemManager.getInstance().getUsers().get(userName).getOrders();
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
+        response.getWriter().append(gson.toJson(orders);
 
-        SuperMarket superMarket = SystemManager.getInstance().getSuperMarketByLocation(requestData.get("zone").getAsString());
-        if (requestData.has("store") && !requestData.get("store").equals("")) {
-            Store store = superMarket.getStores().get(requestData.get("store").getAsInt());
-            response.getWriter().append(gson.toJson(store.getOrders()));
-        } else {
-
-            response.getWriter().append(gson.toJson(superMarket.getOrders()));
-        }
     }
 
     @Override
