@@ -78,6 +78,7 @@ const CreateOrder = (props) => {
             setZoneOptions(res)
 
         })
+
         return()=>console.log(itemsToOrder);
     }, [])
 

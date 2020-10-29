@@ -8,6 +8,7 @@ import NewStore from "../../Components/LogicalComponents/NewStore/NewStore";
 import FullOrderCreation from "../../Components/LogicalComponents/Orders/CreateOrder/FullOrderCreation";
 import NewItem from "../../Components/LogicalComponents/NewItem/NewItem";
 import showFeedbacks from "../../Components/LogicalComponents/showFeedbacks/ShowFeedbacks";
+import ShowSellerOrders from '../../Components/LogicalComponents/Orders/ShowOrders/ShowSellerOrders'
 
 
 const Main = (props) => {
@@ -20,6 +21,8 @@ const Main = (props) => {
                 <Switch>
                     <Route exact path='/storeAreas' component={StoreArea} />
                     <Route  path='/createOrder' component={FullOrderCreation} />
+                    <Route  path='/storeOrders' component={ShowSellerOrders} />
+
                     <Route  path='/storeAreas/:zone' component={Zone} />
                     <Route  path='/openNewStore' component={NewStore} />
                     <Route  path='/addItem' component={NewItem} />

@@ -21,12 +21,13 @@ const useStyles = makeStyles((theme) => ({
         background: 'inherit',
         width: '80%',
         marginLeft: '10%',
-        marginTopL:'2%'
+        marginTopL: '2%'
 
     },
     card: {
-        minWidth: 400,
+        minWidth: '25%',
         background: 'inherit',
+        marginTop:'2%'
     },
     btn: {
         width: '100%',
@@ -41,34 +42,34 @@ const AllZones = props => {
     return (
         <div className={classes.root}>
             {props.zones.map(zone => {
-                return<Card className={classes.card}>
-                        <CardActionArea>
+                return <Card className={classes.card}>
+                    <CardActionArea>
 
-                            <CardContent>
-                                <Typography gutterBottom variant="h5" component="h2">
-                                    Name: {zone.name}
-                                </Typography>
-                                <Typography variant="body2" color="textSecondary" component="p">
-                                    <ul>
-                                        <li>Items count: {zone.itemsCount}</li>
-                                        <li>Orders count: {zone.orderCount}</li>
-                                        <li>Stores count: {zone.storesCount}</li>
-                                        <li>Average order price: {zone.averageOrderPrice}</li>
-                                        <Button
-                                            className={classes.btn}
-                                            onClick={() => props.history.push("/storeAreas/" + zone.name)}
-                                            variant="contained"
-                                            color="secondary">
-                                            View
-                                            </Button>
-                                    </ul>
-                                </Typography>
-                            </CardContent>
-                        </CardActionArea>
-                        <CardActions>
+                        <CardContent>
+                            <Typography gutterBottom variant="h5" component="h2">
+                                Name: {zone.name}
+                            </Typography>
+                            <Typography variant="body2" color="textSecondary" component="p">
+                                <ul>
+                                    <li>Items count: {zone.itemsCount}</li>
+                                    <li>Orders count: {zone.orderCount}</li>
+                                    <li>Stores count: {zone.storesCount}</li>
+                                    <li>Average order price: {zone.averageOrderPrice}</li>
 
-                        </CardActions>
-                    </Card>
+                                </ul>
+                            </Typography>
+                        </CardContent>
+                    </CardActionArea>
+                    <CardActions>
+                        <Button
+                            className={classes.btn}
+                            onClick={() => props.history.push("/storeAreas/" + zone.name)}
+                            variant="contained"
+                            color="secondary">
+                            View
+                        </Button>
+                    </CardActions>
+                </Card>
             })}
 
 
