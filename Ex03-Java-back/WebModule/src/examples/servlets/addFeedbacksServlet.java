@@ -44,8 +44,11 @@ public class addFeedbacksServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
         for(Store store:order.getStoresToOrderFrom().keySet()) {
-            store.getRating().addFeedback(order.getOrderCustomer().getName(), order.getDateOfOrder(),rating, ratingMessage);
+            store.getRating().addFeedback(order.getOrderCustomer().getName(), store.getName(), order.getDateOfOrder(),rating, ratingMessage);
+            webSocketServlet.broadcast(store.getStoreOwner().getName(), "Got new feedback:\n " + customer + " gave the store " +
+                    store.getName() +", " + rating + " stars");
         }
+
 
     }
     @Override

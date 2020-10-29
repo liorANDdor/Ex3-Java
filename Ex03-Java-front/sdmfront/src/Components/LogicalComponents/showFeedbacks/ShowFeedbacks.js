@@ -4,12 +4,13 @@ import { withRouter } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import axios from "../../../Utilities/Axios/Axios";
 import Table from "../../UIComponents/Table/Table";
-
+import Rating from '@material-ui/lab/Rating';
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
     container: {
         background: 'inherit',
-        width: '30%',
+        width: '80%',
         marginLeft: '20%',
         marginTop: '2%',
         height: '200px',
@@ -25,6 +26,9 @@ const ShowFeedbacks = (props) => {
         Rate : {
             header: 'Rate',
         },
+        Store:{
+            header: 'Store',
+        },
         Message : {
             header: 'Message',
         },
@@ -38,10 +42,10 @@ const ShowFeedbacks = (props) => {
 
 
     const loadData = async () => {
-        const newFeedbacks =  await axios.post('/SDM/getStoresByUser')
+        const newFeedbacks =  await axios.post('/SDM/getFeedbacks')
 
-        console.log(newFeedbacks)
-            // setFeedbacks(newFeedbacks);
+        console.log(newFeedbacks.data)
+             setFeedbacks(newFeedbacks.data);
     }
 
     useEffect(() => {
@@ -56,13 +60,22 @@ const ShowFeedbacks = (props) => {
 
 
     return(
+        feedbacks.length>0?
         <div>
+            (<Typography component="h1" variant="h5">
+            Customer feedbacks
+        </Typography>)
             <Table
                 columns={cols}
-                data={feedbacks.map(feedback => ({  Client: feedback.clientName, Date: feedback.feedbackDate,
-                Rate: feedback.rating, Message:feedback.comment}))}
-                container={classes.container} /> </div>
-)
+                    data={feedbacks.map(feedback => ({  Client: <Rating name="read-only" value={feedback.rating} readOnly />, Store: feedback.storeName,
+                        Date: feedback.comment , Rate: feedback.feedbackDate , Message:feedback.clientName}))}
+                container={classes.container} /> </div> :
+            <div>
+            <Typography component="h1" variant="h5">
+                New Feedbacks Yet
+            </Typography>
+</div>
+    )
 };
 
 

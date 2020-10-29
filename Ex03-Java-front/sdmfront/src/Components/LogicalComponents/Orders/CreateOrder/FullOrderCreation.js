@@ -12,8 +12,15 @@ const FullOrderCreation = () => {
     const [orderId, setOrderId] = useState(null)
     const [isSentSales, setIsSentSales] = useState(false)
 
-    const submitHandler = (order) => {
-        console.log(order)
+    const refreshPage =() =>{
+        setWasOrdered(false)
+        setDoneOrder({})
+        setOrderId(null)
+        setIsSentSales(false)
+
+
+    }
+    const submitHandler = (order) => 
         
         setDoneOrder(order)
         axios.post("/SDM/makePurchase", order).then((res) => {
@@ -35,7 +42,7 @@ const FullOrderCreation = () => {
         toRender = <AddSales isAddedSaleHandler order={doneOrder} addedSalesHandler={addedSalesHandler} />
         : toRender = <CreatNewOrder submitOrder={submitHandler} />
     if(isSentSales && wasOrdered) 
-        toRender = <SimplRating zone={doneOrder.zone} orderId={orderId} />
+        toRender = <SimplRating zone={doneOrder.zone} orderId={orderId} restartPage={refreshPage} />
         
 
     return toRender

@@ -34,6 +34,7 @@ import java.util.stream.Collectors;
 @WebServlet(name = "NewStoreServlet", urlPatterns = "/createStore")
 public class NewStoreServlet extends HttpServlet {
 
+    private  Store newStore= new Store();
     public void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Gson gson = new Gson();
@@ -73,7 +74,9 @@ public class NewStoreServlet extends HttpServlet {
             String userName = (String) request.getSession().getAttribute("userName");
             newStore.setStoreOwner(SystemManager.getInstance().getUsers().get(userName));
             sdm.getStores().put(newStore.getId(), newStore);
-            webSocketServlet.broadcast(SystemManager.getInstance().getOwnerOfZone(zone),"Hi Pal, new store named " + newStore.getName() + " in your Zone was added!!!");
+            webSocketServlet.broadcast(SystemManager.getInstance().getOwnerOfZone(zone),
+                    "Hi Pal, new store named " + newStore.getName() + " was added by " + newStore.getStoreOwner().getName() + " at (" + newStore.getLocation().x +"," + newStore.getLocation().y +
+                            ") and sells " + newStore.getItemsToSell().size() + "/"+ sdm.getItems().size() + " items in your zone!!!");
         }
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");

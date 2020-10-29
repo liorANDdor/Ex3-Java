@@ -76,8 +76,10 @@ const CreateOrder = (props) => {
     useEffect(() => {
         LoadZonesService().then(res => {
             setZoneOptions(res)
+
         })
-        return ()=>console.log('unmount')
+
+        return()=>console.log(itemsToOrder);
     }, [])
 
     const zoneToOrderChangeHandler = (event) => {
@@ -167,13 +169,14 @@ const CreateOrder = (props) => {
             setItemsToOrder([...itemsToOrder, { ...el, quantity: Number(el.quantity) }])
         }
         else {
-            setItemsToOrder(itemsToOrder.map(item => el.id === item.id ? { ...item, quantity: Number(item.quantity) + Number(el.quantity) } : item))
+            setItemsToOrder([...itemsToOrder, itemsToOrder.map(item => el.id === item.id ? { ...item, quantity: Number(item.quantity) + Number(el.quantity) } : item)])
         }
         console.log(itemsToOrder)
     }
 
     const createNewOrderObj = () => {
         let itemsAsObject = {}
+        console.log(itemsToOrder)
         itemsToOrder.forEach(item => {
             itemsAsObject = {
                 ...itemsAsObject,
@@ -191,6 +194,29 @@ const CreateOrder = (props) => {
         }
 
         return order
+    }
+
+    const changeLocationX = (e) =>{
+
+        if (parseInt(e.target.value) > 50 || parseInt(e.target.value) <1   ) {
+            console.log(e.target.value)
+            console.log("over")
+        }
+        else{
+            console.log(e.target.value)
+            console.log("below")
+            setX(e.target.value)}
+    }
+    const changeLocationY = (e) =>{
+
+        if (parseInt(e.target.value) > 50 || parseInt(e.target.value) <1   ) {
+            console.log(e.target.value)
+            console.log("over")
+        }
+        else{
+            console.log(e.target.value)
+            console.log("below")
+            setY(e.target.value)}
     }
 
 
@@ -211,13 +237,15 @@ const CreateOrder = (props) => {
             <div className={classes.LocationContainer}>
                 <Input
                     type='number'
-                    onChange={e => setX(e.target.value)}
+                    onChange={e=>changeLocationX(e)}
                     className={classes.locationInput}
+                    value={x}
                     placeholder='Location: X' />
                 <Input
                     type='number'
-                    onChange={e => setY(e.target.value)}
+                    onChange={e=>changeLocationY(e)}
                     className={classes.locationInput}
+                    value={y}
                     placeholder='Location: Y' />
             </div>
             <FormControl className={classes.formControl}>

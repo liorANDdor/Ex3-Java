@@ -7,10 +7,11 @@ import Typography from "@material-ui/core/Typography";
 const useStyles = makeStyles((theme) => ({
     container: {
         background: 'inherit',
-        width: '30%',
-        marginLeft: '20%',
+        width: '60%',
+        marginLeft: '10%',
+        marginRight: '10%',
         marginTop: '2%',
-        height: '200px',
+        height: '400px',
     }
 }));
 

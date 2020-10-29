@@ -4,7 +4,6 @@ import SDMModel.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.sun.org.apache.xpath.internal.operations.Or;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
@@ -17,8 +16,10 @@ import java.awt.*;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /*
@@ -36,11 +37,10 @@ import java.util.stream.Collectors;
  *       orderId:
  * */
 
-@WebServlet(name = "makePurchaseServlet", urlPatterns = "/makePurchase")
-public class makePurchaseServlet extends HttpServlet {
+@WebServlet(name = "offerSelesServlet", urlPatterns = "/showSales")
+public class offerSalesServlet extends HttpServlet {
     private HashMap<Integer, Order> subOrders = new HashMap<>();
     private Order order = new Order();
-
 
 
     public void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -85,18 +85,25 @@ public class makePurchaseServlet extends HttpServlet {
                     double itemQuantity = item.getValue().getAsDouble();
                     sys.addAnItemToOrder(sdm, order, subOrders, store, itemId, itemQuantity);
                 }
-                sys.commitOrder(sdm, order);
             }
-            notifySellers(order);
-            orderStatus.put("wasAdded", true);
-            orderStatus.put("orderId", order.getOrderNumber());
-            response.getWriter().append(gson.toJson(orderStatus));
+            ArrayList<Sale> sales = sys.showSales(sdm, order);
+            orderStatus.put("isValid", true);
+            if(sales.size()>0){
+                orderStatus.put("isSale", true);
+                orderStatus.put("sales", sales);
+
+            }
+            else{
+                orderStatus.put("isSale", false);
+            }
+
+
         }
         else {
-            orderStatus.put("wasAdded", false);
+            orderStatus.put("isValid", false);
             orderStatus.put("error", "Location entered belongs to another store");
-            response.getWriter().append(gson.toJson(orderStatus));
         }
+        response.getWriter().append(gson.toJson(orderStatus));
     }
 
     private void notifySellers(Order aggregatedOrder) {

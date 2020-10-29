@@ -4,6 +4,7 @@ package SDMModel;
 import javafx.beans.property.SimpleBooleanProperty;
 
 import java.awt.*;
+import java.lang.reflect.Array;
 import java.time.Instant;
 import java.util.*;
 import java.util.List;
@@ -337,7 +338,7 @@ public class SystemManager {
             }
         }
         for (Store store : stores.values()) {
-            if (store.getLocation() == newStore.getLocation()) {
+            if (store.getLocation().x == newStore.getLocation().x &&store.getLocation().y == newStore.getLocation().y) {
                 isContentAsNeeded = false;
                 whatWrongMessage.append(String.format("There are two stores with the Location "));
             }
@@ -388,6 +389,24 @@ public class SystemManager {
 
     }
 
+    public ArrayList<Sale> showSales(SuperMarket sdm, Order order) {
+        ArrayList<Sale> sales = new ArrayList<>();
+        for (Store store : order.getStoresToOrderFrom().keySet()) {
+            Order suborder = store.getOrders().get(order.getOrderNumber());
+            for (Sale sale : store.getSales()) {
+                IfBuy conditonForSale = sale.getIfBuy();
+                Item itemSale = sdm.getItemByID(conditonForSale.getItemId());
+                if (suborder.getItemsQuantity().containsKey(itemSale))
+                    for (double i = 0; i < Math.floor(suborder.getItemsQuantity().get(itemSale) / conditonForSale.getQuantity()); i++) {
+                        sales.add(sale);
+                    }
+
+            }
+        }
+        return sales;
+    }
+
+
     public void addAnItemToOrder(SuperMarket superMarket, Order order, HashMap<Integer, Order> subOrders, Store store, int itemId, double quantity) {
         Item item = superMarket.getItemByID(itemId);
         if (order.getItemsQuantity().containsKey(item)) {
@@ -401,6 +420,7 @@ public class SystemManager {
             }
             order.getItemsQuantity().put(item, quantity);
         }
+
 
         double itemPrice = superMarket.getStores().get(store.getId()).getItemPrice(itemId);
         order.increaseOrderTotalPrice(itemPrice * quantity);
