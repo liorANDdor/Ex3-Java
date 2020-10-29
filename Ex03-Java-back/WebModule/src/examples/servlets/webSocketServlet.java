@@ -35,13 +35,15 @@ public class webSocketServlet {
     public void onError(Throwable t) {
     }
 
-    public static void broadcast(String userName, String msg){
-                try {
-                    sessionsToUser.get(userName).getBasicRemote().sendText(msg);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+    public static void broadcast(String userName, String msg) {
+        if (sessionsToUser.containsKey(userName)) {
+            try {
+                sessionsToUser.get(userName).getBasicRemote().sendText(msg);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+        }
+    }
 
 
 }
