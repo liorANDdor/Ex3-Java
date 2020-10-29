@@ -38,7 +38,7 @@ public class Order implements Serializable {
 
 
     private Integer orderNumber;
-    private HashMap<Store, List<Sell>> storesToOrderFrom = new HashMap<Store, List<Sell>>();
+    private transient HashMap<Store, List<Sell>> storesToOrderFrom = new HashMap<Store, List<Sell>>();
     private Point locationOfClient;
     private HashMap<Item , Double> itemsQuantity = new  HashMap<Item ,Double>();
     private Date dateOfOrder;

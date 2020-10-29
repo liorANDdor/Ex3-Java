@@ -6,6 +6,8 @@ const ShowCustomerOrders = () => {
     useEffect(()=>{
         axios.post('/SDM/getOrdersByUsername').then(res=>console.log(res))
     },[])
+
+    return null
     
 
 }

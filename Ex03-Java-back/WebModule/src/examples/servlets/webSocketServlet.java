@@ -21,7 +21,14 @@ public class webSocketServlet {
 
     @OnClose
     public void onClose(Session session) {
-        sessionsToUser.remove(session.getId());
+        Map.Entry<String, Session> pair =
+                sessionsToUser
+                        .entrySet()
+                        .stream()
+                        .filter((ent) -> ent.getValue().getId() == session.getId())
+                        .findFirst()
+                        .get();
+        sessionsToUser.remove(pair.getKey());
     }
 
     @OnMessage
@@ -44,6 +51,8 @@ public class webSocketServlet {
             }
         }
     }
+
+
 
 
 
