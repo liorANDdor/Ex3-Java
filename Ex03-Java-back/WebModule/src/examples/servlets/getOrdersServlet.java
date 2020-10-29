@@ -44,7 +44,7 @@ public class getOrdersServlet extends HttpServlet {
         HashMap<Integer, Order> orders =  SystemManager.getInstance().getUsers().get(userName).getOrders();
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
-        response.getWriter().append(gson.toJson(orders);
+        response.getWriter().append(gson.toJson(orders));
 
     }
 

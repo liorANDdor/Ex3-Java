@@ -73,8 +73,11 @@ public class getStoresByUser extends HttpServlet {
         JSONObject itemsInfo = new JSONObject();
         for(Item item:order.getItemsQuantity().keySet()){
             JSONObject itemInfo = new JSONObject();
+
             itemInfo.put("id", item.getId());
             itemInfo.put("name", item.getName());
+
+            itemInfo.put("purchaseType", item.getPurchaseCategory());
             itemInfo.put("quantity", order.getItemsQuantity().get(item));
             itemInfo.put("price", order.getItemPrice(item.getId()));
             itemInfo.put("totalPrice", order.getItemPrice(item.getId()) * order.getItemsQuantity().get(item) );
