@@ -13,7 +13,7 @@ const FullOrderCreation = () => {
     const [isSentSales, setIsSentSales] = useState(false)
 
     const submitHandler = (order) => {
-        console.log('asd')
+        console.log(order)
         
         setDoneOrder(order)
         axios.post("/SDM/makePurchase", order).then((res) => {

@@ -77,6 +77,7 @@ const CreateOrder = (props) => {
         LoadZonesService().then(res => {
             setZoneOptions(res)
         })
+        return ()=>console.log('unmount')
     }, [])
 
     const zoneToOrderChangeHandler = (event) => {

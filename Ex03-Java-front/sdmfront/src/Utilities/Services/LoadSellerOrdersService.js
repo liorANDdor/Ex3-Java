@@ -9,11 +9,12 @@ const LoadOrders = async () => {
         const storeAndOrders = {}
         storeAndOrders['name'] = res.data[store].map.name
         storeAndOrders['orders'] = []
-        Object.keys(res.data[store].map.orders.map).forEach((order,ind) => {
-            storeAndOrders['orders'].push(res.data[store].map.orders.map[order].map)
-            storeAndOrders['orders'][ind]['items'] = []
-            Object.keys(res.data[store].map.orders.map[order].map['items'].map).forEach(item => {
-                storeAndOrders['orders'][ind]['items'].push(res.data[store].map.orders.map[order].map['items'].map[item].map)
+        Object.keys(res.data[store].map.orders.map).forEach((order, ind) => {
+            storeAndOrders['orders'].push({ ...res.data[store].map.orders.map[order].map })
+            const items = { ...res.data[store].map.orders.map[order].map.items.map }
+            storeAndOrders['orders'][ind].items = []
+            Object.keys(items).forEach(item => {
+                storeAndOrders['orders'][ind]['items'].push(items[item].map)
             })
 
         })
