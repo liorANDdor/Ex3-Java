@@ -42,12 +42,12 @@ const ShowSellerOrders = () => {
     const classes = useStyles()
     const [stores, setStores] = useState([])
     useEffect(() => {
-        // (async () => {
-        //     let res = await loadSellerOrdersService()
-        //     setOrders(res)
-        // })()
+         (async () => {
+             let res = await loadSellerOrdersService()
+             setStores(res)
+         })()
 
-        setStores(ordersDemo)
+        //setStores(ordersDemo)
     }, [])
 
     return (

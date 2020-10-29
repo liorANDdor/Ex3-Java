@@ -20,7 +20,7 @@ const FullOrderCreation = () => {
 
 
     }
-    const submitHandler = (order) => 
+    const submitHandler = (order) => {
         
         setDoneOrder(order)
         axios.post("/SDM/makePurchase", order).then((res) => {
@@ -48,5 +48,6 @@ const FullOrderCreation = () => {
     return toRender
 
 }
+
 
 export default FullOrderCreation
