@@ -21,7 +21,7 @@ import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
 import MyTable from '../../../UIComponents/Table/Table'
 import ModalItems from '../../../UIComponents/ModalItems/ModalItems'
-
+import LoadOrders from "../../../../Utilities/Services/LoadCustomerOrdersService";
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -29,27 +29,100 @@ const useStyles = makeStyles((theme) => ({
         width: '80%',
         marginLeft: '10%',
         marginTop: '2%',
-    },
-    inlineTable: {
-        background: 'inherit',
     }
 }));
 
 
-const ShowCustomerOrders = () => {
+const ShowCustomerOrders = (props) => {
     const classes = useStyles()
-    const [stores, setStores] = useState([])
+    const [orders, setOrders] = useState([])
     useEffect(() => {
         (async () => {
 
-            let res = await axios.post("/SDM/getOrdersByUsername")
-            console.log(res.data)
+            let res = await LoadOrders()
+            console.log(res)
+            setOrders(res)
         })()
 
         //setStores(ordersDemo)
     }, [])
 
-    return (null
+    const [isOpen, setIsOpen] = useState({})
+
+
+    const handleOpen = (index) => {
+        setIsOpen({ ...isOpen, [index]: true })
+    };
+
+    const handleClose = (index) => {
+        setIsOpen({ ...isOpen, [index]: false })
+    };
+
+    const cols = {
+        orderNumber: {
+            header: 'Order number'
+        },
+        orderDate: {
+            header: 'Order date'
+        },
+        customerLocation: {
+            header: 'Customer location',
+            RenderMethod: (el) => 'X: ' + el['customerLocation'].x + ' Y: ' + el['customerLocation'].y
+        },
+        itemsAmount: {
+            header: 'Items amount'
+        },
+        totalPrice: {
+            header: 'Total price'
+        },
+        shipmentPrice: {
+            header: 'Shipment price'
+        },
+        itemsWasSold: {
+            header: 'Items was sold',
+            RenderMethod: (el, index) => (<div style={{ background: 'inherit' }}>
+                <Button type="button"
+                    variant="contained"
+                    size='small'
+                    color="secondary"
+                    onClick={() => handleOpen(index)}>
+                    View items
+            </Button>
+                <Modal
+                    open={isOpen[index]}
+                    onClose={() => handleClose(index)}
+                    aria-labelledby="simple-modal-title"
+                    aria-describedby="simple-modal-description"
+                >
+                    <ModalItems items={el['itemsWasSold']} />
+                </Modal>
+            </div>)
+        }
+    }
+
+    const getData = orders => {
+        const data = []
+        orders.forEach(order => {
+            const obj = {
+                orderNumber: order.id,
+                orderDate: order.date,
+                customerLocation: order.customerLocation,
+                itemsAmount: order.itemsAmound,
+                totalPrice: order.itemsPrice,
+                shipmentPrice: order.shipmentPrice,
+                itemsWasSold:order.items
+            }
+            data.push(obj)
+        })
+        console.log('orders', orders)
+        return data
+    }
+
+    return (
+        <MyTable
+            columns={cols}
+            data={getData(orders)}
+            container={classes.container} />
     )
 
 }

@@ -1,12 +1,14 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 
 import axios from '../../../Utilities/Axios/Axios'
 import TextField from "@material-ui/core/TextField";
 import loadZones from "../../../Utilities/Services/LoadZonesServices";
 import loadUsers from "../../../Utilities/Services/LoadUserService";
 import DateFnsUtils from "@date-io/date-fns";
-import {KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
-import {makeStyles} from "@material-ui/core/styles";
+import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+import { makeStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
+
 
 
 
@@ -44,7 +46,7 @@ const Deposit = prop => {
 
     useEffect(() => {
         const interval = setInterval(async () => {
-          //  checkTransaction();
+            //  checkTransaction();
         }, 2000);
         return () => {
             clearInterval(interval)
@@ -55,16 +57,16 @@ const Deposit = prop => {
     const handleChange = (event) => {
 
         const double = /^[0-9,.\b]+$/;
-        if (double.test(event.target.value) || event.target.value=='') {
-                setdepositAmount(event.target.value);
-                console.log('fuck')
-            } else {
-            }
+        if (double.test(event.target.value) || event.target.value == '') {
+            setdepositAmount(event.target.value);
+            console.log('fuck')
+        } else {
+        }
 
     }
     const data = {
-        amountTransfered:depositAmount,
-        transferType:"Deposit",
+        amountTransfered: depositAmount,
+        transferType: "Deposit",
         date: selectedDate
     }
     const makeTransaction = () => {
@@ -82,14 +84,17 @@ const Deposit = prop => {
 
 
 
-    return (<div>
+    return (<div className={classes.container}>
 
-        <button onClick={makeTransaction}>Deposit</button>
-    <TextField onChange={(event) => handleChange(event)} margin="normal" label="Amount To Deposit" variant="filled"
-        value={depositAmount}
-        autoFocus
+        <Button variant="contained"
+            color="secondary"
+            onClick={makeTransaction}>Deposit
+            </Button>
+        <TextField onChange={(event) => handleChange(event)} margin="normal" label="Amount To Deposit" variant="filled"
+            value={depositAmount}
+            autoFocus
 
-    />
+        />
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
                 className={classes.formControl}
