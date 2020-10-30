@@ -21,7 +21,8 @@ public class webSocketServlet {
 
     @OnClose
     public void onClose(Session session) {
-        sessionsToUser.remove(session.getId());
+        Map.Entry<String, Session> sessionToRemove =  sessionsToUser.entrySet().stream().filter(x -> session.getId().equals(x.getValue().getId())).findFirst().get();
+        sessionsToUser.remove(sessionToRemove.getKey());
     }
 
     @OnMessage
