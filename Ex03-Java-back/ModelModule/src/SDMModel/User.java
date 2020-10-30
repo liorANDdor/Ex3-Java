@@ -61,7 +61,7 @@ public class User {
         return orders;
     }
 
-    private HashMap<Integer, Order> orders = new HashMap<>();
+    private transient HashMap<Integer, Order> orders = new HashMap<>();
 
     public synchronized void  addTransaction(double amountTransfered, MoneyAcount.TransferType transferType, Date date){
         acount.addTransaction(amountTransfered, transferType, date);
