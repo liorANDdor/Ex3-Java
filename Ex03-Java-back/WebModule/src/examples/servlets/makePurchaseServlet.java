@@ -87,6 +87,7 @@ public class makePurchaseServlet extends HttpServlet {
                 }
                 sys.commitOrder(sdm, order);
             }
+            user.getOrders().put(order.getOrderNumber(), order);
             notifySellers(order);
             orderStatus.put("wasAdded", true);
             orderStatus.put("orderId", order.getOrderNumber());

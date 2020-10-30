@@ -48,7 +48,7 @@ public class getOrdersServlet extends HttpServlet {
         }
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
-        response.getWriter().append(gson.toJson(orders));
+        response.getWriter().append(gson.toJson(ordersInfo));
 
     }
 
@@ -63,7 +63,7 @@ public class getOrdersServlet extends HttpServlet {
             orderInfo.put("itemsAmound", order.getItemsQuantity().size());
             orderInfo.put("items", createItemsObject(order));
 
-            orderInfo.put(order.getOrderNumber().toString(), orderInfo);
+            //orderInfo.put(order.getOrderNumber().toString(), orderInfo);
 
         return orderInfo;
 

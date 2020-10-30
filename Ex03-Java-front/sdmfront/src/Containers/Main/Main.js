@@ -9,6 +9,7 @@ import FullOrderCreation from "../../Components/LogicalComponents/Orders/CreateO
 import NewItem from "../../Components/LogicalComponents/NewItem/NewItem";
 import showFeedbacks from "../../Components/LogicalComponents/showFeedbacks/ShowFeedbacks";
 import ShowSellerOrders from '../../Components/LogicalComponents/Orders/ShowOrders/ShowSellerOrders'
+import ShowCustomerOrders from '../../Components/LogicalComponents/Orders/ShowOrders/ShowCustomerOrders'
 
 
 const Main = (props) => {
@@ -22,6 +23,7 @@ const Main = (props) => {
                     <Route exact path='/storeAreas' component={StoreArea} />
                     <Route  path='/createOrder' component={FullOrderCreation} />
                     <Route  path='/storeOrders' component={ShowSellerOrders} />
+                    <Route  path='/ordersInfo' component={ShowCustomerOrders} />
 
                     <Route  path='/storeAreas/:zone' component={Zone} />
                     <Route  path='/openNewStore' component={NewStore} />
