@@ -8,6 +8,7 @@ import AddSales from './AddSales'
 const FullOrderCreation = () => {
 
     const [wasOrdered, setWasOrdered] = useState(false)
+    const [stores, setStores] = useState([{}])
     const [doneOrder, setDoneOrder] = useState({})
     const [orderId, setOrderId] = useState(null)
     const [isSentSales, setIsSentSales] = useState(false)
@@ -27,6 +28,7 @@ const FullOrderCreation = () => {
 
             if (res.data.map.wasAdded === true) {
                 setWasOrdered(true)
+                setStores(res.data.map.stores.map)
                 setOrderId(res.data.map.orderId);
                 console.log(wasOrdered)
             }
@@ -36,13 +38,13 @@ const FullOrderCreation = () => {
     const addedSalesHandler = () => {
         setIsSentSales(true)
     }
-
+    {console.log(stores)}
     let toRender = null
     wasOrdered ?
-        toRender = <AddSales isAddedSaleHandler order={doneOrder} addedSalesHandler={addedSalesHandler} />
+        toRender = <SimplRating zone={doneOrder.zone} orderId={orderId} restartPage={refreshPage} storesList={stores}/>
         : toRender = <CreatNewOrder submitOrder={submitHandler} />
-    if(isSentSales && wasOrdered) 
-        toRender = <SimplRating zone={doneOrder.zone} orderId={orderId} restartPage={refreshPage} />
+
+
         
 
     return toRender

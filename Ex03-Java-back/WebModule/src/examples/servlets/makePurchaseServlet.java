@@ -88,9 +88,14 @@ public class makePurchaseServlet extends HttpServlet {
                 sys.commitOrder(sdm, order);
             }
             user.getOrders().put(order.getOrderNumber(), order);
+            HashMap<Integer, String> stores = new HashMap<>();
+            for(Store store: order.getStoresToOrderFrom().keySet()){
+                stores.put(store.getId(), store.getName());
+            }
             notifySellers(order);
             orderStatus.put("wasAdded", true);
             orderStatus.put("orderId", order.getOrderNumber());
+            orderStatus.put("stores", stores);
             response.getWriter().append(gson.toJson(orderStatus));
         }
         else {

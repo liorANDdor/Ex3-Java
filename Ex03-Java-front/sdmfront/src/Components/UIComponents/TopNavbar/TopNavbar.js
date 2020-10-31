@@ -11,7 +11,6 @@ import UsersList from "../UsersList/UsersList";
 import Notifications from "../Notifications/Notifications";
 const customerActions = {
     createOrder: 'Create order',
-    raitingOfStoreOwners: 'Raiting of store owners',
     ordersInfo: 'Orders infomartion'
 }
 
