@@ -40,8 +40,10 @@ public class SuperMarket {
 
 
         for(SDMStore sdmStore : storesSDM){
-            Store newStore = Store.createInstanceBySDM(sdmStore, (Seller) user);
-            instance.getStores().put(newStore.getId(), newStore);
+            if(user.isSeller()) {
+                Store newStore = Store.createInstanceBySDM(sdmStore, (Seller) user);
+                instance.getStores().put(newStore.getId(), newStore);
+            }
         }
 
         for(SDMItem sdmItem : itemsSDM){

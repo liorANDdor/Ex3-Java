@@ -9,7 +9,7 @@ const FullOrderCreation = () => {
 
     const [wasOrdered, setWasOrdered] = useState(false)
     const [error, setError] = useState("")
-    const [stores, setStores] = useState([{}])
+    const [stores, setStores] = useState([])
     const [doneOrder, setDoneOrder] = useState({})
     const [orderId, setOrderId] = useState(null)
     const [isSentSales, setIsSentSales] = useState(false)

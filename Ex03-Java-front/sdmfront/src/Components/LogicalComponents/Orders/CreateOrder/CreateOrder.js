@@ -104,8 +104,10 @@ const CreateOrder = (props) => {
             name: item.name,
             price: item.price ? item.price : 'dynamic price',
             purchaseCategory: item.purchaseCategory,
+            total:0,
             quantity: 0,
-            add: null
+            add: null,
+            remove: null
         }))
 
         setItemOptions(itemsDataTable)
@@ -145,12 +147,19 @@ const CreateOrder = (props) => {
         purchaseCategory: {
             header: 'Purchase category'
         },
+        total:{
+          header:'total',
+            RenderMethod:el=>{
+              const ind = itemsToOrder.findIndex(item=>item.id==el.id)
+              return ind >= 0 ? itemsToOrder[ind].quantity : 0
+          }
+        },
         quantity: {
             header: 'Quantity',
             RenderMethod: (el) => <Input
                 style={{ width: '48px' }}
                 type='number'
-                onChange={event => setItemOptions(itemOptions.map(item => item.id === el.id ? { ...el, quantity: event.target.value } : item))}
+                onChange={event => setItemOptions(itemOptions.map(item => item.id === el.id ? { ...item, quantity: event.target.value } : item))}
                 value={el.quantity}
             />
         },
@@ -161,17 +170,39 @@ const CreateOrder = (props) => {
                 color="secondary"
                 disabled={el.quantity <= 0 || (el.purchaseCategory === 'QUANTITY' ? !Number.isInteger(Number(el.quantity)) : false)}
                 onClick={() => addItemToOrder(el)}>add</Button>
+        },
+        remove: {
+            header: 'Remove from order',
+            RenderMethod: el => <Button
+                variant="contained"
+                color="secondary"
+                disabled={el.quantity <= 0 || (el.purchaseCategory === 'QUANTITY' ? !Number.isInteger(Number(el.quantity)) : false)}
+                onClick={() => removeItemToOrder(el)}>remove</Button>
         }
     }
-
+    console.log(itemsToOrder)
     const addItemToOrder = (el) => {
         const found = itemsToOrder.some(item => el.id === item.id);
         if (!found) {
             setItemsToOrder([...itemsToOrder, { ...el, quantity: Number(el.quantity) }])
         }
         else {
-            setItemsToOrder([...itemsToOrder, itemsToOrder.map(item => el.id === item.id ? { ...item, quantity: Number(item.quantity) + Number(el.quantity) } : item)])
+            setItemsToOrder( itemsToOrder.map(item => el.id === item.id ? { ...item, quantity: Number(item.quantity) + Number(el.quantity) } : item))
         }
+        console.log(itemsToOrder)
+    }
+    const removeItemToOrder = (el) => {
+        const found = itemsToOrder.some(item => el.id === item.id);
+        if (found) {
+            let newItems =[...itemsToOrder]
+            newItems = itemsToOrder.map(item => el.id === item.id ? { ...item, quantity: Number(item.quantity) - Number(el.quantity) } : item)
+            newItems= newItems.filter(item=>item.quantity>0)
+            setItemsToOrder((newItems))
+        }
+        else {
+            //setItemsToOrder([...itemsToOrder, itemsToOrder.map(item => el.id === item.id ? { ...item, quantity: Number(item.quantity) + Number(el.quantity) } : item)])
+        }
+
         console.log(itemsToOrder)
     }
 

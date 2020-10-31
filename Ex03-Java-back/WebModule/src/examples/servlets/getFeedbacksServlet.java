@@ -34,7 +34,7 @@ public class getFeedbacksServlet extends HttpServlet {
         ArrayList<Rating.Feedback> feedbacks = new ArrayList<>();
         int storeIndex = 0;
         HashMap<String, HashMap<Integer, Rating.Feedback>> feedbackInfo = new HashMap<>();
-        for (List<SuperMarket> superMarkets : SystemManager.getInstance().getSuperMarkets().values())
+        for (List<SuperMarket> superMarkets : SystemManager.getInstance().getSuperMarkets().values()) {
             for (SuperMarket superMarket : superMarkets) {
                 for (Store store : superMarket.getStores().values())
                     if (store.getStoreOwner().getName().equals(customer)) {
@@ -45,10 +45,12 @@ public class getFeedbacksServlet extends HttpServlet {
 
                         }
                     }
-                response.setContentType("text/html;charset=UTF-8");
-                response.setHeader("Access-Control-Allow-Origin", "*");
-                response.getWriter().append(gson.toJson(feedbacks));
+
             }
+        }
+        response.setContentType("text/html;charset=UTF-8");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.getWriter().append(gson.toJson(feedbacks));
     }
 
 

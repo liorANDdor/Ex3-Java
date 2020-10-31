@@ -70,7 +70,7 @@ public class SystemManager {
         return superMarketSpecificZone;
     }
 
-    public HashMap<String, List<SuperMarket>> getSuperMarkets() {
+    public synchronized HashMap<String, List<SuperMarket>> getSuperMarkets() {
         return superMarkets;
     }
 
@@ -240,7 +240,7 @@ public class SystemManager {
 
     }
 
-    public void setSuperMarket(String userName, SuperMarket SDM) {
+    public synchronized void  setSuperMarket(String userName, SuperMarket SDM) {
         if (superMarkets.containsKey(userName))
             superMarkets.get(userName).add(SDM);
         else {

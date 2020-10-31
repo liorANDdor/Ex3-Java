@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     container: {
         background: 'inherit',
         width: '80%',
-        marginLeft: '20%',
+        marginLeft: '10%',
         marginTop: '2%',
         height: '200px',
     }
@@ -62,9 +62,9 @@ const ShowFeedbacks = (props) => {
     return(
         feedbacks.length>0?
         <div>
-            (<Typography component="h1" variant="h5">
+            <Typography component="h1" variant="h5">
             Customer feedbacks
-        </Typography>)
+        </Typography>
             <Table
                 columns={cols}
                     data={feedbacks.map(feedback => ({  Client: <Rating name="read-only" value={feedback.rating} readOnly />, Store: feedback.storeName,

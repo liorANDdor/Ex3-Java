@@ -5,40 +5,34 @@ import Box from '@material-ui/core/Box';
 import { TextField } from '@material-ui/core';
 import clone from "clone";
 import axios from "../../../Utilities/Axios/Axios";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import Checkbox from "@material-ui/core/Checkbox";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
-import CommentIcon from "@material-ui/icons/Comment";
+import {withRouter} from "react-router-dom"
 
 
-
-export default function SimpleRating(props) {
-
+const SimpleRating=(props)=> {
 
 
-    const [value, setValue] = React.useState(2);
+    const [disable, isDisabled] = React.useState({});
+    const [rateMessage, setRateMessage] = React.useState({});
+    const [rateNumber, setRateNumber] = React.useState({});
 
-    const [rateMessage, setRateMessage] = React.useState("");
-    const [rateNumber, setRateNumber] = React.useState(0);
 
-    const ratingInput = {
-        number: rateNumber,
-        message: rateMessage
-    };
-    const [rating, setRating] = useState(ratingInput);
     const handleChange = (event, key) => {
-        let newRating = clone(ratingInput);
-        newRating.message = event.target.value;
-        setRateMessage(event.target.value);
-      setRating(newRating);
+        console.log(rateNumber)
+        setRateMessage({...rateMessage,[key]:event.target.value});
     };
 
 
-    function sendRating() {
-        axios.post('SDM/addFeedbacks', { rate:rating, zone:props.zone, orderId:props.orderId})
-       props.restartPage();
+    function sendRating(rateNumber, rateMessage, index, storeName) {
+        axios.post('SDM/addFeedbacks', { rate:{nubmer:rateNumber[index], message:rateMessage[index] }, zone:props.zone, orderId:props.orderId, store:storeName })
+        isDisabled({...disable,[index]:true});
+
+    }
+
+    const finishOrder=()=>{
+        props.history.push("/storeAreas");
+    }
+    const handleChangeRating =(x, newValue, value) => {
+        setRateNumber({...rateNumber,[value]:newValue});
     }
 
     return (
@@ -49,33 +43,29 @@ export default function SimpleRating(props) {
                 Press here to rate the order
                 <br></br>
             </Typography>
-
 }
-
-            {Object.entries(props.storesList).map((key, value) => {
-
+            {Object.keys(props.storesList).map((key, index) => {
                 return (
                     <div>
                     <Box component="fieldset" mb={3} borderColor="transparent">
-                        <Typography component="legend">-- Rate {value} --</Typography>
-                        <Rating
-                            name="simple-controlled"
-                            value={rateNumber}
-                            onChange={(event, newValue) => {
+                        <Typography component="legend">-- Rate { props.storesList[key]} --</Typography>
 
-                                let newRating = clone(ratingInput);
-                                newRating.number = newValue;
-                                setRateNumber(newValue);
-                                setRating(newRating);
-                            }}
+                        <Rating
+                            name={index}
+
+                            value={rateNumber[index]?? 0}
+
+                            onChange={(x, newValue )=>handleChangeRating(x, newValue, index)}
                         />
                     </Box>
-                <TextField lable="Free Text" value={rateMessage} onChange={handleChange}/>
-                        <button onClick={x=>sendRating(rateNumber, rateMessage, key )}>RATE NOW</button>
+                <TextField lable="Free Text" value={rateMessage[index]} onChange={x=>handleChange(x, index)}/>
+                        <button disabled={disable[index]} onClick={x=>sendRating(rateNumber, rateMessage, index ,props.storesList[key] )}>RATE NOW</button>
                     </div>
                 );
             })}
-
+            <button onClick={finishOrder}>Back</button>
         </div>
     );
 }
+
+export default withRouter(SimpleRating)
