@@ -16,6 +16,7 @@ import {
     MuiPickersUtilsProvider
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns'
+import Typography from "@material-ui/core/Typography";
 
 
 const useStyle = makeStyles(theme => ({
@@ -225,7 +226,11 @@ const CreateOrder = (props) => {
 
 
         <div className={classes.container}>
-            <FormControlLabel
+            {<Typography component="h1" variant="h5">
+                 {props.error}
+            </Typography>}
+
+                <FormControlLabel
                 control={
                     <Switch
                         checked={isDynamicOrder}

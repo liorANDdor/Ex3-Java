@@ -8,6 +8,7 @@ import AddSales from './AddSales'
 const FullOrderCreation = () => {
 
     const [wasOrdered, setWasOrdered] = useState(false)
+    const [error, setError] = useState("")
     const [stores, setStores] = useState([{}])
     const [doneOrder, setDoneOrder] = useState({})
     const [orderId, setOrderId] = useState(null)
@@ -32,6 +33,10 @@ const FullOrderCreation = () => {
                 setOrderId(res.data.map.orderId);
                 console.log(wasOrdered)
             }
+            else{
+                setError(res.data.map.error)
+
+            }
         });
     }
 
@@ -42,7 +47,7 @@ const FullOrderCreation = () => {
     let toRender = null
     wasOrdered ?
         toRender = <SimplRating zone={doneOrder.zone} orderId={orderId} restartPage={refreshPage} storesList={stores}/>
-        : toRender = <CreatNewOrder submitOrder={submitHandler} />
+        : toRender = <CreatNewOrder submitOrder={submitHandler} error={error} />
 
 
         
